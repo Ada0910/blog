@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -37,7 +38,7 @@ public class AdminController {
      * @Author Ada
      * @Date 17:39 2019/6/16
      * @Param [userName, password, verifyCode, session]
-     * @Description 登陆验证的方法
+     * @Description 登陆
      **/
     @PostMapping(value = "/login")
     public String login(@RequestParam("userName") String userName,
@@ -74,8 +75,48 @@ public class AdminController {
 
         }
 
+    }
+
+    /***
+     * @Author Ada
+     * @Date 21:39 2019/6/20
+     * @Param [request]
+     * @return java.lang.String
+     * @Description 首页跳转请求
+     **/
+    @GetMapping({"", "/", "/index", "/index.html"})
+    public String index(HttpServletRequest request) {
+
+        request.setAttribute("path", "index");
+        return "admin/index";
+    }
 
 
+    /**
+     * @Author Ada
+     * @Date 23:00 2019/6/23
+     * @Param [request]
+     * @return java.lang.String
+     * @Description 退出
+     **/
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().removeAttribute("loginUserId");
+        request.getSession().removeAttribute("loginUser");
+        request.getSession().removeAttribute("errorMsg");
+        return "admin/login";
+    }
+
+    /***
+     * @Author Ada
+     * @Date 10:43 2019/6/24
+     * @Param [request]
+     * @return java.lang.String
+     * @Description 修改密码
+     **/
+    @GetMapping("/profile")
+    public String profile(HttpServletRequest request){
+        return  "admin/profile";
     }
 
 
