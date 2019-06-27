@@ -79,6 +79,6 @@ public class AdminUserServiceImpl implements AdminUserService {
                 return true;
             }
         }
-        return null;
+        return false;
     }
 }

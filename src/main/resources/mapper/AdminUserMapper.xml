@@ -34,7 +34,7 @@
         (admin_user_id,login_user_name ,login_password,nick_name,locked,create_time)
         values
         (#{adminUserId,jdbcType=INTEGER}, #{loginUserName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR},
-      #{nickName,jdbcType=VARCHAR}, #{locked,jdbcType=TINYINT},DATE())
+      #{nickName,jdbcType=VARCHAR}, #{locked,jdbcType=TINYINT},Now())
     </insert>
 
     <insert id="insertSelective" parameterType="com.ada.blog.entity.AdminUser">
@@ -45,7 +45,7 @@
             <if test="loginPassword != null">login_password</if>
             <if test="nickName != null">nick_name</if>
             <if test="locked != null">locked,</if>
-            <if test="createTime ! = null ">create_time,</if>
+            create_time,
         </trim>
         <trim>
             <if test="adminUserId != null">
@@ -63,7 +63,7 @@
             <if test="locked != null">
                 #{locked,jdbcType=TINYINT},
             </if>
-            Date(),
+            Now(),
         </trim>
     </insert>
 
@@ -82,9 +82,7 @@
             <if test="locked != null">
                 locked = #{locked,jdbcType=TINYINT},
             </if>
-            <if test="createTime ! = null">
-                create_time = Date(),
-            </if>
+            create_time = Now(),
         </set>
         where admin_user_id = #{adminUserId,jdbcType=INTEGER}
     </update>
@@ -96,7 +94,7 @@
       login_password = #{loginPassword,jdbcType=VARCHAR},
       nick_name = #{nickName,jdbcType=VARCHAR},
       locked = #{locked,jdbcType=TINYINT},
-      create_time = Date()
+      create_time = Now()
     where
     admin_user_id = #{adminUserId,jdbcType=INTEGER}
   </update>

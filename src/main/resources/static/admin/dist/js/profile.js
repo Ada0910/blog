@@ -1,7 +1,7 @@
 $(function () {
     //修改个人信息
     $('#updateUserNameButton').click(function () {
-        $("#updateUserNameButton").attr("disabled",true);
+        /*$("#updateUserNameButton").attr("disabled",true);*/
         var userName = $('#loginUserName').val();
         var nickName = $('#nickName').val();
         if (validUserNameForUpdate(userName, nickName)) {
@@ -24,7 +24,7 @@ $(function () {
     });
     //修改密码
     $('#updatePasswordButton').click(function () {
-        $("#updatePasswordButton").attr("disabled",true);
+       /* $("#updatePasswordButton").attr("disabled",true);*/
         var originalPassword = $('#originalPassword').val();
         var newPassword = $('#newPassword').val();
         if (validPasswordForUpdate(originalPassword, newPassword)) {
@@ -63,12 +63,12 @@ function validUserNameForUpdate(userName, nickName) {
     }
     if (!validUserName(userName)) {
         $('#updateUserName-info').css("display", "block");
-        $('#updateUserName-info').html("请输入符合规范的登录名！");
+        $('#updateUserName-info').html("请输入符合规范的登录名（2-16位数字、下划线、减号、字母)！");
         return false;
     }
     if (!validCN_ENString2_18(nickName)) {
         $('#updateUserName-info').css("display", "block");
-        $('#updateUserName-info').html("请输入符合规范的昵称！");
+        $('#updateUserName-info').html("请输入符合规范的昵称（2-16位数字、下划线、减号、字母)！");
         return false;
     }
     return true;
@@ -90,7 +90,7 @@ function validPasswordForUpdate(originalPassword, newPassword) {
     }
     if (!validPassword(newPassword)) {
         $('#updatePassword-info').css("display", "block");
-        $('#updatePassword-info').html("请输入符合规范的密码！");
+        $('#updatePassword-info').html("请输入符合规范的密码！(最少2位，最多20位字母或数字的组合)");
         return false;
     }
     return true;

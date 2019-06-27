@@ -8,14 +8,14 @@ import java.util.Date;
 
 /**
  * @author Ada
- * @ClassName :BlogConfig
+ * @ClassName :Config
  * @date 2019/6/13 23:05
  * @Description:博客配置项实体
  */
 @Setter
 @Getter
 @ToString
-public class BlogConfig {
+public class Config {
     /**
      * 配置项的名称
      */

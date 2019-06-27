@@ -1,10 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- public.js -->
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<!-- profile -->
+<script th:src="@{/admin/dist/js/profile.js}"></script>
 
+
+<body class="hold-transition sidebar-mini">
+<!-- 引入页面头header-fragment -->
+<div th:replace="admin/header::header-nav"></div>
+<!-- 引入工具栏sidebar-fragment -->
+<div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+
+<!--内容-->
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid"></div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">基本信息</h3>
+                        </div>
+                        <div class="card-body">
+                            <form role="form" id="userNameForm" >
+                                <div class="form-group col-sm-8">
+                                    <div class="alert alert-danger" id="updateUserName-info"
+                                         style="display: none;"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>登陆名称</label>
+                                    <input type="text" class="form-control" id="loginUserName"
+                                           name="loginUserName"
+                                           placeholder="登陆名" required="true" th:value="${session.loginUserName}">
+                                </div>
+                                <div class="form-group">
+                                    <label>昵称</label>
+                                    <input type="text" class="form-control" id="nickName"
+                                           name="nickName"
+                                           placeholder="昵称" required="true" th:value="${session.nickName}">
+                                </div>
+                                <div class="card-footer">
+                                    <button type="button" id="updateUserNameButton"
+                                            class="btn btn-primary btn-block btn-flat float-right">确认修改
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">修改密码</h3>
+                        </div>
+                        <div class="card-body">
+                            <form role="form" id="userPasswordForm">
+                                <div class="form-group col-sm-8">
+                                    <div class="alert alert-danger updatePassword-info" id="updatePassword-info" style="display: none;"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label"><i class="fa fa-key"></i> 原密码</label>
+                                    <input type="text" class="form-control" id="originalPassword"
+                                           name="originalPassword"
+                                           placeholder="原密码" required="true">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label"><i class="fa fa-key"></i> 新密码</label>
+                                    <input type="text" class="form-control" id="newPassword" name="newPassword"
+                                           placeholder="新密码" required="true">
+                                </div>
+                                <div class="card-footer">
+                                    <button type="button" id="updatePasswordButton"
+                                            class="btn btn-primary btn-block btn-flat float-right">确认修改
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!--class="row"-->
+        </div><!--class="container-fluid"-->
+    </section><!--class="content"-->
+</div><!--class="content-wrapper"-->
+
+<!-- 引入页脚footer-fragment -->
+<div th:replace="admin/footer::footer-fragment"></div>
 </body>
 </html>

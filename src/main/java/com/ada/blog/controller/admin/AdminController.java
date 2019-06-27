@@ -5,10 +5,7 @@ import com.ada.blog.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -93,10 +90,10 @@ public class AdminController {
 
 
     /**
+     * @return java.lang.String
      * @Author Ada
      * @Date 23:00 2019/6/23
      * @Param [request]
-     * @return java.lang.String
      * @Description 退出
      **/
     @GetMapping("/logout")
@@ -112,12 +109,67 @@ public class AdminController {
      * @Date 10:43 2019/6/24
      * @Param [request]
      * @return java.lang.String
-     * @Description 修改密码
+     * @Description 用户信息修改页面
      **/
     @GetMapping("/profile")
-    public String profile(HttpServletRequest request){
-        return  "admin/profile";
+    public String profile(HttpServletRequest request) {
+        Integer loginUserId = (Integer) request.getSession().getAttribute("loginUserId");
+        AdminUser adminUser = adminUserService.getUserDetailById(loginUserId);
+        if (adminUser == null) {
+            return "admin/login";
+        }
+        request.setAttribute("path", "profile");
+        request.getSession().setAttribute("loginUserName", adminUser.getLoginUserName());
+        request.getSession().setAttribute("nickName", adminUser.getNickName());
+        return "admin/user/profile";
     }
 
+
+    /**
+     * @return java.lang.String
+     * @Author Ada
+     * @Date 16:03 2019/6/24
+     * @Param [request, originalPassword, newPassword]
+     * @Description 修改密码
+     **/
+    @PostMapping("/profile/password")
+    @ResponseBody
+    public String passwordUpdate(HttpServletRequest request, @RequestParam("originalPassword") String originalPassword, @RequestParam("newPassword") String newPassword) {
+        if (StringUtils.isEmpty(originalPassword) || StringUtils.isEmpty(newPassword)) {
+            return "参数不能为空";
+        }
+
+        Integer loginUserId = (Integer) request.getSession().getAttribute("loginUserId");
+        if (adminUserService.updatePassword(loginUserId, originalPassword, newPassword)) {
+            request.getSession().removeAttribute("loginUserId");
+            request.getSession().removeAttribute("loginUser");
+            request.getSession().removeAttribute("errorMsg");
+            return "success";
+        } else {
+            return "修改失败";
+        }
+    }
+
+    /***
+     * @Author Ada
+     * @Date 16:05 2019/6/24
+     * @Param [request, loginUserName, nickName]
+     * @return java.lang.String
+     * @Description 修改登录名和昵称
+     **/
+    @PostMapping("/profile/name")
+    @ResponseBody
+    public String nameUpdate(HttpServletRequest request, @RequestParam("loginUserName") String loginUserName,
+                             @RequestParam("nickName") String nickName) {
+        if (StringUtils.isEmpty(loginUserName) || StringUtils.isEmpty(nickName)) {
+            return "参数不能为空";
+        }
+        Integer loginUserId = (int) request.getSession().getAttribute("loginUserId");
+        if (adminUserService.updateName(loginUserId, loginUserName, nickName)) {
+            return "success";
+        } else {
+            return "修改失败";
+        }
+    }
 
 }
