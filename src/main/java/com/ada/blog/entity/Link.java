@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @author Ada
- * @ClassName :BlogLink
+ * @ClassName :Link
  * @date 2019/6/13 23:07
  * @Description:友情链接实体
  */
@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BlogLink {
+public class Link {
     /**
      * 友链表主键id
      */
