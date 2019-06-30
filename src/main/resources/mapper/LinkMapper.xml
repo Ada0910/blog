@@ -32,7 +32,7 @@
 
     <update id="deleteBatch">
         update tb_link
-        set is_delete = 1
+        set is_deleted = 1
         where link_id in
         <foreach collection="array" item="id" open="(" separator="," close=")">
             #{id}
@@ -42,28 +42,26 @@
     <select id="findLinkList" parameterType="Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
+        from tb_link
         where is_deleted = 0
         order by link_id desc
-        <if test=" start != null and limit != null">
+        <if test="start != null and limit!= null">
             limit #{start} ,#{limit}
         </if>
     </select>
 
-    <select id="getTotalLinks" parameterType="Map" resultMap="int">
+    <select id="getTotalLinks" parameterType="Map" resultType="java.lang.Integer">
         select count(1)
         from tb_link
         where  is_deleted =0
     </select>
 
     <insert id="insert" parameterType="com.ada.blog.entity.Link">
-        insert into tb_link
-        (link_id, link_type, link_name,
-      link_url, link_description, link_rank,
-      is_deleted, create_time)
+        insert into tb_link (link_id, link_type, link_name,link_url, link_description, link_rank,is_deleted, create_time)
       values
       (#{linkId,jdbcType=INTEGER}, #{linkType,jdbcType=TINYINT}, #{linkName,jdbcType=VARCHAR},
       #{linkUrl,jdbcType=VARCHAR}, #{linkDescription,jdbcType=VARCHAR}, #{linkRank,jdbcType=INTEGER},
-      #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+      #{isDeleted,jdbcType=TINYINT}, Now())
     </insert>
 
     <insert id="insertSelective" parameterType="com.ada.blog.entity.Link">
@@ -76,7 +74,7 @@
             <if test="linkDescription != null">link_description,</if>
             <if test="linkRank != null">link_rank,</if>
             <if test="isDeleted != null">is_deleted,</if>
-            <if test="createTime != null">create_time,</if>
+            create_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="linkId != null">
@@ -100,9 +98,8 @@
             <if test="isDeleted != null">
                 #{isDeleted,jdbcType=TINYINT},
             </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
+            Now(),
+
         </trim>
     </insert>
 
@@ -127,9 +124,8 @@
             <if test="isDeleted != null">
                 is_deleted = #{isDeleted,jdbcType=TINYINT},
             </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
+            create_time = Now(),
+
         </set>
         where link_id = #{linkId,jdbcType=INTEGER}
     </update>
@@ -142,7 +138,7 @@
       link_description = #{linkDescription,jdbcType=VARCHAR},
       link_rank = #{linkRank,jdbcType=INTEGER},
       is_deleted = #{isDeleted,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = Now()
     where link_id = #{linkId,jdbcType=INTEGER}
   </update>
 

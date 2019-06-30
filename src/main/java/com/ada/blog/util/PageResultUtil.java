@@ -3,17 +3,18 @@ package com.ada.blog.util;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author Ada
  * @ClassName :PageResultUtil
  * @date 2019/6/29 23:16
- * @Description: 分页工具类
+ * @Description: 分页工具类（根据页码和条数进行分页，返回分页的结果）
  */
 @Getter
 @Setter
-public class PageResultUtil {
+public class PageResultUtil implements Serializable {
 
     /**
      * 总数

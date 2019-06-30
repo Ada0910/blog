@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/links/list',
+        url: '/admin/link/list',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'linkId', index: 'linkId', width: 50, key: true, hidden: true},
@@ -53,41 +53,43 @@ function reload() {
 
 function linkAdd() {
     reset();
-    $('.modal-title').html('友链添加');
+    $('.modal-title').html('友情链接添加');
     $('#linkModal').modal('show');
 }
 
 //绑定modal上的保存按钮
-$('#saveButton').click(function () {
+function saveButton(){
+/*$('#saveButton').onclick(function () {*/
+    $('.modal-title').html('斤斤计较');
     var linkId = $("#linkId").val();
     var linkName = $("#linkName").val();
     var linkUrl = $("#linkUrl").val();
     var linkDescription = $("#linkDescription").val();
     var linkRank = $("#linkRank").val();
-    if (!validCN_ENString2_18(linkName)) {
+    if (!validCN_ENString2_100(linkName)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的名称！");
+        $('#edit-error-msg').html("名称不规范(2-100位的中英文字符串)！");
         return;
     }
     if (!isURL(linkUrl)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的网址！");
+        $('#edit-error-msg').html("网址不规范！");
         return;
     }
     if (!validCN_ENString2_100(linkDescription)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的描述！");
+        $('#edit-error-msg').html("描述不规范(2-100位的中英文字符串)！");
         return;
     }
     if (isNull(linkRank) || linkRank < 0) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的排序值！");
+        $('#edit-error-msg').html("排序值不规范(不能为空和小于0)！");
         return;
     }
     var params = $("#linkForm").serialize();
-    var url = '/admin/links/save';
+    var url = '/admin/link/add';
     if (linkId != null && linkId > 0) {
-        url = '/admin/links/update';
+        url = '/admin/link/update';
     }
     $.ajax({
         type: 'POST',//方法类型
@@ -100,8 +102,7 @@ $('#saveButton').click(function () {
                     icon: "success",
                 });
                 reload();
-            }
-            else {
+            } else {
                 $('#linkModal').modal('hide');
                 swal("保存失败", {
                     icon: "error",
@@ -116,8 +117,8 @@ $('#saveButton').click(function () {
         }
     });
 
-});
 
+}
 function linkEdit() {
     var id = getSelectedRow();
     if (id == null) {
@@ -125,7 +126,7 @@ function linkEdit() {
     }
     reset();
     //请求数据
-    $.get("/admin/links/info/" + id, function (r) {
+    $.get("/admin/link/info/" + id, function (r) {
         if (r.resultCode == 200 && r.data != null) {
             //填充数据至modal
             $("#linkName").val(r.data.linkName);
@@ -157,29 +158,30 @@ function deleteLink() {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-    }).then((flag) => {
-            if (flag) {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/links/delete",
-                    contentType: "application/json",
-                    data: JSON.stringify(ids),
-                    success: function (r) {
-                        if (r.resultCode == 200) {
-                            swal("删除成功", {
-                                icon: "success",
-                            });
-                            $("#jqGrid").trigger("reloadGrid");
-                        } else {
-                            swal(r.message, {
-                                icon: "error",
-                            });
-                        }
+    }).then((flag)=>{
+        if(flag) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/link/delete",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                success: function (r) {
+                    if (r.resultCode == 200) {
+                        swal("删除成功", {
+                            icon: "success",
+                        });
+                        $("#jqGrid").trigger("reloadGrid");
+                    } else {
+                        swal(r.message, {
+                            icon: "error",
+                        });
                     }
-                });
-            }
+                }
+            });
         }
-    );
+    }
+);
+
 }
 
 function reset() {

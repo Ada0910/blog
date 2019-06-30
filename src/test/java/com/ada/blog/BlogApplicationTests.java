@@ -15,7 +15,7 @@ public class BlogApplicationTests {
 
         MD5Util  md5Util = new MD5Util();
         System.out.println("密码为1的md5是：");
-        System.out.println(md5Util.MD5Encode("1","UTF-8"));
+        System.out.println(md5Util.MD5Encode("123","UTF-8"));
     }
 
 }

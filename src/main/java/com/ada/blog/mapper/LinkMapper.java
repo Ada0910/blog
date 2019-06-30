@@ -18,7 +18,7 @@ public interface LinkMapper {
     /**
      * 根据主键查询
      */
-    Link selectByPrimaryKey(Link link);
+    Link selectByPrimaryKey(Integer id);
 
     /**
      * 根据主键删除
@@ -38,7 +38,7 @@ public interface LinkMapper {
     /**
      * 获取总数
      */
-    int getTotalLinks(PageUtil pageUtil);
+    Integer getTotalLinks(PageUtil pageUtil);
 
     /**
      * 直接插入

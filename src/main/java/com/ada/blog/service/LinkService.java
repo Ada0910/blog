@@ -15,24 +15,24 @@ import java.util.Map;
  */
 public interface LinkService {
 
-    /***/
+
     PageResultUtil getLinkPage(PageUtil pageUtil);
 
-    /***/
-    int getTotalLinks();
 
-    /***/
+    Integer getTotalLinks();
+
+
     Boolean saveLink(Link link);
 
-    /***/
+
     Link selectById(Integer id);
 
-    /***/
+
     Boolean updateLink(Link link);
 
-    /***/
+
     Boolean deleteBitch(Integer[] ids);
 
-    /***/
+
     Map<Byte, List<Link>> getLinksForLinkPage();
 }
