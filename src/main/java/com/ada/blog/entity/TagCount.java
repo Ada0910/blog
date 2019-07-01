@@ -6,14 +6,14 @@ import lombok.ToString;
 
 /**
  * @author Ada
- * @ClassName :BlogTagCount
+ * @ClassName :TagCount
  * @date 2019/6/13 23:10
  * @Description:博客标签
  */
 @Setter
 @Getter
 @ToString
-public class BlogTagCount {
+public class TagCount {
 
     /**
      * 标签id

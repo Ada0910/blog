@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * @author Ada
- * @ClassName :BlogTagRelation
+ * @ClassName :TagRelation
  * @date 2019/6/13 23:02
  * @Description:博客标签关系表
  */
@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BlogTagRelation {
+public class TagRelation {
     /**
      * 关系表id
      */

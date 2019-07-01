@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @author Ada
- * @ClassName :BlogTag
+ * @ClassName :Tag
  * @date 2019/6/13 22:58
  * @Description:博客标签实体类
  */
@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BlogTag {
+public class Tag {
 
     /**
      * 标签表主键id
