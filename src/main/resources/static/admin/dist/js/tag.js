@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/tags/list',
+        url: '/admin/tag/list',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'tagId', index: 'tagId', width: 50, key: true, hidden: true},
@@ -19,7 +19,7 @@ $(function () {
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.list",
-            page: "data.currPage",
+            page: "data.currentPage",
             total: "data.totalPage",
             records: "data.totalCount"
         },
@@ -50,12 +50,12 @@ function reload() {
 
 function tagAdd() {
     var tagName = $("#tagName").val();
-    if (!validCN_ENString2_18(tagName)) {
+    if (!validCN_ENString2_100(tagName)) {
         swal("标签名称不规范", {
             icon: "error",
         });
     } else {
-        var url = '/admin/tags/save?tagName=' + tagName;
+        var url = '/admin/tag/add?tagName=' + tagName;
         $.ajax({
             type: 'POST',//方法类型
             url: url,
@@ -66,8 +66,7 @@ function tagAdd() {
                         icon: "success",
                     });
                     reload();
-                }
-                else {
+                } else {
                     $("#tagName").val('')
                     swal(result.message, {
                         icon: "error",
@@ -96,26 +95,27 @@ function deleteTag() {
         buttons: true,
         dangerMode: true,
     }).then((flag) => {
-            if (flag) {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/tags/delete",
-                    contentType: "application/json",
-                    data: JSON.stringify(ids),
-                    success: function (r) {
-                        if (r.resultCode == 200) {
-                            swal("删除成功", {
-                                icon: "success",
-                            });
-                            $("#jqGrid").trigger("reloadGrid");
-                        } else {
-                            swal(r.message, {
-                                icon: "error",
-                            });
-                        }
+        if(flag) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/tag/delete",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                success: function (r) {
+                    if (r.resultCode == 200) {
+                        swal("删除成功", {
+                            icon: "success",
+                        });
+                        $("#jqGrid").trigger("reloadGrid");
+                    } else {
+                        swal(r.message, {
+                            icon: "error",
+                        });
                     }
-                });
-            }
+                }
+            });
         }
-    );
+    }
+)
+    ;
 }

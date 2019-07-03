@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ada.blog.mapper.CategoryMapper">
+    <resultMap id="BaseResultMap" type="com.ada.blog.entity.Category">
+        <id column="category_id" jdbcType="INTEGER" property="categoryId"/>
+        <result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
+        <result column="category_icon" jdbcType="VARCHAR" property="categoryIcon"/>
+        <result column="category_rank" jdbcType="INTEGER" property="categoryRank"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    category_id, category_name, category_icon, category_rank, is_deleted, create_time
+  </sql>
+
+    <select id="findCategoryList" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog_category
+        where is_deleted=0
+        order by category_rank desc,create_time desc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+
+    <select id="getTatolCategory" parameterType="Map" resultType="int">
+        select count(*)
+        from tb_blog_category
+        where is_deleted=0
+    </select>
+
+</mapper>

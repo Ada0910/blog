@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/categories/list',
+        url: '/admin/category/list',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'categoryId', index: 'categoryId', width: 50, key: true, hidden: true},
@@ -20,7 +20,7 @@ $(function () {
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.list",
-            page: "data.currPage",
+            page: "data.currentPage",
             total: "data.totalPage",
             records: "data.totalCount"
         },
@@ -78,15 +78,15 @@ function categoryAdd() {
 //绑定modal上的保存按钮
 $('#saveButton').click(function () {
     var categoryName = $("#categoryName").val();
-    if (!validCN_ENString2_18(categoryName)) {
+    if (!validCN_ENString2_100(categoryName)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的分类名称！");
+        $('#edit-error-msg').html("分类名称不规范(2-100位的中英文字符串)！");
     } else {
         var params = $("#categoryForm").serialize();
-        var url = '/admin/categories/save';
+        var url = '/admin/category/add';
         var id = getSelectedRowWithoutAlert();
         if (id != null) {
-            url = '/admin/categories/update';
+            url = '/admin/category/update';
         }
         $.ajax({
             type: 'POST',//方法类型
@@ -143,7 +143,7 @@ function deleteCagegory() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/categories/delete",
+                    url: "/admin/category/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {

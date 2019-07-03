@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
  * @author Ada
  * @ClassName :ResultStatusUtil
  * @date 2019/6/29 17:32
- * @Description: 响应结果生成工具
+ * @Description: 响应结果状态生成工具
  */
 public class ResultStatusUtil {
 

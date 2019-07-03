@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @author Ada
- * @ClassName :BlogCategory
+ * @ClassName :Category
  * @date 2019/6/13 22:42
  * @Description:博客分类实体类
  */
@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BlogCategory {
+public class Category {
 
     /**
      * 博客分类id
