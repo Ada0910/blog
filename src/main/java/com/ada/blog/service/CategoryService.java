@@ -2,7 +2,6 @@ package com.ada.blog.service;
 
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
-import com.ada.blog.util.ResultUtil;
 
 /**
  * @author Ada
@@ -12,5 +11,11 @@ import com.ada.blog.util.ResultUtil;
  */
 public interface CategoryService {
 
- PageResultUtil getBlogCategeoryPage(PageUtil pageUtil);
+    PageResultUtil getBlogCategeoryPage(PageUtil pageUtil);
+
+    Boolean addCategory(String categoryName, String categoryIcon);
+
+    Boolean updateCategory(Integer categoryId,String categoryName, String categoryIcon);
+
+    Boolean deleteBatch(Integer[] ids);
 }

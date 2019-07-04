@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ada.blog.mapper.BlogMapper">
+
+    <resultMap id="BaseResultMap" type="com.ada.blog.entity.Blog">
+        <id column="blog_id" jdbcType="BIGINT" property="blogId"/>
+        <result column="blog_title" jdbcType="VARCHAR" property="blogTitle"/>
+        <result column="blog_sub_url" jdbcType="VARCHAR" property="blogSubUrl"/>
+        <result column="blog_cover_image" jdbcType="VARCHAR" property="blogCoverImage"/>
+        <result column="blog_category_id" jdbcType="INTEGER" property="blogCategoryId"/>
+        <result column="blog_category_name" jdbcType="VARCHAR" property="blogCategoryName"/>
+        <result column="blog_tags" jdbcType="VARCHAR" property="blogTags"/>
+        <result column="blog_status" jdbcType="TINYINT" property="blogStatus"/>
+        <result column="blog_views" jdbcType="BIGINT" property="blogViews"/>
+        <result column="enable_comment" jdbcType="TINYINT" property="enableComment"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ada.blog.entity.Blog">
+        <result column="blog_content" jdbcType="LONGVARCHAR" property="blogContent"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    blog_id, blog_title, blog_sub_url, blog_cover_image, blog_category_id, blog_category_name,
+    blog_tags, blog_status, blog_views, enable_comment, is_deleted, create_time, update_time
+  </sql>
+
+    <sql id="Blob_Column_List">
+    blog_content
+  </sql>
+
+    <update id="updateCategory">
+        update tb_blog
+        set blog_category_id = #{categoryId,jdbcType=INTEGER},
+        blog_category_name = #{categoryName,jdbcType=VARCHAR}
+        where blog_category_id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and is_deleted =0
+    </update>
+
+
+</mapper>

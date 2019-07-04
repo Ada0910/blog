@@ -76,7 +76,7 @@ function categoryAdd() {
 }
 
 //绑定modal上的保存按钮
-$('#saveButton').click(function () {
+function saveButton() {
     var categoryName = $("#categoryName").val();
     if (!validCN_ENString2_100(categoryName)) {
         $('#edit-error-msg').css("display", "block");
@@ -99,8 +99,7 @@ $('#saveButton').click(function () {
                         icon: "success",
                     });
                     reload();
-                }
-                else {
+                } else {
                     $('#categoryModal').modal('hide');
                     swal(result.message, {
                         icon: "error",
@@ -115,7 +114,7 @@ $('#saveButton').click(function () {
             }
         });
     }
-});
+}
 
 function categoryEdit() {
     reset();
