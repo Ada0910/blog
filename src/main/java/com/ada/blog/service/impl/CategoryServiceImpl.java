@@ -74,12 +74,28 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public Boolean deleteBatch(Integer[] ids) {
-        if (ids.length<1) {
+        if (ids.length < 1) {
             return false;
         }
-        blogMapper.updateCategory("默认分类",0,ids);
-        return categoryMapper.deleteBatch(ids)>0;
+        blogMapper.updateCategory("默认分类", 0, ids);
+        return categoryMapper.deleteBatch(ids) > 0;
 
+    }
+
+    /**
+     * 获取总条数
+     */
+    @Override
+    public int getTotalCategory() {
+        return categoryMapper.getTatolCategory(null);
+    }
+
+    /**
+     * 获取所有信息
+     */
+    @Override
+    public List<Category> getAllCategory() {
+        return categoryMapper.findCategoryList(null);
     }
 }
 

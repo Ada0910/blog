@@ -45,6 +45,10 @@ public interface CategoryMapper {
      */
     int updateByPrimaryKeySelective(Category category);
 
-    /**删除*/
+    /**
+     * 删除
+     */
     int deleteBatch(Integer[] ids);
+
+
 }
