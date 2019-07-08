@@ -80,7 +80,7 @@ function saveButton() {
     var categoryName = $("#categoryName").val();
     if (!validCN_ENString2_100(categoryName)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("分类名称不规范(2-100位的中英文字符串)！");
+        $('#edit-error-msg').html("分类名称不规范(2-100为字母字符组合)！");
     } else {
         var params = $("#categoryForm").serialize();
         var url = '/admin/category/add';
@@ -139,28 +139,29 @@ function deleteCagegory() {
         buttons: true,
         dangerMode: true,
     }).then((flag) => {
-            if (flag) {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/category/delete",
-                    contentType: "application/json",
-                    data: JSON.stringify(ids),
-                    success: function (r) {
-                        if (r.resultCode == 200) {
-                            swal("删除成功", {
-                                icon: "success",
-                            });
-                            $("#jqGrid").trigger("reloadGrid");
-                        } else {
-                            swal(r.message, {
-                                icon: "error",
-                            });
-                        }
+        if(flag) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/category/delete",
+                contentType: "application/json",
+                data: JSON.stringify(ids),
+                success: function (r) {
+                    if (r.resultCode == 200) {
+                        swal("删除成功", {
+                            icon: "success",
+                        });
+                        $("#jqGrid").trigger("reloadGrid");
+                    } else {
+                        swal(r.message, {
+                            icon: "error",
+                        });
                     }
-                });
-            }
+                }
+            });
         }
-    );
+    }
+)
+    ;
 }
 
 

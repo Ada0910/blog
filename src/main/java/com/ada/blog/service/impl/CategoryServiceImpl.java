@@ -8,6 +8,7 @@ import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @date 2019/7/3 23:14
  * @Description:
  */
-@Service("/categoryService")
+@Service("categoryService")
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -57,6 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
      * 更新
      */
     @Override
+    @Transactional
     public Boolean updateCategory(Integer categoryId, String categoryName, String categoryIcon) {
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
         if (category != null) {
@@ -73,6 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
      * 删除
      */
     @Override
+    @Transactional
     public Boolean deleteBatch(Integer[] ids) {
         if (ids.length < 1) {
             return false;

@@ -115,5 +115,32 @@
         </foreach>
     </update>
 
+    <insert id="insert" parameterType="com.ada.blog.entity.Category">
+    insert into tb_blog_category (category_id, category_name, category_icon,
+      category_rank, is_deleted, create_time)
+    values (#{categoryId,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{categoryIcon,jdbcType=VARCHAR},
+      #{categoryRank,jdbcType=INTEGER}, #{isDeleted,jdbcType=TINYINT}, Now()
+      )
+  </insert>
 
+    <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.Category">
+    update tb_blog_category
+    set category_name = #{categoryName,jdbcType=VARCHAR},
+      category_icon = #{categoryIcon,jdbcType=VARCHAR},
+      category_rank = #{categoryRank,jdbcType=INTEGER},
+      is_deleted = #{isDeleted,jdbcType=TINYINT},
+      create_time = Now()
+    where category_id = #{categoryId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByCategoryId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog_category
+        where category_id IN
+        <foreach collection="categoryId" item="item" index="index"
+                 open="(" separator="," close=")">#{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
 </mapper>

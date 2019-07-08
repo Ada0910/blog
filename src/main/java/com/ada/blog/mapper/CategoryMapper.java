@@ -2,6 +2,7 @@ package com.ada.blog.mapper;
 
 import com.ada.blog.entity.Category;
 import com.ada.blog.util.PageUtil;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -51,4 +52,9 @@ public interface CategoryMapper {
     int deleteBatch(Integer[] ids);
 
 
+    int insert(Category category);
+
+    int updateByPrimaryKey(Category category);
+
+    List<Category> selectByCategoryId(@Param("categoryId") List<Integer> categoryId);
 }

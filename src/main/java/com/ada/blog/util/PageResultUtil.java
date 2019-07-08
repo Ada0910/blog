@@ -49,6 +49,6 @@ public class PageResultUtil implements Serializable {
         this.totalCount = totalCount;
         this.pageSize = pageSize;
         this.currentPage = currentPage;
-        this.totalPage = (int) Math.ceil(totalCount / pageSize);
+        this.totalPage = (int) Math.ceil((double)totalCount / pageSize);
     }
 }
