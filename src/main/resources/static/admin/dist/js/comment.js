@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/comments/list',
+        url: '/admin/comment/list',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'commentId', index: 'commentId', width: 50, key: true, hidden: true},
@@ -23,7 +23,7 @@ $(function () {
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.list",
-            page: "data.currPage",
+            page: "data.currentPage",
             total: "data.totalPage",
             records: "data.totalCount"
         },
@@ -79,7 +79,7 @@ function checkDoneComments() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/comments/checkDone",
+                    url: "/admin/comment/checkDone",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -118,7 +118,7 @@ function deleteComments() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/comments/delete",
+                    url: "/admin/comment/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -158,7 +158,7 @@ function reply() {
 }
 
 //绑定modal上的保存按钮
-$('#saveButton').click(function () {
+function  saveButton() {
     var replyBody = $("#replyBody").val();
     if (!validCN_ENString2_100(replyBody)) {
         swal("请输入符合规范的回复信息!", {
@@ -166,7 +166,7 @@ $('#saveButton').click(function () {
         });
         return;
     } else {
-        var url = '/admin/comments/reply';
+        var url = '/admin/comment/reply';
         var id = getSelectedRow();
         var params = {"commentId": id, "replyBody": replyBody}
         $.ajax({
@@ -180,8 +180,7 @@ $('#saveButton').click(function () {
                         icon: "success",
                     });
                     reload();
-                }
-                else {
+                } else {
                     $('#replyModal').modal('hide');
                     swal(result.message, {
                         icon: "error",
@@ -196,4 +195,4 @@ $('#saveButton').click(function () {
             }
         });
     }
-});
+}

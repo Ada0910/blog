@@ -11,7 +11,7 @@ import java.util.Map;
  * @author Ada
  * @ClassName :PageUtil
  * @date 2019/6/29 23:00
- * @Description: 分页查询(获取页码和条数)
+ * @Description: 设置Json的各个参数
  */
 
 @Getter
