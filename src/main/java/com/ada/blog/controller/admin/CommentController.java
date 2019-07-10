@@ -66,13 +66,32 @@ public class CommentController {
             return ResultStatusUtil.failResult("参数异常!!!");
         }
 
-        if (commentService.reply(commentId,replyBody)) {
+        if (commentService.reply(commentId, replyBody)) {
             return ResultStatusUtil.successResult();
         } else {
             return ResultStatusUtil.failResult("回复失败");
         }
 
+    }
 
 
+    /***
+     * @Author Ada
+     * @Date 23:41 2019/7/10
+     * @Param [ids]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 审核
+     **/
+    @PostMapping("/comment/checkDone")
+    @ResponseBody
+    public ResultUtil checkDone(@RequestBody Integer[] ids) {
+        if (ids.length < 1) {
+            return ResultStatusUtil.failResult("参数异常！");
+        }
+        if (commentService.checkDone(ids)) {
+            return ResultStatusUtil.successResult();
+        } else {
+            return ResultStatusUtil.failResult("审核失败");
+        }
     }
 }

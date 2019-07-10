@@ -34,4 +34,9 @@ public interface CommentMapper {
      * 更新
      */
     int updateByPrimaryKeySelective(Comment comment);
+
+    /**
+     * 审核
+     */
+    int checkDone(Integer[] ids);
 }

@@ -95,4 +95,13 @@
         </set>
         where comment_id = #{commentId,jdbcType=BIGINT}
     </update>
+
+    <update id="checkDone">
+        update tb_blog_comment
+        set comment_status=1 where comment_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and comment_status = 0
+    </update>
 </mapper>

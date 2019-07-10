@@ -14,4 +14,7 @@ public interface CommentService {
     PageResultUtil getCommentPage(PageUtil pageUtil);
 
     Boolean reply(Long commentId, String replyBody);
+
+    Boolean checkDone(Integer[] ids);
+
 }

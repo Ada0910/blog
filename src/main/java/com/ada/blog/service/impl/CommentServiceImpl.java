@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
     public PageResultUtil getCommentPage(PageUtil pageUtil) {
         List<Comment> comment = commentMapper.findCommentList(pageUtil);
         int total = commentMapper.getTotalComment(pageUtil);
-        PageResultUtil pageResultUtil = new PageResultUtil(comment, total, pageUtil.getLimit(),pageUtil.getPage());
+        PageResultUtil pageResultUtil = new PageResultUtil(comment, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResultUtil;
     }
 
@@ -43,12 +43,20 @@ public class CommentServiceImpl implements CommentService {
      **/
     @Override
     public Boolean reply(Long commentId, String replyBody) {
-      Comment comment = commentMapper.selectByPrimaryKey(commentId);
-      if(comment != null && comment.getCommentStatus().intValue() == 1){
-          comment.setReplyBody(replyBody);
-          comment.setReplyCreateTime(new Date());
-          return commentMapper.updateByPrimaryKeySelective(comment)>0;
-      }
+        Comment comment = commentMapper.selectByPrimaryKey(commentId);
+        if (comment != null && comment.getCommentStatus().intValue() == 1) {
+            comment.setReplyBody(replyBody);
+            comment.setReplyCreateTime(new Date());
+            return commentMapper.updateByPrimaryKeySelective(comment) > 0;
+        }
         return false;
+    }
+
+    /**
+     * 审核
+     */
+    @Override
+    public Boolean checkDone(Integer[] ids) {
+        return commentMapper.checkDone(ids) > 0;
     }
 }
