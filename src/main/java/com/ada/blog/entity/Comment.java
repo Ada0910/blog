@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * @author Ada
- * @ClassName :BlogComment
+ * @ClassName :Comment
  * @date 2019/6/13 22:47
  * @Description: 博客内容评论
  */
@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BlogComment {
+public class Comment {
 
     /**
      * 评论id

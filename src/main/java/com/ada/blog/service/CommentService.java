@@ -12,4 +12,6 @@ import com.ada.blog.util.PageUtil;
 public interface CommentService {
 
     PageResultUtil getCommentPage(PageUtil pageUtil);
+
+    Boolean reply(Long commentId, String replyBody);
 }

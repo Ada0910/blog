@@ -7,8 +7,7 @@ import com.ada.blog.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -22,6 +21,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class CommentController {
+
 
     @Autowired
     private CommentService commentService;
@@ -41,11 +41,38 @@ public class CommentController {
      * @Description 评论的 Json串
      **/
     @RequestMapping("/comment/list")
+    @ResponseBody
     public ResultUtil list(@RequestParam Map<String, Object> params) {
         if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
             return ResultStatusUtil.failResult("参数异常！！！");
         }
         PageUtil pageUtil = new PageUtil(params);
         return ResultStatusUtil.successResult(commentService.getCommentPage(pageUtil));
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:53 2019/7/10
+     * @Param [id, replyBody]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 回复
+     **/
+    @PostMapping("/comment/reply")
+    @ResponseBody
+    public ResultUtil reply(@RequestParam("commentId") Long commentId,
+                            @RequestParam("replyBody") String replyBody) {
+
+        if (commentId == null || commentId < 1 || StringUtils.isEmpty(replyBody)) {
+            return ResultStatusUtil.failResult("参数异常!!!");
+        }
+
+        if (commentService.reply(commentId,replyBody)) {
+            return ResultStatusUtil.successResult();
+        } else {
+            return ResultStatusUtil.failResult("回复失败");
+        }
+
+
+
     }
 }

@@ -1,5 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ada.blog.mapper.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.ada.blog.entity.Comment">
+        <id column="comment_id" jdbcType="BIGINT" property="commentId"/>
+        <result column="blog_id" jdbcType="BIGINT" property="blogId"/>
+        <result column="commentator" jdbcType="VARCHAR" property="commentator"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="website_url" jdbcType="VARCHAR" property="websiteUrl"/>
+        <result column="comment_body" jdbcType="VARCHAR" property="commentBody"/>
+        <result column="comment_create_time" jdbcType="TIMESTAMP" property="commentCreateTime"/>
+        <result column="commentator_ip" jdbcType="VARCHAR" property="commentatorIp"/>
+        <result column="reply_body" jdbcType="VARCHAR" property="replyBody"/>
+        <result column="reply_create_time" jdbcType="TIMESTAMP" property="replyCreateTime"/>
+        <result column="comment_status" jdbcType="TINYINT" property="commentStatus"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+    </resultMap>
 
+    <sql id="Base_Column_List">
+    comment_id, blog_id, commentator, email, website_url, comment_body, comment_create_time,
+    commentator_ip, reply_body, reply_create_time, comment_status, is_deleted
+  </sql>
+
+    <select id="findCommentList" resultMap="BaseResultMap" parameterType="Map">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog_comment
+        where is_deleted=0
+        <if test="blogId!=null">
+            AND blog_id = #{blogId}
+        </if>
+        <if test="commentStatus!=null">
+            AND comment_status = #{commentStatus}
+        </if>
+        order by comment_id desc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
+
+    <select id="getTotalComment" parameterType="Map" resultType="int">
+        select count(*) from tb_blog_comment
+        where is_deleted=0
+        <if test="blogId!=null">
+            AND blog_id = #{blogId}
+        </if>
+        <if test="commentStatus!=null">
+            AND comment_status = #{commentStatus}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog_comment
+        where comment_id = #{commentId,jdbcType=BIGINT} and is_deleted=0
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ada.blog.entity.Comment">
+        update tb_blog_comment
+        <set>
+            <if test="blogId != null">
+                blog_id = #{blogId,jdbcType=BIGINT},
+            </if>
+            <if test="commentator != null">
+                commentator = #{commentator,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="websiteUrl != null">
+                website_url = #{websiteUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="commentBody != null">
+                comment_body = #{commentBody,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCreateTime != null">
+                comment_create_time = #{commentCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commentatorIp != null">
+                commentator_ip = #{commentatorIp,jdbcType=VARCHAR},
+            </if>
+            <if test="replyBody != null">
+                reply_body = #{replyBody,jdbcType=VARCHAR},
+            </if>
+            <if test="replyCreateTime != null">
+                reply_create_time = #{replyCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commentStatus != null">
+                comment_status = #{commentStatus,jdbcType=TINYINT},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=TINYINT},
+            </if>
+        </set>
+        where comment_id = #{commentId,jdbcType=BIGINT}
+    </update>
 </mapper>

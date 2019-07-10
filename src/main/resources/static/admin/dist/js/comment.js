@@ -161,7 +161,7 @@ function reply() {
 function  saveButton() {
     var replyBody = $("#replyBody").val();
     if (!validCN_ENString2_100(replyBody)) {
-        swal("请输入符合规范的回复信息!", {
+        swal("格式不规范(2-100的字母或数字组合)!", {
             icon: "warning",
         });
         return;
