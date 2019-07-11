@@ -1,6 +1,6 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/blogs/list',
+        url: '/admin/blog/list',
         datatype: "json",
         colModel: [
             {label: 'id', name: 'blogId', index: 'blogId', width: 50, key: true, hidden: true},
@@ -23,7 +23,7 @@ $(function () {
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.list",
-            page: "data.currPage",
+            page: "data.currentPage",
             total: "data.totalPage",
             records: "data.totalCount"
         },
@@ -90,7 +90,7 @@ function reload() {
 }
 
 function addBlog() {
-    window.location.href = "/admin/blogs/edit";
+    window.location.href = "/admin/blog/edit";
 }
 
 function editBlog() {
@@ -98,7 +98,7 @@ function editBlog() {
     if (id == null) {
         return;
     }
-    window.location.href = "/admin/blogs/edit/" + id;
+    window.location.href = "/admin/blog/edit/" + id;
 }
 
 function deleteBlog() {
@@ -116,7 +116,7 @@ function deleteBlog() {
             if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/blogs/delete",
+                    url: "/admin/blog/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {

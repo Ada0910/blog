@@ -1,7 +1,11 @@
 package com.ada.blog.mapper;
 
+import com.ada.blog.entity.Blog;
+import com.ada.blog.util.PageUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author Ada
@@ -17,4 +21,13 @@ public interface BlogMapper {
      */
     int updateCategory(@Param("categoryName") String categoryName, @Param("categoryId") Integer categoryId, @Param("ids") Integer[] ids);
 
+    /**
+     * 返回博客管理列表
+     */
+    List<Blog> findBlogList(PageUtil pageUtil);
+
+    /**
+     * 返回博客的总数
+     */
+    int getTotalBlog(PageUtil pageUtil);
 }
