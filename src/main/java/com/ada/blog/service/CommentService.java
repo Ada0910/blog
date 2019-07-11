@@ -17,4 +17,6 @@ public interface CommentService {
 
     Boolean checkDone(Integer[] ids);
 
+    Boolean deleteBatch(Integer[] ids);
+
 }

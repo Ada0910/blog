@@ -59,4 +59,12 @@ public class CommentServiceImpl implements CommentService {
     public Boolean checkDone(Integer[] ids) {
         return commentMapper.checkDone(ids) > 0;
     }
+
+    /**
+     * 批量删除
+     */
+    @Override
+    public Boolean deleteBatch(Integer[] ids) {
+        return commentMapper.deleteBatch(ids) > 0;
+    }
 }

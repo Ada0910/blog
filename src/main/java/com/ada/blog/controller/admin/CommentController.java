@@ -94,4 +94,26 @@ public class CommentController {
             return ResultStatusUtil.failResult("审核失败");
         }
     }
+
+
+    /***
+     * @Author Ada
+     * @Date 21:07 2019/7/11
+     * @Param [ids]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 批量删除
+     **/
+    @PostMapping("/comment/delete")
+    @ResponseBody
+    public ResultUtil delete(@RequestBody Integer[] ids) {
+        if (ids.length < 1) {
+            return ResultStatusUtil.failResult("参数异常!!!");
+        }
+        if (commentService.deleteBatch(ids)) {
+
+            return ResultStatusUtil.successResult();
+        } else {
+            return ResultStatusUtil.failResult("删除失败");
+        }
+    }
 }

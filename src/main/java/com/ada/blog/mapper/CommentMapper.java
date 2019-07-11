@@ -39,4 +39,9 @@ public interface CommentMapper {
      * 审核
      */
     int checkDone(Integer[] ids);
+
+    /**
+     * 批量删除
+     */
+    int deleteBatch(Integer[] ids);
 }

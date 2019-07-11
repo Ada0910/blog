@@ -104,4 +104,14 @@
         </foreach>
         and comment_status = 0
     </update>
+
+    <update id="deleteBatch">
+        update tb_blog_comment
+        set is_deleted=1 where comment_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
 </mapper>
