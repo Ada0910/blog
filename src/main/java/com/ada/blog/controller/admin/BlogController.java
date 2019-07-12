@@ -1,16 +1,15 @@
 package com.ada.blog.controller.admin;
 
+import com.ada.blog.entity.Blog;
 import com.ada.blog.service.BlogService;
+import com.ada.blog.service.CategoryService;
 import com.ada.blog.util.PageUtil;
 import com.ada.blog.util.ResultStatusUtil;
 import com.ada.blog.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -27,6 +26,9 @@ public class BlogController {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     /***
      * @Author Ada
@@ -48,7 +50,7 @@ public class BlogController {
      * @return com.ada.blog.util.ResultUtil
      * @Description 返回列表
      **/
-    @RequestMapping(value = "/blog/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/blog/list", method = RequestMethod.GET)
     @ResponseBody
     public ResultUtil list(@RequestParam Map<String, Object> params) {
         if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
@@ -57,5 +59,41 @@ public class BlogController {
         PageUtil pageUtil = new PageUtil(params);
         return ResultStatusUtil.successResult(blogService.getBlogPage(pageUtil));
     }
+
+    /***
+     * @Author Ada
+     * @Date 22:03 2019/7/12
+     * @Param [request]
+     * @return java.lang.String
+     * @Description 发布博客
+     **/
+    @RequestMapping("/blog/edit")
+    public String add(HttpServletRequest request) {
+        request.setAttribute("path", "edit");
+        request.setAttribute("category", categoryService.getAllCategory());
+        return "admin/blog/edit";
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:16 2019/7/12
+     * @Param [request, blogId]
+     * @return java.lang.String
+     * @Description 修改文章
+     **/
+    @RequestMapping("/blog/edit/{blogId}")
+    public String edit(HttpServletRequest request, @PathVariable("blogId") Long blogId) {
+        request.setAttribute("path", "edit");
+        Blog blog = blogService.getBlogById(blogId);
+        if (blog == null) {
+            return "error/error_400";
+        }
+        request.setAttribute("blog",blogService.getBlogById(blogId));
+        request.setAttribute("category",categoryService.getAllCategory());
+        return "admin/blog/edit";
+    }
+
+
+
 
 }

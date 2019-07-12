@@ -77,4 +77,13 @@
     </select>
 
 
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tb_blog
+        where blog_id = #{blogId,jdbcType=BIGINT} and is_deleted = 0
+    </select>
+
 </mapper>

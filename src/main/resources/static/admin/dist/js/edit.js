@@ -47,7 +47,7 @@ $(function () {
     });
 });
 
-$('#confirmButton').click(function () {
+function confirmButton() {
     var blogTitle = $('#blogName').val();
     var blogSubUrl = $('#blogSubUrl').val();
     var blogCategoryId = $('#blogCategoryId').val();
@@ -102,9 +102,9 @@ $('#confirmButton').click(function () {
         return;
     }
     $('#articleModal').modal('show');
-});
+}
 
-$('#saveButton').click(function () {
+function saveButton() {
     var blogId = $('#blogId').val();
     var blogTitle = $('#blogName').val();
     var blogSubUrl = $('#blogSubUrl').val();
@@ -120,7 +120,7 @@ $('#saveButton').click(function () {
         });
         return;
     }
-    var url = '/admin/blogs/save';
+    var url = '/admin/blog/save';
     var swlMessage = '保存成功';
     var data = {
         "blogTitle": blogTitle, "blogSubUrl": blogSubUrl, "blogCategoryId": blogCategoryId,
@@ -128,7 +128,7 @@ $('#saveButton').click(function () {
         "enableComment": enableComment
     };
     if (blogId > 0) {
-        url = '/admin/blogs/update';
+        url = '/admin/blog/update';
         swlMessage = '修改成功';
         data = {
             "blogId": blogId,
@@ -159,10 +159,9 @@ $('#saveButton').click(function () {
                     confirmButtonClass: 'btn btn-success',
                     buttonsStyling: false
                 }).then(function () {
-                    window.location.href = "/admin/blogs";
+                    window.location.href = "/admin/blog";
                 })
-            }
-            else {
+            } else {
                 $('#articleModal').modal('hide');
                 swal(result.message, {
                     icon: "error",
@@ -176,17 +175,17 @@ $('#saveButton').click(function () {
             });
         }
     });
-});
+}
 
-$('#cancelButton').click(function () {
-    window.location.href = "/admin/blogs";
-});
+function cancelButton() {
+    window.location.href = "/admin/blog";
+}
 
 /**
  * 随机封面功能
  */
-$('#randomCoverImage').click(function () {
+function randomCoverImage() {
     var rand = parseInt(Math.random() * 40 + 1);
     $("#blogCoverImage").attr("src", '/admin/dist/img/rand/' + rand + ".jpg");
     $("#blogCoverImage").attr("style", "width:160px ;height: 120px;display:block;");
-});
+}

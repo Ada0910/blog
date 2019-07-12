@@ -36,4 +36,17 @@ public class BlogServiceImpl implements BlogService {
         PageResultUtil pageResultUtil = new PageResultUtil(list, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResultUtil;
     }
+
+    /***
+     * @Author Ada
+     * @Date 22:20 2019/7/12
+     * @Param [blogId]
+     * @return com.ada.blog.entity.Blog
+     * @Description 根据id查找博客
+     **/
+    @Override
+    public Blog getBlogById(Long blogId) {
+        Blog blog = blogMapper.selectByPrimaryKey(blogId);
+        return blog ;
+    }
 }

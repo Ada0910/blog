@@ -1,5 +1,6 @@
 package com.ada.blog.service;
 
+import com.ada.blog.entity.Blog;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
 
@@ -12,4 +13,6 @@ import com.ada.blog.util.PageUtil;
 public interface BlogService {
 
     PageResultUtil getBlogPage(PageUtil pageUtil);
+
+    Blog getBlogById(Long blogId);
 }

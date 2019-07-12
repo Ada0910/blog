@@ -30,4 +30,9 @@ public interface BlogMapper {
      * 返回博客的总数
      */
     int getTotalBlog(PageUtil pageUtil);
+
+    /**
+     * 根据id查找博客
+     */
+    Blog selectByPrimaryKey(Long blogId);
 }
