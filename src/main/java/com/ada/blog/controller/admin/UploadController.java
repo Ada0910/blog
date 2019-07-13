@@ -1,6 +1,7 @@
 package com.ada.blog.controller.admin;
 
 import com.ada.blog.entity.UploadPath;
+import com.ada.blog.util.MyBlogUtil;
 import com.ada.blog.util.ResultStatusUtil;
 import com.ada.blog.util.ResultUtil;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -36,7 +39,7 @@ public class UploadController {
      **/
     @RequestMapping({"/upload/file"})
     @ResponseBody
-    public ResultUtil upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException {
+    public ResultUtil upload(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException, URISyntaxException {
         //文件名
         String fileName = file.getOriginalFilename();
         //后缀名
@@ -68,6 +71,7 @@ public class UploadController {
         }
 
         ResultUtil resultUtil = ResultStatusUtil.successResult();
+        resultUtil.setData(MyBlogUtil.getHost(new URI(request.getRequestURL()+""))+"/upload/"+newFileName);
         return resultUtil;
     }
 }

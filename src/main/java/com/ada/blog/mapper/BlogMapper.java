@@ -35,4 +35,9 @@ public interface BlogMapper {
      * 根据id查找博客
      */
     Blog selectByPrimaryKey(Long blogId);
+
+    /**
+     * 更新博客
+     */
+    int updateByPrimaryKeySelective(Blog tempBlog);
 }

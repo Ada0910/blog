@@ -15,4 +15,8 @@ public interface BlogService {
     PageResultUtil getBlogPage(PageUtil pageUtil);
 
     Blog getBlogById(Long blogId);
+
+    String updateBlog(Blog blog);
+
+
 }

@@ -86,4 +86,54 @@
         where blog_id = #{blogId,jdbcType=BIGINT} and is_deleted = 0
     </select>
 
+    <update id="updateByPrimaryKeySelective" parameterType="com.ada.blog.entity.Blog">
+        update tb_blog
+        <set>
+        <if test="blogTitle != null">
+            blog_title = #{blogTitle,jdbcType=VARCHAR},
+        </if>
+        <if test="blogSubUrl != null">
+            blog_sub_url = #{blogSubUrl,jdbcType=VARCHAR},
+        </if>
+        <if test="blogCoverImage != null">
+            blog_cover_image = #{blogCoverImage,jdbcType=VARCHAR},
+        </if>
+        <if test="blogContent != null">
+            blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="blogCategoryId != null">
+            blog_category_id = #{blogCategoryId,jdbcType=INTEGER},
+        </if>
+        <if test="blogCategoryName != null">
+            blog_category_name = #{blogCategoryName,jdbcType=VARCHAR},
+        </if>
+        <if test="blogTags != null">
+            blog_tags = #{blogTags,jdbcType=VARCHAR},
+        </if>
+        <if test="blogStatus != null">
+            blog_status = #{blogStatus,jdbcType=TINYINT},
+        </if>
+        <if test="blogViews != null">
+            blog_views = #{blogViews,jdbcType=BIGINT},
+        </if>
+        <if test="enableComment != null">
+            enable_comment = #{enableComment,jdbcType=TINYINT},
+        </if>
+        <if test="isDeleted != null">
+            is_deleted = #{isDeleted,jdbcType=TINYINT},
+        </if>
+        <if test="createTime != null">
+            create_time = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateTime != null">
+            update_time = #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="blogContent != null">
+            blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+        </if>
+        </set>
+        where blog_id = #{blogId,jdbcType=BIGINT}
+    </update>
+
+
 </mapper>
