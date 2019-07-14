@@ -120,7 +120,7 @@ function saveButton() {
         });
         return;
     }
-    var url = '/admin/blog/save';
+    var url = '/admin/blog/add';
     var swlMessage = '保存成功';
     var data = {
         "blogTitle": blogTitle, "blogSubUrl": blogSubUrl, "blogCategoryId": blogCategoryId,

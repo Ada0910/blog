@@ -40,4 +40,12 @@ public interface BlogMapper {
      * 更新博客
      */
     int updateByPrimaryKeySelective(Blog tempBlog);
+
+    /**
+     * 删除博客
+     */
+    int deleteBatch(Integer[] ids);
+
+    /**添加博客*/
+    int  insertSelective(Blog blog);
 }

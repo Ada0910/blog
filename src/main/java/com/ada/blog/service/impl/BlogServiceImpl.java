@@ -11,6 +11,7 @@ import com.ada.blog.util.PageUtil;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,14 +119,14 @@ public class BlogServiceImpl implements BlogService {
             }
         }
         //新增标签数据不为空->新增标签数据
-        if(!CollectionUtils.isEmpty(insertTag)){
+        if (!CollectionUtils.isEmpty(insertTag)) {
             tagMapper.insertBlogTagBatch(insertTag);
         }
 
         //tag_relation表的更新
         List<TagRelation> tagRelations = new ArrayList<>();
         tagList.addAll(insertTag);
-        for(Tag tag :tagList){
+        for (Tag tag : tagList) {
             TagRelation tagRelation = new TagRelation();
             tagRelation.setBlogId(blog.getBlogId());
             tagRelation.setTagId(tag.getTagId());
@@ -139,5 +140,80 @@ public class BlogServiceImpl implements BlogService {
             return "success";
         }
         return "修改失败";
+    }
+
+    /***
+     * @Author Ada
+     * @Date 10:32 2019/7/14
+     * @Param [ids]
+     * @return java.lang.Boolean
+     * @Description 批量删除博客
+     **/
+    @Override
+    public Boolean deleteBatch(Integer[] ids) {
+        return blogMapper.deleteBatch(ids) > 0;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 12:21 2019/7/14
+     * @Param [blog]
+     * @return java.lang.String
+     * @Description 添加博客
+     **/
+    @Override
+    @Transactional
+    public String addBlog(Blog blog) {
+        //Category表的更新
+        Category category = categoryMapper.selectByPrimaryKey(blog.getBlogCategoryId());
+        if (category == null) {
+            blog.setBlogCategoryId(0);
+            blog.setBlogCategoryName("默认分类");
+        } else {
+            blog.setBlogCategoryName(category.getCategoryName());
+            category.setCategoryRank(category.getCategoryRank() + 1);
+        }
+
+        //处理tag（标签）表
+        //取出标签名放入tags数组
+        String[] tags = blog.getBlogTags().split(",");
+        if (tags.length > 6) {
+            return "标签的数量限制为6";
+        }
+        if (blogMapper.insertSelective(blog) > 0) {
+
+            //更新tag表
+            List<Tag> insertTag = new ArrayList<>();
+            List<Tag> tagList = new ArrayList<>();
+            for (int i = 0; i < tags.length; i++) {
+                Tag tag = tagMapper.selectByTagName(tags[i]);
+                if (tag != null) {
+                    tagList.add(tag);
+                } else {
+                    Tag tempTag = new Tag();
+                    tempTag.setTagName(tags[i]);
+                    insertTag.add(tempTag);
+                }
+            }
+            //新增标签数据并修改分类排序值
+            if (!CollectionUtils.isEmpty(insertTag)) {
+                tagMapper.insertBlogTagBatch(insertTag);
+            }
+
+            categoryMapper.updateByPrimaryKeySelective(category);
+            //tagRelations表
+            List<TagRelation> tagRelations = new ArrayList<>();
+            tagList.addAll(insertTag);
+            for (Tag tag : tagList) {
+                TagRelation tagRelation = new TagRelation();
+                tagRelation.setTagId(tag.getTagId());
+                tagRelation.setBlogId(blog.getBlogId());
+                tagRelations.add(tagRelation);
+            }
+            if (tagRelationMapper.insertBatch(tagRelations) > 0) {
+                return "success";
+            }
+        }
+        return "保存失败";
     }
 }

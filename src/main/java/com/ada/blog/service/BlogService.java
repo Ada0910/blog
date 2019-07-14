@@ -18,5 +18,8 @@ public interface BlogService {
 
     String updateBlog(Blog blog);
 
+    Boolean deleteBatch(Integer[] ids);
+
+    String addBlog(Blog blog);
 
 }

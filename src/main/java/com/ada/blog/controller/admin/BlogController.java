@@ -156,5 +156,77 @@ public class BlogController {
         }
     }
 
+    /***
+     * @Author Ada
+     * @Date 10:30 2019/7/14
+     * @Param [ids]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 删除
+     **/
+    @RequestMapping("/blog/delete")
+    @ResponseBody
+    public ResultUtil delete(@RequestBody Integer[] ids) {
+        if (ids.length < 1) {
+            return ResultStatusUtil.failResult("参数异常");
+        }
+        if (blogService.deleteBatch(ids)) {
+            return ResultStatusUtil.successResult();
+        } else {
+            return ResultStatusUtil.failResult("删除失败");
+        }
+    }
+
+
+    @RequestMapping(value = "/blog/add", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultUtil add(@RequestParam("blogTitle") String blogTitle,
+                          @RequestParam(name = "blogSubUrl", required = false) String blogSubUrl,
+                          @RequestParam("blogCategoryId") Integer blogCategoryId,
+                          @RequestParam("blogTags") String blogTags,
+                          @RequestParam("blogContent") String blogContent,
+                          @RequestParam("blogCoverImage") String blogCoverImage ,
+                          @RequestParam("blogStatus") Byte blogStatus,
+                          @RequestParam("enableComment") Byte enableComment) {
+        if (StringUtils.isEmpty(blogTitle)) {
+            return ResultStatusUtil.failResult("文章标题不能为空");
+        }
+        if (blogTitle.trim().length() > 150) {
+            return ResultStatusUtil.failResult("标题内容不宜过长");
+        }
+        if (StringUtils.isEmpty(blogTags)) {
+            return ResultStatusUtil.failResult("文章标签不能为空");
+        }
+        if (blogTags.trim().length() > 150) {
+            return ResultStatusUtil.failResult("标签不宜过长");
+        }
+        if (blogSubUrl.trim().length() > 150) {
+            return ResultStatusUtil.failResult("路径不宜过长");
+        }
+        if (StringUtils.isEmpty(blogContent)) {
+            return ResultStatusUtil.failResult("文章内容不能为空");
+        }
+        if (blogTags.trim().length() > 1000000) {
+            return ResultStatusUtil.failResult("文章内容不宜过长");
+        }
+        if (StringUtils.isEmpty(blogCoverImage)) {
+            return ResultStatusUtil.failResult("封面图不宜为空");
+        }
+        Blog blog = new Blog();
+        blog.setBlogCategoryId(blogCategoryId);
+        blog.setBlogTitle(blogTitle);
+        blog.setBlogSubUrl(blogSubUrl);
+        blog.setBlogTags(blogTags);
+        blog.setBlogContent(blogContent);
+        blog.setBlogStatus(blogStatus);
+        blog.setEnableComment(enableComment);
+        blog.setBlogCoverImage(blogCoverImage);
+        String saveBlogResult = blogService.addBlog(blog);
+        if ("success".equals(saveBlogResult)) {
+            return ResultStatusUtil.successResult("添加成功");
+        } else {
+            return ResultStatusUtil.failResult(saveBlogResult);
+        }
+    }
+
 
 }
