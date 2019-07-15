@@ -22,4 +22,6 @@ public interface BlogService {
 
     String addBlog(Blog blog);
 
+    int getTotalBlog();
+
 }

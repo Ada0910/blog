@@ -46,6 +46,10 @@ public interface BlogMapper {
      */
     int deleteBatch(Integer[] ids);
 
-    /**添加博客*/
-    int  insertSelective(Blog blog);
+    /**
+     * 添加博客
+     */
+    int insertSelective(Blog blog);
+
+
 }

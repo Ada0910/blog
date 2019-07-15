@@ -67,4 +67,12 @@ public class CommentServiceImpl implements CommentService {
     public Boolean deleteBatch(Integer[] ids) {
         return commentMapper.deleteBatch(ids) > 0;
     }
+
+    /**
+     * 评论的总数
+     */
+    @Override
+    public int getTotalComment() {
+        return commentMapper.getTotalComment(null);
+    }
 }

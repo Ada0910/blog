@@ -1,7 +1,7 @@
 package com.ada.blog.controller.admin;
 
 import com.ada.blog.entity.AdminUser;
-import com.ada.blog.service.AdminUserService;
+import com.ada.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -23,6 +23,22 @@ public class AdminController {
 
     @Autowired
     private AdminUserService adminUserService;
+
+    @Autowired
+    private BlogService blogService;
+
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private LinkService linkService;
+
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private CommentService commentService;
+
 
     @GetMapping({"/login"})
     public String login() {
@@ -83,7 +99,12 @@ public class AdminController {
      **/
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
-
+        request.setAttribute("path", "index");
+        request.setAttribute("categoryCount", categoryService.getTotalCategory());
+        request.setAttribute("blogCount", blogService.getTotalBlog());
+        request.setAttribute("linkCount", linkService.getTotalLinks());
+        request.setAttribute("tagCount", tagService.getTotalTags());
+        request.setAttribute("commentCount", commentService.getTotalComment());
         request.setAttribute("path", "index");
         return "admin/index";
     }

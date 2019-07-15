@@ -19,4 +19,6 @@ public interface CommentService {
 
     Boolean deleteBatch(Integer[] ids);
 
+   int getTotalComment();
+
 }

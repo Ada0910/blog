@@ -216,4 +216,16 @@ public class BlogServiceImpl implements BlogService {
         }
         return "保存失败";
     }
+
+    /***
+     * @Author Ada
+     * @Date 22:39 2019/7/15
+     * @Param []
+     * @return int
+     * @Description 查询博客的总数
+     **/
+    @Override
+    public int getTotalBlog() {
+        return blogMapper.getTotalBlog(null);
+    }
 }
