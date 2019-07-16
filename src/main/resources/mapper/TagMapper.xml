@@ -55,20 +55,32 @@
         where tag_name = #{tagName,jdbcType=VARCHAR} AND is_deleted = 0
     </select>
 
-    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    update tb_blog_tag
-    set is_deleted = 1
-    where tag_id = #{tagId,jdbcType=INTEGER}
-   </update>
+    <!--  <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+      update tb_blog_tag
+      set is_deleted = 1
+      where tag_id = #{tagId,jdbcType=INTEGER}
+     </update>-->
 
-    <update id="deleteBatch">
-        update tb_blog_tag
-        set is_deleted = 1
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tb_blog_tag
+        where tag_id = #{tagId,jdbcType = INTEGER}
+    </delete>
+    <!--  <update id="deleteBatch">
+          update tb_blog_tag
+          set is_deleted = 1
+          where tag_id in
+          <foreach item="id" collection="array" open="(" separator="," close=")">
+              #{id}
+          </foreach>
+      </update>-->
+
+    <delete id="deleteBatch">
+        delete from tb_blog_tag
         where tag_id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </update>
+    </delete>
 
     <insert id="insertBlogTagBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="tagId">
         insert into tb_blog_tag(tag_name)

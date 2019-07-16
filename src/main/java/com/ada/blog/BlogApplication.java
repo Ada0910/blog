@@ -17,9 +17,4 @@ public class BlogApplication {
 
     }
 
-    /*@PostConstruct
-    void setDefaultTimezone(){
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
-    }*/
-
 }

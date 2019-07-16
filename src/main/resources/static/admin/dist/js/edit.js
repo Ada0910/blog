@@ -19,7 +19,7 @@ $(function () {
         /**图片上传配置*/
         imageUpload: true,
         imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"], //图片上传格式
-        imageUploadURL: "/admin/blogs/md/uploadfile",
+        imageUploadURL: "/admin/blog/md/uploadfile",
         onload: function (obj) { //上传成功之后的回调
         }
     });

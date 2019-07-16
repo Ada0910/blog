@@ -107,13 +107,20 @@
         where category_id = #{categoryId,jdbcType=INTEGER}
     </update>
 
-    <update id="deleteBatch">
+  <!--  <update id="deleteBatch">
         update tb_blog_category
         set is_deleted=1 where category_id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>
-    </update>
+    </update>-->
+    <delete id="deleteBatch">
+        delete  from tb_category
+        where category_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
     <insert id="insert" parameterType="com.ada.blog.entity.Category">
     insert into tb_blog_category (category_id, category_name, category_icon,
