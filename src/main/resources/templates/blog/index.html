@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--头部-->
+<head th:replace="blog/header::head-fragment"></head>
+<script th:src="@{/blog/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/blog/plugins/search/search.js}"></script>
+
+<body id="blog">
+<!--导航条-->
+<div th:replace="blog/header::nav-fragment"></div>
+<!--头部-->
+<div th:replace="blog/header::header-fragment"></div>
+<!--主体-->
+<div class="am-g am-g-fixed blog-fixed">
+    <div th:replace="blog/content/blog-list::blog-list-fragment"></div>
+    <div th:replace="blog/side::side-fragment"></div>
+</div>
+<!--底部-->
+<footer th:replace="blog/footer::footer-fragment"></footer>
+</body>
+
+</html>

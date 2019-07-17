@@ -24,4 +24,6 @@ public interface BlogService {
 
     int getTotalBlog();
 
+    public PageResultUtil getBlogForIndexPage(int pageNum);
+
 }

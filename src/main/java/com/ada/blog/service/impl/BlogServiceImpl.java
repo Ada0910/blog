@@ -1,9 +1,6 @@
 package com.ada.blog.service.impl;
 
-import com.ada.blog.entity.Blog;
-import com.ada.blog.entity.Category;
-import com.ada.blog.entity.Tag;
-import com.ada.blog.entity.TagRelation;
+import com.ada.blog.entity.*;
 import com.ada.blog.mapper.*;
 import com.ada.blog.service.BlogService;
 import com.ada.blog.util.PageResultUtil;
@@ -14,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ada
@@ -227,5 +226,27 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public int getTotalBlog() {
         return blogMapper.getTotalBlog(null);
+    }
+
+    /***
+     * @Author Ada
+     * @Date 23:08 2019/7/17
+     * @Param [pageNum]
+     * @return com.ada.blog.util.PageResultUtil
+     * @Description 首页分页数据
+     **/
+    @Override
+    public PageResultUtil getBlogForIndexPage(int page) {
+        Map map =new HashMap();
+        map.put("page",page);
+        //每页8条
+        map.put("limit",8);
+        map.put("blogStatus",1);
+        PageUtil pageUtil = new PageUtil(map);
+        List<Blog> blogList = blogMapper.findBlogList(pageUtil);
+        List<BlogList> blogLists = getBlogListByBlog(blogList);
+        int total = blogMapper.getTotalBlog(pageUtil);
+        PageResultUtil pageResultUtil = new PageResultUtil(blogLists,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResultUtil;
     }
 }
