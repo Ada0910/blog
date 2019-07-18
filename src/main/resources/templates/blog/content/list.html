@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="blog/header::head-fragment"></head>
+<script th:src="@{/blog/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/blog/plugins/search/search.js}"></script>
+
 <body id="blog">
 <div th:replace="blog/header::nav-fragment"></div>
 <div th:replace="blog/header::header-fragment"></div>
@@ -10,6 +13,4 @@
 </div>
 <footer th:replace="blog/footer::footer-fragment"></footer>
 </body>
-<script th:src="@{/blog/plugins/jquery/jquery.min.js}"></script>
-<script th:src="@{/blog/plugins/search/search.js}"></script>
 </html>

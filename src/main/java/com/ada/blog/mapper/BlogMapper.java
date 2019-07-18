@@ -51,5 +51,9 @@ public interface BlogMapper {
      */
     int insertSelective(Blog blog);
 
+    /**
+     * 根据类型查找不同的博客
+     */
+    List<Blog> findBlogListByType(@Param("type") int type, @Param("limit") int limit);
 
 }

@@ -6,6 +6,7 @@ import com.ada.blog.service.BlogService;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
 import org.apache.shiro.util.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Ada
@@ -237,16 +239,74 @@ public class BlogServiceImpl implements BlogService {
      **/
     @Override
     public PageResultUtil getBlogForIndexPage(int page) {
-        Map map =new HashMap();
-        map.put("page",page);
+        Map map = new HashMap();
+        map.put("page", page);
         //每页8条
-        map.put("limit",8);
-        map.put("blogStatus",1);
+        map.put("limit", 8);
+        map.put("blogStatus", 1);
         PageUtil pageUtil = new PageUtil(map);
         List<Blog> blogList = blogMapper.findBlogList(pageUtil);
         List<BlogList> blogLists = getBlogListByBlog(blogList);
+        //获取博客的总数
         int total = blogMapper.getTotalBlog(pageUtil);
-        PageResultUtil pageResultUtil = new PageResultUtil(blogLists,total,pageUtil.getLimit(),pageUtil.getPage());
+        //分页查询博客
+        PageResultUtil pageResultUtil = new PageResultUtil(blogLists, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResultUtil;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:21 2019/7/18
+     * @Param [type]
+     * @return java.util.List<com.ada.blog.entity.BlogList>
+     * @Description 查询不同类型的博客
+     **/
+    @Override
+    public List<BlogList> getBlogListForIndexPage(int type) {
+        List<BlogList> blogLists = new ArrayList<>();
+        List<Blog> blogs = blogMapper.findBlogListByType(type, 9);
+        if (!CollectionUtils.isEmpty(blogs)) {
+            for (Blog blog : blogs) {
+                BlogList blogList = new BlogList();
+                BeanUtils.copyProperties(blog, blogList);
+                blogLists.add(blogList);
+            }
+        }
+        return blogLists;
+    }
+
+    /**
+     * @return java.util.List<com.ada.blog.entity.BlogList>
+     * @Author Ada
+     * @Date 21:17 2019/7/18
+     * @Param [blogList]
+     * @Description 获取博客的列表
+     **/
+    public List<BlogList> getBlogListByBlog(List<Blog> blogList) {
+        List<BlogList> blogLists = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(blogList)) {
+            List<Integer> categoryIds = blogList.stream().map(Blog::getBlogCategoryId).collect(Collectors.toList());
+            Map<Integer, String> blogCategoryMap = new HashMap<>();
+            if (!CollectionUtils.isEmpty(categoryIds)) {
+                //根据categoryId查询category列表
+                List<Category> categories = categoryMapper.selectByCategoryId(categoryIds);
+                if (!CollectionUtils.isEmpty(categories)) {
+                    blogCategoryMap = categories.stream().collect(Collectors.toMap(Category::getCategoryId, Category::getCategoryIcon, (key1, key2) -> key2));
+                }
+            }
+            for (Blog blog : blogList) {
+                BlogList list = new BlogList();
+                BeanUtils.copyProperties(blog, list);
+                if (blogCategoryMap.containsKey(blog.getBlogCategoryId())) {
+                    list.setBlogCategoryIcon(blogCategoryMap.get(blog.getBlogCategoryId()));
+                } else {
+                    list.setBlogCategoryId(0);
+                    list.setBlogCategoryName("默认分类");
+                    list.setBlogCategoryIcon("/admin/dist/img/category/00.png");
+                }
+                blogLists.add(list);
+            }
+        }
+        return blogLists;
     }
 }

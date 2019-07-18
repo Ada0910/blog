@@ -59,12 +59,11 @@ public class IndexController {
         if (blogPageResult == null) {
             return "error/error_404";
         }
-        request.setAttribute("", );
-        request.setAttribute("", );
-        request.setAttribute("", );
-        request.setAttribute("", );
-        request.setAttribute("", );
-        request.setAttribute("", );
+        request.setAttribute("blogPageResult", blogPageResult);
+        request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
+        request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
+        request.setAttribute("pageName","首页");
+        request.setAttribute("configuration",configService.getAllConfigs());
         return "blog/index";
     }
 

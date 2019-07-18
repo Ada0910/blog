@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head th:fragment="head-fragment">
     <meta charset="utf-8">
     <title th:text="|${configuration.get('websiteName')} - ${pageName}|">主页</title>
@@ -10,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/blog/amaze/css/base.css}">
 </head>
 
+<!--导航栏-->
 <nav th:fragment="nav-fragment" class="navbar navbar-default navbar-custom navbar-fixed-top">
     <div class="container-fluid">
 
@@ -24,7 +26,7 @@
             </a>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
+
         <div id="huxblog_navbar">
             <div class="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -48,14 +50,14 @@
 
 
 <header th:fragment="header-fragment" class="intro-header"
-        th:style="'background-image:url(' + @{/blog/amaze/images/header.jpg} + ');'">
+        th:style="'background-image:url('+ @{/blog/amaze/images/header.jpg} +');',height=360px">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="site-heading">
-          <span class="subheading">
+        <!--  <span class="subheading">
               千里之行，始于足下
-          </span>
+          </span>-->
                 </div>
             </div>
         </div>

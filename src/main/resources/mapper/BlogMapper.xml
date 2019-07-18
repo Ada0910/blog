@@ -144,7 +144,7 @@
     </update>-->
 
     <delete id="deleteBatch">
-        delete  from tb_blog
+        delete from tb_blog
         where blog_id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
@@ -242,5 +242,19 @@
             </if>
         </trim>
     </insert>
+
+    <select id="findBlogListByType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_blog
+        where is_deleted=0 AND blog_status = 1<!-- 发布状态的文章 -->
+        <if test="type!=null and type==0">
+            order by blog_views desc
+        </if>
+        <if test="type!=null and type==1">
+            order by blog_id desc
+        </if>
+        limit #{limit}
+    </select>
 
 </mapper>
