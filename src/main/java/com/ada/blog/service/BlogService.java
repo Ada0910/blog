@@ -1,6 +1,7 @@
 package com.ada.blog.service;
 
 import com.ada.blog.entity.Blog;
+import com.ada.blog.entity.BlogDetail;
 import com.ada.blog.entity.BlogList;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
@@ -30,4 +31,8 @@ public interface BlogService {
     PageResultUtil getBlogForIndexPage(int pageNum);
 
     List<BlogList> getBlogListForIndexPage(int type);
+
+    BlogDetail getBlogDetail(Long blogId);
+
+
 }

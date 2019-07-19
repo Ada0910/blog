@@ -275,6 +275,45 @@ public class BlogServiceImpl implements BlogService {
         return blogLists;
     }
 
+    /***
+     * @Author Ada
+     * @Date 22:36 2019/7/19
+     * @Param [blogId]
+     * @return com.ada.blog.entity.BlogDetail
+     * @Description 根据博客id查找博客
+     **/
+    @Override
+    public BlogDetail getBlogDetail(Long blogId) {
+        Blog blog = blogMapper.selectByPrimaryKey(blogId);
+        //不为空且状态已发布
+        BlogDetail blogDetail = getBlogDetail(blog);
+        if (blogDetail != null) {
+            return blogDetail;
+        }
+        return null;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:52 2019/7/19
+     * @Param [blog]
+     * @return com.ada.blog.entity.BlogDetail
+     * @Description 方法抽取
+     **/
+    private BlogDetail getBlogDetail(Blog blog) {
+        if (blog != null && blog.getBlogStatus() == 1) {
+            //增加浏览量
+            blog.setBlogViews(blog.getBlogViews() + 1);
+            blogMapper.updateByPrimaryKey(blog);
+            BlogDetail blogDetail = new BlogDetail();
+
+            BeanUtils.copyProperties(blog,blogDetail);
+            blogDetail.setBlogContent();
+
+        }
+        return null;
+    }
+
     /**
      * @return java.util.List<com.ada.blog.entity.BlogList>
      * @Author Ada

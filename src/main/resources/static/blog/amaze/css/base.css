@@ -2253,6 +2253,7 @@
    background-size: cover;
    -o-background-size: cover;
    margin-bottom: 30px;
+     height: 360px;
  }
  
  .intro-header .site-heading,

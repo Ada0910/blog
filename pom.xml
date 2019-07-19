@@ -93,15 +93,16 @@
             <version>1.16.10</version>
         </dependency>
 
-        <!-- commonmark core -->
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark</artifactId>
+            <version>0.8.0</version>
         </dependency>
         <!-- commonmark table -->
         <dependency>
             <groupId>com.atlassian.commonmark</groupId>
             <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>0.8.0</version>
         </dependency>
 
     </dependencies>

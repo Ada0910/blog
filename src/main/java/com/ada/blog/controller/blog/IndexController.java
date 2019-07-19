@@ -1,5 +1,6 @@
 package com.ada.blog.controller.blog;
 
+import com.ada.blog.entity.BlogDetail;
 import com.ada.blog.service.*;
 import com.ada.blog.util.PageResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 /**
  * @author Ada
@@ -66,5 +68,21 @@ public class IndexController {
         request.setAttribute("configuration",configService.getAllConfigs());
         return "blog/index";
     }
+
+
+    /***
+     * @Author Ada
+     * @Date 22:28 2019/7/19
+     * @Param [request, blogId, commentPage]
+     * @return java.lang.String
+     * @Description 详情页
+     * , @PathParam(value = "commentPage",required= false,defaultValue="1")Integer commentPage
+     **/
+    @RequestMapping({"/blog/{blogId}","/article/{blogId}"})
+    public String detail(HttpServletRequest request, @PathVariable("blogId")Long blogId){
+        BlogDetail blogDetail = blogService.getBlogDetail(blogId);
+        return "blog/content/detail";
+    }
+
 
 }
