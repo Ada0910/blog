@@ -44,4 +44,14 @@ public interface CommentMapper {
      * 批量删除
      */
     int deleteBatch(Integer[] ids);
+
+    /**
+     * 获取博客的评论总数
+     */
+    int getTotalBlogComments(Map map);
+
+    /**
+     * 添加评论
+     */
+    int insertSelective(Comment comment);
 }

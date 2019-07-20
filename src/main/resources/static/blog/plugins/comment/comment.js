@@ -1,4 +1,4 @@
-$('#commentSubmit').click(function () {
+function  commentSubmit() {
     var blogId = $('#blogId').val();
     var verifyCode = $('#verifyCode').val();
     var commentator = $('#commentator').val();
@@ -57,8 +57,7 @@ $('#commentSubmit').click(function () {
                 });
                 $('#commentBody').val('');
                 $('#verifyCode').val('');
-            }
-            else {
+            } else {
                 swal(result.message, {
                     icon: "error",
                 });
@@ -71,4 +70,4 @@ $('#commentSubmit').click(function () {
             });
         }
     });
-});
+}

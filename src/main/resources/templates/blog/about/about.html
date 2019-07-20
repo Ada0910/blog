@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="blog/header::head-fragment"></head>
+
+
+<body id="blog">
+<div th:replace="blog/header::nav-fragment"></div>
+<div th:replace="blog/header::header-fragment"></div>
+
+
+<div class="am-g am-g-fixed blog-fixed">
+    <div class="am-u-lg-8 am-u-sm-12">
+        <main class="links-list">
+            <h2 id="个人介绍">网站信息</h2>
+            <p>我的邮箱是
+                <th:block th:text="${configuration.get('yourEmail')}"></th:block>
+            </p>
+            <ul>
+                <li>网站名称：Ada</li>
+                <li>网站链接：</li>
+                <li>网站描述：Ada的个人网站</li>
+                <li>GitHub地址：https://github.com/Ada0910</li>
+                <li>码云地址：https://gitee.com/adaXie</li>
+            </ul>
+
+        </main>
+    </div>
+</div>
+
+<!-- 引入页脚footer-fragment -->
+<footer th:replace="blog/footer::footer-fragment"></footer>
+</body>
+</html>

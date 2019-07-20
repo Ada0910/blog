@@ -34,5 +34,7 @@ public interface BlogService {
 
     BlogDetail getBlogDetail(Long blogId);
 
+    PageResultUtil getBlogPageBySearch(String keyword,int page);
+
 
 }

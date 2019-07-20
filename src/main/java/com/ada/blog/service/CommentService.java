@@ -1,5 +1,6 @@
 package com.ada.blog.service;
 
+import com.ada.blog.entity.Comment;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
 
@@ -19,6 +20,9 @@ public interface CommentService {
 
     Boolean deleteBatch(Integer[] ids);
 
-   int getTotalComment();
+    int getTotalComment();
 
+    PageResultUtil getCommentPageByBlogIdAndPageNum(Long blogId,Integer commentPage);
+
+    Boolean addComment(Comment comment);
 }

@@ -257,7 +257,7 @@
         limit #{limit}
     </select>
 
-    <update id="updateByPrimaryKey" parameterType="com.site.blog.my.core.entity.Blog">
+    <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.Blog">
     update tb_blog
     set blog_title = #{blogTitle,jdbcType=VARCHAR},
       blog_sub_url = #{blogSubUrl,jdbcType=VARCHAR},

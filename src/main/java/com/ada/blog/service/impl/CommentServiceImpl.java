@@ -5,11 +5,14 @@ import com.ada.blog.mapper.CommentMapper;
 import com.ada.blog.service.CommentService;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Ada
@@ -75,4 +78,42 @@ public class CommentServiceImpl implements CommentService {
     public int getTotalComment() {
         return commentMapper.getTotalComment(null);
     }
+
+    /**
+     * 根据blogId和page查询评论
+     */
+    @Override
+    public PageResultUtil getCommentPageByBlogIdAndPageNum(Long blogId, Integer commentPage) {
+        if (commentPage < 1) {
+            return null;
+        }
+        Map map = new HashMap();
+        map.put("page", commentPage);
+        map.put("limit", 8);
+        map.put("blogId", blogId);
+        map.put("commentStatus", 1);
+
+        PageUtil pageUtil = new PageUtil(map);
+        List<Comment> comments = commentMapper.findCommentList(pageUtil);
+        if (!CollectionUtils.isEmpty(comments)) {
+            int total = commentMapper.getTotalBlogComments(pageUtil);
+            PageResultUtil pageResultUtil = new PageResultUtil(comments, total, pageUtil.getLimit(), pageUtil.getPage());
+            return pageResultUtil;
+        }
+        return null;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 23:07 2019/7/20
+     * @Param [comment]
+     * @return java.lang.Boolean
+     * @Description 添加评论
+     **/
+    @Override
+    public Boolean addComment(Comment comment) {
+        return commentMapper.insertSelective(comment)>0;
+    }
+
+
 }

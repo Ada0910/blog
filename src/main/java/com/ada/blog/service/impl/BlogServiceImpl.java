@@ -3,18 +3,18 @@ package com.ada.blog.service.impl;
 import com.ada.blog.entity.*;
 import com.ada.blog.mapper.*;
 import com.ada.blog.service.BlogService;
+import com.ada.blog.util.MarkDownUtil;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
+import com.ada.blog.util.PatternUtil;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -295,21 +295,76 @@ public class BlogServiceImpl implements BlogService {
 
     /***
      * @Author Ada
+     * @Date 16:08 2019/7/20
+     * @Param [keyword, page]
+     * @return com.ada.blog.util.PageResultUtil
+     * @Description  搜索
+     **/
+    @Override
+    public PageResultUtil getBlogPageBySearch(String keyword, int page) {
+       if(page>0&& PatternUtil.validKeyword(keyword)){
+           Map map = new HashMap();
+           map.put("page",page);
+           map.put("limit",9);
+           map.put("keyword",keyword);
+           map.put("blogStatus",1);
+
+
+           PageUtil pageUtil = new PageUtil(map);
+           int total = blogMapper.getTotalBlog(pageUtil);
+
+           List<Blog> blog = blogMapper.findBlogList(pageUtil);
+           List<BlogList> blogList = getBlogListByBlog(blog);
+
+           PageResultUtil pageResultUtil  = new PageResultUtil(blogList,total,pageUtil.getLimit(),pageUtil.getPage());
+           return pageResultUtil;
+       }
+
+        return null;
+    }
+
+    /***
+     * @Author Ada
      * @Date 22:52 2019/7/19
      * @Param [blog]
      * @return com.ada.blog.entity.BlogDetail
      * @Description 方法抽取
      **/
     private BlogDetail getBlogDetail(Blog blog) {
+        //博客不为空且是发布状态
         if (blog != null && blog.getBlogStatus() == 1) {
             //增加浏览量
             blog.setBlogViews(blog.getBlogViews() + 1);
             blogMapper.updateByPrimaryKey(blog);
+
             BlogDetail blogDetail = new BlogDetail();
+            BeanUtils.copyProperties(blog, blogDetail);
+            blogDetail.setBlogContent(MarkDownUtil.mdToHtml(blog.getBlogContent()));
 
-            BeanUtils.copyProperties(blog,blogDetail);
-            blogDetail.setBlogContent();
 
+            Category category = categoryMapper.selectByPrimaryKey(blog.getBlogCategoryId());
+            if (category == null) {
+                category = new Category();
+                category.setCategoryId(0);
+                category.setCategoryName("默认分类");
+                category.setCategoryIcon("/admin/dist/img/category/00.png");
+            }
+            //分类信息
+            blogDetail.setBlogCategoryIcon(category.getCategoryIcon());
+
+            if (!StringUtils.isEmpty(blog.getBlogTags())) {
+                //标签设置
+                List<String> tags = Arrays.asList(blog.getBlogTags().split(","));
+                blogDetail.setBlogTags(tags);
+            }
+
+            //设置评论数
+            Map params = new HashMap();
+            params.put("blogId", blog.getBlogId());
+            //过滤审核通过的数据
+            params.put("commentStatus", 1);
+            blogDetail.setCommentCount(commentMapper.getTotalBlogComments(params));
+            return blogDetail;
         }
         return null;
     }
