@@ -50,38 +50,40 @@
 <!--详情页头部（文章标题，浏览次数和标签）-->
 <header th:fragment="header-fragment" class="intro-header"
         th:style="'background-image:url(' + @{/blog/amaze/images/header.jpg} + ');'">
-    <div class="container">
+
+</header>
+
+<div class="container">
+
+
         <div class="row">
-
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1" >
                 <div class="post-heading">
-                    <h1 th:text="${blogDetail.blogTitle}" ></h1>
+                    <h1 th:text="'标題：'+${blogDetail.blogTitle}" style="color:black "></h1>
 
-                    <span class="meta">
+                    <span class="meta" style="color:black">
                         <th:block th:text="${#dates.format(blogDetail.createTime, 'yyyy-MM-dd')}"></th:block> &nbsp;
                             <div class="comments-view" style="display: inline-block">
-                                <a href="#comments" class="article-comments"><th:block
-                                        th:text="${blogDetail.commentCount}"></th:block>条评论</a> &nbsp;
+                                <a href="#comments" class="article-comments" style="color:black"><th:block
+                                        th:text="${blogDetail.commentCount}" ></th:block>条评论</a> &nbsp;
                                 <th:block th:text="${blogDetail.blogViews}"></th:block>浏览
                             </div>
                     </span>
 
-                    <div class="tags post-tags">
+                    <div class="tags post-tags" >
                         <th:block th:each="tag : ${blogDetail.blogTags}">
-                            <a class="tag" rel="tag" th:href="@{'/tag/' + ${tag}}">
-                                <th:block th:text="${tag}"></th:block>
-                            </a>&nbsp;
+                            <p th:text="标签" style="display: inline-block"></p>&nbsp;&nbsp;
+                            <a class="tag" rel="tag" th:href="@{'/tag/' + ${tag}}"  style="background-color: rgba(80, 159, 255, 0.8)">
+                                <th:block th:text="${tag}" ></th:block>
+                            </a>&nbsp;&nbsp;
                         </th:block>
                     </div>
 
                 </div>
             </div>
-
         </div><!--row-->
-    </div><!--container-->
-</header>
 
-<div class="container">
+
 
     <div class="am-g am-g-fixed blog-fixed">
         <div class="am-u-lg-12 am-u-sm-12">
@@ -97,7 +99,8 @@
         </div>
     </div>
 
-    <!--侧边栏-->
+
+
     <aside class="comments" id="comments">
 
         <th:block th:if="${null != commentPageResult}">
@@ -229,9 +232,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="center">
+                    <td colspan="6" align="center">
                         <button id="commentSubmit" type="submit"
-                                class="submit am-btn am-btn-primary" onclick="commentSubmit()">提交
+                                class="submit am-btn am-btn-primary " onclick="commentSubmit()">提交
                         </button>
                     </td>
                 </tr>

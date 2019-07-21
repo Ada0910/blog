@@ -60,4 +60,16 @@ public interface BlogMapper {
      * 更新
      */
     int updateByPrimaryKey(Blog blog);
+
+    /**
+     * 根据tagId查询博客
+     */
+    List<Blog> getBlogPageByTagId(PageUtil pageUtil);
+
+    /**
+     * tag总数
+     */
+    int getTotalBlogByTagId(PageUtil pageUtil);
+
+   Blog selectBySubUrl(String subUrl);
 }

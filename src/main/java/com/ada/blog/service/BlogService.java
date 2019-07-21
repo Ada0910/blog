@@ -34,7 +34,12 @@ public interface BlogService {
 
     BlogDetail getBlogDetail(Long blogId);
 
-    PageResultUtil getBlogPageBySearch(String keyword,int page);
+    PageResultUtil getBlogPageBySearch(String keyword, int page);
 
+    PageResultUtil getBlogPageByCategory(String categoryName, int page);
+
+    PageResultUtil getBlogPageByTag(String tagName, int page);
+
+    BlogDetail getBlogDetailBySubUrl(String subUrl);
 
 }

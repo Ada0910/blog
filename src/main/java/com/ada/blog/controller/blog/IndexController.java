@@ -69,6 +69,7 @@ public class IndexController {
         request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
         request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
         request.setAttribute("pageName", "首页");
+        request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
         request.setAttribute("configuration", configService.getAllConfigs());
         return "blog/index";
     }
@@ -96,15 +97,27 @@ public class IndexController {
 
     /***
      * @Author Ada
+     * @Date 23:37 2019/7/20
+     * @Param [request, keyword]
+     * @return java.lang.String
+     * @Description
+     **/
+    @GetMapping({"/search/{keyword}"})
+    public String search(HttpServletRequest request, @PathVariable("keyword") String keyword) {
+        return search(request, keyword, 1);
+    }
+
+    /***
+     * @Author Ada
      * @Date 15:39 2019/7/20
      * @Param [request, keyword, page]
      * @return java.lang.String
      * @Description 搜索列表页
      **/
-    @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
-    public String search(HttpServletRequest request, @PathVariable("keyword") String keyword) {
-        //@PathVariable("page") Integer page
-        PageResultUtil pageResultUtil = blogService.getBlogPageBySearch(keyword, 1);
+    @RequestMapping(value = "/search/{keyword}/{keyword}", method = RequestMethod.GET)
+    public String search(HttpServletRequest request, @PathVariable("keyword") String keyword, @PathVariable("page") Integer page) {
+        //
+        PageResultUtil pageResultUtil = blogService.getBlogPageBySearch(keyword, page);
         request.setAttribute("blogPageResult", pageResultUtil);
         request.setAttribute("pageName", "搜索");
         request.setAttribute("pageUrl", "search");
@@ -113,7 +126,7 @@ public class IndexController {
         request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
         request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
         request.setAttribute("configuration", configService.getAllConfigs());
-        return "blog/search/list";
+        return "blog/content/list";
     }
 
     /***
@@ -210,11 +223,82 @@ public class IndexController {
         comment.setBlogId(blogId);
         comment.setCommentator(MyBlogUtil.cleanString(commentator));
         comment.setEmail(email);
-        if(!PatternUtil.isURL(websiteUrl)){
+        if (!PatternUtil.isURL(websiteUrl)) {
             comment.setWebsiteUrl(websiteUrl);
         }
         comment.setCommentBody(MyBlogUtil.cleanString(commentBody));
         return ResultStatusUtil.successResult(commentService.addComment(comment));
     }
 
+    /***
+     * @Author Ada
+     * @Date 10:28 2019/7/21
+     * @Param [request, categoryName]
+     * @return java.lang.String
+     * @Description 分类详情页
+     **/
+    @GetMapping("/category/{categoryName}")
+    public String category(HttpServletRequest request, @PathVariable("categoryName") String categoryName) {
+        return category(request, categoryName, 1);
+    }
+
+    @GetMapping("/category/{categoryName}/{page}")
+    public String category(HttpServletRequest request, @PathVariable("categoryName") String categoryName, @PathVariable("page") int page) {
+        PageResultUtil pageResultUtil = blogService.getBlogPageByCategory(categoryName, page);
+        request.setAttribute("blogPageResult", pageResultUtil);
+        request.setAttribute("pageName", "分类");
+        request.setAttribute("pageUrl", "category");
+        request.setAttribute("keyword", categoryName);
+        request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
+        request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
+        request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
+        request.setAttribute("configuration", configService.getAllConfigs());
+        return "blog/content/list";
+    }
+
+    /***
+     * @Author Ada
+     * @Date 14:40 2019/7/21
+     * @Param [request, tagName]
+     * @return java.lang.String
+     * @Description 标签列表页
+     **/
+    @GetMapping({"/tag/{tagName}"})
+    public String tag(HttpServletRequest request, @PathVariable("tagName") String tagName) {
+        return tag(request, tagName, 1);
+    }
+
+    @GetMapping({"/tag/{tagName}/{page}"})
+    public String tag(HttpServletRequest request, @PathVariable("tagName") String tagName, @PathVariable("page") Integer page) {
+        PageResultUtil pageResultUtil = blogService.getBlogPageByTag(tagName, page);
+        request.setAttribute("blogPageResult", pageResultUtil);
+        request.setAttribute("pageName", "标签");
+        request.setAttribute("pageUrl", "tag");
+        request.setAttribute("newBlogs", blogService.getBlogListForIndexPage(1));
+        request.setAttribute("hotBlogs", blogService.getBlogListForIndexPage(0));
+        request.setAttribute("keyword", tagName);
+        request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
+        request.setAttribute("configuration", configService.getAllConfigs());
+        return "blog/content/list";
+    }
+
+    /***
+     * @Author Ada
+     * @Date 15:10 2019/7/21
+     * @Param [request, subUrl]
+     * @return java.lang.String
+     * @Description其他的一些配置页面
+     **/
+    @GetMapping({"/{subUrl}"})
+    public String detail(HttpServletRequest request, @PathVariable("subUrl") String subUrl) {
+        BlogDetail blogDetail = blogService.getBlogDetailBySubUrl(subUrl);
+        if (blogDetail != null) {
+            request.setAttribute("blogDetail", blogDetail);
+            request.setAttribute("pageName", subUrl);
+            request.setAttribute("configuration", configService.getAllConfigs());
+            return "blog/content/detail";
+        } else {
+            return "error/error_400";
+        }
+    }
 }

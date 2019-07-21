@@ -14,13 +14,13 @@
 
             <th:block th:unless="${#lists.isEmpty(favoriteLinks)}">
                 <div class="title">
-                    <h3>友情链接</h3>
+                    <h1 class="linkLine">友情链接</h1>
                 </div>
                 <div class="list">
                     <ul>
                         <th:block th:each="favoriteLink : ${favoriteLinks}">
                             <li><a th:href="@{${favoriteLink.linkUrl}}"
-                                   th:text="${favoriteLink.linkName}">友情链接</a>
+                                   th:text="${favoriteLink.linkName}" target="_blank">友情链接</a>
                                 -
                                 <th:block th:text="${favoriteLink.linkDescription}"></th:block>
                             </li>
@@ -32,12 +32,12 @@
 
             <th:block th:unless="${#lists.isEmpty(recommendLinks)}">
                 <div class="title">
-                    <h3>推荐社区</h3>
+                    <h1 class="linkLine">推荐社区</h1>
                 </div>
                 <div class="list">
                     <ul>
                         <th:block th:each="recommendLink : ${recommendLinks}">
-                            <li><a th:href="@{${recommendLink.linkUrl}}" th:text="${recommendLink.linkName}">推荐社区</a>
+                            <li><a th:href="@{${recommendLink.linkUrl}}" th:text="${recommendLink.linkName}" target="_blank">推荐社区</a>
                                 -
                                 <th:block th:text="${recommendLink.linkDescription}"></th:block>
                             </li>
@@ -48,13 +48,13 @@
 
             <th:block th:unless="${#lists.isEmpty(webLinks)}">
                 <div class="title">
-                    <h3>推荐网站</h3>
+                    <h1 class="linkLine">推荐网站</h1>
                 </div>
                 <div class="list">
                     <ul>
                         <th:block th:each="webLink : ${webLinks}">
                             <li><a th:href="@{${webLink.linkUrl}}"
-                                   th:text="${webLink.linkName}">推荐网站</a>
+                                   th:text="${webLink.linkName}" target="_blank">推荐网站</a>
                                 -
                                 <th:block th:text="${webLink.linkDescription}"></th:block>
                             </li>
@@ -62,18 +62,6 @@
                     </ul>
                 </div>
             </th:block>
-
-            <h2 id="个人介绍">网站信息</h2>
-            <p>我的邮箱是
-                <th:block th:text="${configuration.get('yourEmail')}"></th:block>
-            </p>
-            <ul>
-                <li>网站名称：Ada</li>
-                <li>网站链接：</li>
-                <li>网站描述：Ada的个人网站</li>
-                <li>GitHub地址：https://github.com/Ada0910</li>
-                <li>码云地址：https://gitee.com/adaXie</li>
-            </ul>
 
         </main>
     </div>

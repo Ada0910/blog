@@ -67,14 +67,13 @@
                                        placeholder="请输入自定义路径,如:springboot-mybatis,默认为id"> &nbsp;&nbsp;
                                 <select class="form-control select2" style="width: 100%;" id="blogCategoryId"
                                         data-placeholder="请选择分类...">
-                                    <th:block th:if="${null == categories}">
+                                    <th:block th:if="${null == category}">
                                         <option value="0" selected="selected">默认分类</option>
                                     </th:block>
-                                    <th:block th:unless="${null == categories}">
-                                        <th:block th:each="c : ${categories}">
+                                    <th:block th:unless="${null == category}">
+                                        <th:block th:each="c : ${category}">
                                             <option th:value="${c.categoryId}" th:text="${c.categoryName}"
                                                     th:selected="${null !=blog and null !=blog.blogCategoryId and blog.blogCategoryId==c.categoryId} ?true:false">
-                                                >
                                             </option>
                                         </th:block>
                                     </th:block>

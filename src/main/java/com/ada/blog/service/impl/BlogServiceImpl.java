@@ -298,27 +298,101 @@ public class BlogServiceImpl implements BlogService {
      * @Date 16:08 2019/7/20
      * @Param [keyword, page]
      * @return com.ada.blog.util.PageResultUtil
-     * @Description  搜索
+     * @Description 搜索
      **/
     @Override
     public PageResultUtil getBlogPageBySearch(String keyword, int page) {
-       if(page>0&& PatternUtil.validKeyword(keyword)){
-           Map map = new HashMap();
-           map.put("page",page);
-           map.put("limit",9);
-           map.put("keyword",keyword);
-           map.put("blogStatus",1);
+        if (page > 0 && PatternUtil.validKeyword(keyword)) {
+            Map map = new HashMap();
+            map.put("page", page);
+            map.put("limit", 9);
+            map.put("keyword", keyword);
+            map.put("blogStatus", 1);
 
 
-           PageUtil pageUtil = new PageUtil(map);
-           int total = blogMapper.getTotalBlog(pageUtil);
+            PageUtil pageUtil = new PageUtil(map);
+            int total = blogMapper.getTotalBlog(pageUtil);
 
-           List<Blog> blog = blogMapper.findBlogList(pageUtil);
-           List<BlogList> blogList = getBlogListByBlog(blog);
+            List<Blog> blog = blogMapper.findBlogList(pageUtil);
+            List<BlogList> blogList = getBlogListByBlog(blog);
 
-           PageResultUtil pageResultUtil  = new PageResultUtil(blogList,total,pageUtil.getLimit(),pageUtil.getPage());
-           return pageResultUtil;
-       }
+            PageResultUtil pageResultUtil = new PageResultUtil(blogList, total, pageUtil.getLimit(), pageUtil.getPage());
+            return pageResultUtil;
+        }
+
+        return null;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 10:39 2019/7/21
+     * @Param [categoryName, page]
+     * @return com.ada.blog.util.PageResultUtil
+     * @Description 根据分类信息查询
+     **/
+    @Override
+    public PageResultUtil getBlogPageByCategory(String categoryName, int page) {
+        if (PatternUtil.validKeyword(categoryName)) {
+            Category category = categoryMapper.selectByCategoryName(categoryName);
+            if ("默认分类".equals(categoryName) && category == null) {
+                category = new Category();
+                category.setCategoryId(0);
+            }
+            if (category != null && page > 0) {
+                Map map = new HashMap();
+                map.put("page", page);
+                map.put("limit", 9);
+
+                map.put("categoryId", category.getCategoryId());
+                map.put("blogStatus", 1);
+                PageUtil pageUtil = new PageUtil(map);
+                List<Blog> blog = blogMapper.findBlogList(pageUtil);
+                List<BlogList> blogLists = getBlogListByBlog(blog);
+                int total = blogMapper.getTotalBlog(pageUtil);
+
+                PageResultUtil pageResultUtil = new PageResultUtil(blogLists, total, pageUtil.getLimit(), pageUtil.getPage());
+                return pageResultUtil;
+            }
+        }
+        return null;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 14:58 2019/7/21
+     * @Param [tagName, page]
+     * @return com.ada.blog.util.PageResultUtil
+     * @Description 标签页
+     **/
+    @Override
+    public PageResultUtil getBlogPageByTag(String tagName, int page) {
+        if (PatternUtil.validKeyword(tagName)) {
+            Tag tag = tagMapper.selectByTagName(tagName);
+            if (tag != null && page > 0) {
+                Map param = new HashMap();
+                param.put("page", page);
+                param.put("limit", 9);
+                param.put("tagId", tag.getTagId());
+                PageUtil pageUtil = new PageUtil(param);
+                List<Blog> blog = blogMapper.getBlogPageByTagId(pageUtil);
+                List<BlogList> blogList = getBlogListByBlog(blog);
+                int total = blogMapper.getTotalBlogByTagId(pageUtil);
+                PageResultUtil pageResult = new PageResultUtil(blogList, total, pageUtil.getLimit(), pageUtil.getPage());
+                return pageResult;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public BlogDetail getBlogDetailBySubUrl(String subUrl) {
+        Blog blog = blogMapper.selectBySubUrl(subUrl);
+        //不为空且状态为已发布
+        BlogDetail blogDetail = getBlogDetail(blog);
+        if (blogDetail != null) {
+            return blogDetail;
+        }
 
         return null;
     }
