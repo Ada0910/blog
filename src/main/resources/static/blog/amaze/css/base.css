@@ -2377,7 +2377,8 @@ a:focus {
 .blog-footer {
     padding: 2rem 0 2rem 0;
     margin-top: 5rem;
-    background-color:rgba(80, 159, 255, 0.8);
+    background-color:#0085a1;
+    /*background-color:rgba(80, 159, 255, 0.8);*/
    /* background-color: #273547;*/
     color: #fff !important;
 }
