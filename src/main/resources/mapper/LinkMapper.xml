@@ -80,14 +80,30 @@
     <insert id="insertSelective" parameterType="com.ada.blog.entity.Link">
         insert into tb_link
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="linkId != null">link_id,</if>
-            <if test="linkType != null">link_type,</if>
-            <if test="linkName != null">link_name</if>
-            <if test="linkUrl != null">link_url,</if>
-            <if test="linkDescription != null">link_description,</if>
-            <if test="linkRank != null">link_rank,</if>
-            <if test="isDeleted != null">is_deleted,</if>
-            create_time,
+            <if test="linkId != null">
+                link_id,
+            </if>
+            <if test="linkType != null">
+                link_type,
+            </if>
+            <if test="linkName != null">
+                link_name,
+            </if>
+            <if test="linkUrl != null">
+                link_url,
+            </if>
+            <if test="linkDescription != null">
+                link_description,
+            </if>
+            <if test="linkRank != null">
+                link_rank,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="linkId != null">
@@ -111,10 +127,12 @@
             <if test="isDeleted != null">
                 #{isDeleted,jdbcType=TINYINT},
             </if>
-            Now(),
-
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
         </trim>
     </insert>
+
 
     <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.Link">
         update tb_link

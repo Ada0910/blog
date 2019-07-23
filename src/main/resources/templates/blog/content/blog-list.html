@@ -30,20 +30,33 @@
                                 <span class="pull-right time pc_time"
                                       th:text="${#dates.format(blog.createTime, 'yyyy-MM-dd')}">2019-01</span>
                             </div>
-                            <h1 class="post-index-title"><a itemtype="url" th:href="@{'/blog/' + ${blog.blogId}}">
-                                <th:block th:text="${blog.blogTitle}"></th:block>
-                            </a>
-                            </h1>
-                            <div class="post-content-preview article-body">
-                                <a th:href="@{'/blog/' + ${blog.blogId}}">
-                                    <img th:src="@{${blog.blogCoverImage}}" alt=""></a>
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <h1 class="post-index-title"><a itemtype="url" th:href="@{'/blog/' + ${blog.blogId}}">
+                                        <th:block th:text="${blog.blogTitle}"></th:block>
+                                    </a>
+                                    </h1>
+                                    <div class="post-content-preview article-body">
+                                        <a th:href="@{'/blog/' + ${blog.blogId}}">
+                                            <img th:src="@{${blog.blogCoverImage}}" alt="" ></a>
+                                    </div>
+                                </div>
                             </div>
+
+
+
+
+
                             <div class="clearfix topic-footer">
                                 <span class="pull-left time mobile_time">2018-01</span>
                             </div>
                     </article>
                 </th:block>
             </th:block>
+
+
+
             <th:block th:if="${null != blogPageResult}">
                 <ul class="am-pagination">
                     <li th:class="${blogPageResult.currentPage==1}?'disabled' : 'am-pagination-prev'"><a

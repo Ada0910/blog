@@ -28,10 +28,10 @@ public class ConfigServiceImpl implements ConfigService {
 
     public static final String websiteName = "Ada个人网站";
     public static final String websiteDescription = "一个分享知识的Java学习网站";
-    public static final String websiteLogo = "/admin/img/logo.png";
-    public static final String websiteIcon = "/admin/img/favicon.png";
+    public static final String websiteLogo = "/common/img/logo.png";
+    public static final String websiteIcon = "/conmon/img/favicon.png";
 
-    public static final String yourAvatar = "/admin/dist/user.png";
+    public static final String yourAvatar = "/common/dist/my.jpg";
     public static final String yourEmail = "1355948107@qq.com";
     public static final String yourName = "Ada";
 

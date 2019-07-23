@@ -115,7 +115,7 @@
         </foreach>
     </update>-->
     <delete id="deleteBatch">
-        delete  from tb_category
+        delete  from tb_blog_category
         where category_id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}

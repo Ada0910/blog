@@ -12131,7 +12131,7 @@ label:not(.form-check-label):not(.custom-file-label) {
   height: 70px;
 }
 
-/* Contains the password input and the login button */
+/* Contains the password input and the common button */
 .lockscreen-credentials {
   margin-left: 70px;
 }

@@ -14,7 +14,7 @@ $(function () {
         width: "100%",
         height: 640,
         syncScrolling: "single",
-        path: "/admin/plugins/editormd/lib/",
+        path: "/common/plugins/editormd/lib/",
         toolbarModes: 'full',
         /**图片上传配置*/
         imageUpload: true,
@@ -186,6 +186,6 @@ function cancelButton() {
  */
 function randomCoverImage() {
     var rand = parseInt(Math.random() * 40 + 1);
-    $("#blogCoverImage").attr("src", '/admin/dist/img/rand/' + rand + ".jpg");
+    $("#blogCoverImage").attr("src", '/common/dist/img/rand/' + rand + ".jpg");
     $("#blogCoverImage").attr("style", "width:160px ;height: 120px;display:block;");
 }
