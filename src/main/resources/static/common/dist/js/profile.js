@@ -37,7 +37,7 @@ $(function () {
                     console.log(r);
                     if (r == 'success') {
                         alert('修改成功');
-                        window.location.href = '/a/common';
+                        window.location.href = '/admin/login';
                     } else {
                         alert('修改失败');
                     }

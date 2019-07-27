@@ -12,6 +12,7 @@
     <artifactId>blog</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>blog</name>
+    <packaging>jar</packaging>
     <description>个人博客网站</description>
 
     <properties>

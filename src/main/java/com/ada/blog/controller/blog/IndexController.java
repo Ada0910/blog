@@ -71,6 +71,7 @@ public class IndexController {
         request.setAttribute("pageName", "首页");
         request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
         request.setAttribute("configuration", configService.getAllConfigs());
+        //request.setAttribute("blog");
         return "blog/index";
     }
 
