@@ -43,7 +43,7 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf
 ![](_v_images/_1564302391_29948.png)
 
 # 4. 部署
-- 先运行一下sql代码，或者保存为sql文件
+- 先运行一下sql代码，或者保存为sql文件，登陆用户和密码为ada  123
 ```
 /*
 Navicat MySQL Data Transfer
