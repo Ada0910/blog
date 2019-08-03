@@ -82,7 +82,6 @@ public class IndexController {
      * @Param [request, blogId, commentPage]
      * @return java.lang.String
      * @Description 详情页
-     * , @PathParam(value = "commentPage",required= false,defaultValue="1")Integer commentPage
      **/
     @RequestMapping(value = {"/blog/{blogId}", "/article/{blogId}"}, method = RequestMethod.GET)
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {

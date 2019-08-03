@@ -21,7 +21,7 @@
                                             <span class="in">in</span>
                                             <span class="category-name">
                                 <a class="category-name" rel="tag" th:href="@{'/category/' + ${blog.blogCategoryName}}"
-                                   th:utext="${blog.blogCategoryName}">
+                                   th:utext="${blog.blogCategoryName}" style="color:rgba(80, 159, 255, 0.8)">
                                     </a>
                             </span>
                                         </div>
@@ -38,7 +38,7 @@
                                         <img th:src="@{${blog.blogCoverImage}}" alt=""></a>
                                 </div>
 
-                                <div style="float: left;margin-left: 10%;width: 60%;height: 100%">
+                                <div style="float: left;margin-left: 10%;width: 60%;height: 100%;">
                                     <h1 class="post-index-title"><a itemtype="url"
                                                                     th:href="@{'/blog/' + ${blog.blogId}}">
                                         <th:block th:text="${blog.blogTitle}"></th:block>
@@ -46,10 +46,12 @@
                                     </h1>
 
 
-                                <!--    <div style="height:100%;width:100%;margin-bottom: 20%" >
-                                        <p>概述：</p>
-                                        <p th:text="${#strings.substring(temp,0,30)}" ></p>
-                                    </div>-->
+                                    <div style="height:100%;width:100%;margin-bottom: 20%">
+
+
+                                        <div th:text="${#strings.substring(blog.blogContent,0,52)}+'......'"></div>
+
+                                    </div>
                                 </div>
                             </div>
 
