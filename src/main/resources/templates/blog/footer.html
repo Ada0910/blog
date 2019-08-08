@@ -6,7 +6,7 @@
         &copy;
         <a th:text="${configuration.get('footerAbout')}">your singal blog.</a>  &nbsp;   • &nbsp;
         Powered by <a href="https://github.com/Ada0910" target="_blank" th:text="${configuration.get('footerCopyRight')}">2019 Ada</a><br/>
-        ICP <a th:text="${configuration.get('footerICP')}">粤ICP备 xxxxxx-x号</a>
+        <a th:text="${configuration.get('footerICP')}" th:href="@{http://www.beian.gov.cn/portal/index?token=f2069c4c-46ad-4533-a55e-69796fe0b54e}" target="_blank">粤ICP备19093390号-1</a>
         <span class="ft-warn">&heartsuit;</span>
         <a href="https://gitee.com/adaXie" target="_blank">Ada</a>
     </div>
