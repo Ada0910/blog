@@ -2345,7 +2345,7 @@ a {
 
 a:hover,
 a:focus {
-    color: #42b983
+    color:rgba(80, 159, 255, 0.8);/*#42b983*/
 }
 
 .blog-text-center {
