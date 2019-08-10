@@ -86,6 +86,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a th:href="@{/admin/about}" th:class="${path}=='about'?'nav-link active':'nav-link'">
+                        <i class="fa fa-book nav-icon" aria-hidden="true"></i>
+                        <p>
+                            关于管理
+                        </p>
+                    </a>
+                </li>
+
                 <li class="nav-header">系统管理</li>
                 <li class="nav-item">
                     <a th:href="@{/admin/config}"
