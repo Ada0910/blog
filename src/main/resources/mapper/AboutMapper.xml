@@ -87,5 +87,44 @@
         </trim>
     </insert>
 
+    <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.About">
+        update tb_about
+        <set>
+            <if test="aboutType != null">
+                about_type = #{aboutType,jdbcType=TINYINT},
+            </if>
+            <if test="aboutName != null">
+                about_name = #{aboutName,jdbcType=VARCHAR},
+            </if>
+            <if test="aboutUrl != null">
+                about_url = #{aboutUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="aboutDescription != null">
+                about_description = #{aboutDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="aboutImage != null">
+                about_image = #{aboutImage,jdbcType=INTEGER},
+            </if>
+            update_time = Now(),
+
+        </set>
+        where about_id = #{aboutId,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_about
+        where about_id = #{aboutId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteBatch">
+        delete from tb_about
+        where about_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>
