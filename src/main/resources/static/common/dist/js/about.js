@@ -3,14 +3,14 @@ $(function () {
         url: '/admin/about/list',
         datatype: "json",
         colModel: [
-            {label: 'id', name: 'aboutId', index: 'aboutId', width: 50, key: true, hidden: true},
+            {label: 'id', name: 'aboutId', index: 'aboutId', width: 10, key: true, hidden: true},
             {label: '名称', name: 'aboutName', index: 'aboutName', width: 80},
-            {label: '链接', name: 'aboutUrl', index: 'aboutUrl', width: 160},
+            {label: '链接', name: 'aboutUrl', index: 'aboutUrl', width: 100},
             {label: '描述', name: 'aboutDescription', index: 'aboutDescription', width: 120},
-            {label: '类型', name: 'aboutType', index: 'aboutType', width: 50},
-            {label: '图片URL', name: 'aboutImage', index: 'aboutImage', width: 120},
-            {label: '添加时间', name: 'createTime', index: 'createTime', width: 80},
-            {label: '更新时间', name: 'updateTime', index: 'updateTime', width: 80}
+            {label: '类型', name: 'aboutType', index: 'aboutType', width: 60},
+            {label: '图片', name: 'aboutImage', index: 'aboutImage', width: 100,formatter: coverImageFormatter},
+            {label: '添加时间', name: 'createTime', index: 'createTime', width: 60},
+            {label: '更新时间', name: 'updateTime', index: 'updateTime', width: 60}
         ],
         height: 560,
         rowNum: 10,
@@ -24,7 +24,7 @@ $(function () {
         pager: "#jqGridPager",
         jsonReader: {
             root: "data.list",
-            page: "data.currPage",
+            page: "data.currentPage",
             total: "data.totalPage",
             records: "data.totalCount"
         },
@@ -60,16 +60,16 @@ function addAbout() {
 }
 
 //绑定modal上的保存按钮
-function saveButton(){
+function saveButton() {
     $('.modal-title').html('添加');
     var aboutId = $("#aboutId").val();
     var aboutName = $("#aboutName").val();
     var aboutUrl = $("#aboutUrl").val();
     var aboutDescription = $("#aboutDescription").val();
     var aboutImage = $("#aboutImage").val();
-    if (!validCN_ENString2_100(aboutName)) {
+    if (isNull(aboutName)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("名称不规范(2-100位的中英文字符串)！");
+        $('#edit-error-msg').html("名称不规范(不能为空)！");
         return;
     }
     if (!isURL(aboutUrl)) {
@@ -77,16 +77,16 @@ function saveButton(){
         $('#edit-error-msg').html("链接不规范！");
         return;
     }
-    if (!validCN_ENString2_100(aboutDescription)) {
+    if (isNull(aboutDescription)) {
         $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("描述不规范(2-100位的中英文字符串)！");
+        $('#edit-error-msg').html("描述不规范(不能为空)！");
         return;
     }
-    if (isNull(aboutImage)) {
+   /* if (isNull(aboutImage)) {
         $('#edit-error-msg').css("display", "block");
         $('#edit-error-msg').html("图片URL不规范(不能为空)！");
         return;
-    }
+    }*/
     var params = $("#aboutForm").serialize();
     var url = '/admin/about/add';
     if (aboutId != null && aboutId > 0) {
@@ -120,6 +120,7 @@ function saveButton(){
 
 
 }
+
 function editAbout() {
     var id = getSelectedRow();
     if (id == null) {
@@ -133,13 +134,16 @@ function editAbout() {
             $("#aboutName").val(r.data.aboutName);
             $("#aboutUrl").val(r.data.aboutUrl);
             $("#aboutDescription").val(r.data.aboutDescription);
-            $("#aboutRank").val(r.data.aboutRank);
+            $("#aboutImage").val(r.data.aboutImage);
             //根据原aboutType值设置select选择器为选中状态
             if (r.data.aboutType == 1) {
                 $("#aboutType option:eq(1)").prop("selected", 'selected');
             }
             if (r.data.aboutType == 2) {
                 $("#aboutType option:eq(2)").prop("selected", 'selected');
+            }
+            if (r.data.aboutType == 3) {
+                $("#aboutType option:eq(3)").prop("selected", 'selected');
             }
         }
     });
@@ -159,7 +163,7 @@ function deleteAbout() {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-    }).then((flag)=>{
+    }).then((flag) => {
         if(flag) {
             $.ajax({
                 type: "POST",
@@ -181,7 +185,7 @@ function deleteAbout() {
             });
         }
     }
-);
+)
 
 }
 
@@ -194,3 +198,33 @@ function reset() {
     $('#edit-error-msg').css("display", "none");
     $("#aboutType option:first").prop("selected", 'selected');
 }
+
+/*图片格式*/
+function coverImageFormatter(cellvalue) {
+    return "<img src='" + cellvalue + "' height=\"120\" width=\"160\" alt='coverImage'/>";
+}
+
+/**上传图片*/
+$(function () {
+    new AjaxUpload('#uploadAboutImage', {
+        action: '/admin/upload/file',
+        name: 'file',
+        autoSubmit: true,
+        responseType: "json",
+        onSubmit: function (file, extension) {
+            if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))) {
+                alert('只支持jpg、png、gif格式的文件！');
+                return false;
+            }
+        },
+        onComplete: function (file, r) {
+            if (r != null && r.resultCode == 200) {
+                $("#aboutImage").attr("src", r.data);
+                $("#aboutImage").attr("style", "width: 128px;height: 128px;display:block;");
+                return false;
+            } else {
+                alert("error");
+            }
+        }
+    });
+});

@@ -11,6 +11,8 @@
 <script th:src="@{/common/dist/js/adminlte.min.js}"></script>
 <script th:src="@{/common/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
 <script th:src="@{/common/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
+<!-- ajaxupload -->
+<script th:src="@{/common/plugins/ajaxupload/ajaxupload.js}"></script>
 <!-- sweetalert -->
 <script th:src="@{/common/plugins/sweetalert/sweetalert.min.js}"></script>
 <script th:src="@{/common/dist/js/public.js}"></script>
@@ -74,7 +76,7 @@
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="aboutModal">Modal</h6>
+                            <h6 class="modal-title">Modal</h6>
                         </div>
 
 
@@ -110,17 +112,35 @@
                                     <input type="url" class="form-control" id="aboutDescription" name="aboutDescription"
                                            placeholder="请输入描述" required="true">
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="aboutImage" class="control-label">图片URL:</label>
-                                    <input type="url" class="form-control" id="aboutImage" name="aboutImage"
-                                           placeholder="请输入图片URL" required="true">
+                                    <div class="col-sm-6">
+                                        <th:block th:if="${null == about}">
+                                            <img id="blogCoverImage" src="/common/dist/img/img-upload.png"
+                                                 style="height: 64px;width: 64px;">
+                                        </th:block>
+                                        <th:block th:unless="${null == about}">
+                                            <img id="aboutImage" th:src="${about.aboutImage}"
+                                                 style="width:160px ;height: 120px;display:block;">
+                                        </th:block>
+                                    </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info" style="margin-bottom: 5px;" id="uploadAboutImage">
+                                            <i class="fa fa-picture-o"></i>&nbsp;上传图片
+                                        </button>
+
+                                    </div>
+                                </div>
+
                             </form>
                         </div><!--modal-body-->
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" id="saveButton"  onclick="saveButton()">确认</button>
+                            <button type="button" class="btn btn-primary" id="saveButton" onclick="saveButton()">确认
+                            </button>
                         </div>
 
                     </div><!--modal-content-->

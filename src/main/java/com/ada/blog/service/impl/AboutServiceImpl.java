@@ -5,10 +5,13 @@ import com.ada.blog.mapper.AboutMapper;
 import com.ada.blog.service.AboutService;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
+import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Ada
@@ -50,15 +53,59 @@ public class AboutServiceImpl implements AboutService {
         return aboutMapper.insertSelective(about) > 0;
     }
 
+    /***
+     * @Author Ada
+     * @Date 15:13 2019/8/11
+     * @Param [aboutId]
+     * @return com.ada.blog.entity.About
+     * @Description 根据id查询
+     **/
     @Override
     public About selectById(Integer aboutId) {
-        return null;
+        return aboutMapper.selectByPrimaryKey(aboutId);
     }
 
+    /***
+     * @Author Ada
+     * @Date 15:13 2019/8/11
+     * @Param [about]
+     * @return java.lang.Boolean
+     * @Description 更新
+     **/
     @Override
     public Boolean updateAbout(About about) {
-        return null;
+        return aboutMapper.updateByPrimaryKey(about) > 0;
     }
 
+    /***
+     * @Author Ada
+     * @Date 15:13 2019/8/11
+     * @Param [ids]
+     * @return java.lang.Boolean
+     * @Description 批量删除
+     **/
+    @Override
+    public Boolean deleteBitch(Integer[] ids) {
+        return aboutMapper.deleteBatch(ids) > 0;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 15:13 2019/8/11
+     * @Param []
+     * @return java.util.Map<java.lang.Byte, java.util.List < com.ada.blog.entity.About>>
+     * @Description 首页获取
+     **/
+    @Override
+    public Map<Byte, List<About>> getAboutPage() {
+        List<About> abouts = aboutMapper.getAboutList(null);
+        if (CollectionUtils.isEmpty(abouts)) {
+            return null;
+        }
+        Map<Byte, List<About>> listMap = abouts.stream().collect(Collectors.groupingBy(About::getAboutType));
+        return listMap;
+
+    }
 }
+
 

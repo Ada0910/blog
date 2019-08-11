@@ -4,6 +4,9 @@ import com.ada.blog.entity.About;
 import com.ada.blog.util.PageResultUtil;
 import com.ada.blog.util.PageUtil;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Ada
  * @ClassName :AboutService
@@ -19,4 +22,8 @@ public interface AboutService {
     About selectById(Integer aboutId);
 
     Boolean updateAbout(About about);
+
+    Boolean deleteBitch(Integer[] ids);
+
+    Map<Byte, List<About>> getAboutPage();
 }

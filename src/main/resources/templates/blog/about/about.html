@@ -11,17 +11,59 @@
 <div class="am-g am-g-fixed blog-fixed">
     <div class="am-u-lg-8 am-u-sm-12">
         <main class="links-list">
-            <h1 id="个人介绍" class="linkLine">网站信息</h1>
-            <p>我的邮箱是
-                <th:block th:text="${configuration.get('yourEmail')}"></th:block>
-            </p>
-            <ul>
-                <li>网站名称：Ada</li>
-                <li>网站链接：http://www.isada.cn/</li>
-                <li>网站描述：Ada的个人网站</li>
-                <li>GitHub地址：https://github.com/Ada0910</li>
-                <li>码云地址：https://gitee.com/adaXie</li>
-            </ul>
+
+
+            <th:block th:unless="${#lists.isEmpty(myInfos)}">
+                <div class="title">
+                    <h1 class="linkLine">作者信息</h1>
+                </div>
+                <div class="list">
+                    <ul>
+                        <th:block th:each="myInfo : ${myInfos}">
+                            <li><a th:href="@{${myInfo.aboutUrl}}"
+                                   th:text="${myInfo.aboutName}" target="_blank">作者信息</a>
+                                -
+                                <th:block th:text="${myInfo.aboutDescription}"></th:block>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+            </th:block>
+
+
+            <th:block th:unless="${#lists.isEmpty(webInfos)}">
+                <div class="title">
+                    <h1 class="linkLine">网站版本</h1>
+                </div>
+                <div class="list">
+                    <ul>
+                        <th:block th:each="webInfo : ${webInfos}">
+                            <li><a th:href="@{${webInfo.aboutUrl}}" th:text="${webInfo.aboutName}" target="_blank">网站版本</a>
+                                -
+                                <th:block th:text="${webInfo.aboutDescription}"></th:block>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(otherInfo)}">
+                <div class="title">
+                    <h1 class="aboutLine">其他</h1>
+                </div>
+                <div class="list">
+                    <ul>
+                        <th:block th:each="otherInfo : ${otherInfos}">
+                            <li><a th:href="@{${otherInfo.aboutUrl}}"
+                                   th:text="${otherInfo.aboutName}" target="_blank">其他</a>
+                                -
+                                <th:block th:text="${otherInfo.aboutDescription}"></th:block>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+            </th:block>
+
 
         </main>
     </div>

@@ -20,4 +20,10 @@ public interface AboutMapper {
     Integer getTotalAbouts(PageUtil pageUtil);
 
     Integer insertSelective(About about);
+
+    About selectByPrimaryKey(Integer aboutId);
+
+    Integer updateByPrimaryKey(About about);
+
+    Integer deleteBatch(Integer[] ids);
 }
