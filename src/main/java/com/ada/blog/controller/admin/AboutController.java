@@ -124,8 +124,9 @@ public class AboutController {
      **/
     @RequestMapping("about/info/{id}")
     @ResponseBody
-    public ResultUtil info(@PathVariable("id") Integer id) {
+    public ResultUtil info(@PathVariable("id") Integer id, HttpServletRequest request) {
         About about = aboutService.selectById(id);
+        request.setAttribute("about", about);
         return ResultStatusUtil.successResult(about);
     }
 

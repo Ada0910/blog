@@ -19,11 +19,12 @@
                 </div>
                 <div class="list">
                     <ul>
-                        <th:block th:each="myInfo : ${myInfos}">
-                            <li><a th:href="@{${myInfo.aboutUrl}}"
-                                   th:text="${myInfo.aboutName}" target="_blank">作者信息</a>
-                                -
-                                <th:block th:text="${myInfo.aboutDescription}"></th:block>
+                        <th:block th:each="myInfo : ${myInfos}" >
+                            <li style="margin-top: 5px;margin-left: 10px;width: 100% ">
+                                <div style="float: left ; width:20% ;height:80px"><a th:text="${myInfo.aboutName}" th:href="@{${myInfo.aboutUrl}}"  target="_blank" >作者信息</a>
+                              <p th:text="${myInfo.aboutDescription}" ></p></div>
+
+                                <div style="float:left;height:100px ;padding-bottom: 20px"><img  th:src="@{${myInfo.aboutImage}}" width="120px" height="80px"/></div>
                             </li>
                         </th:block>
                     </ul>

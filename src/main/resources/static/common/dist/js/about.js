@@ -7,7 +7,7 @@ $(function () {
             {label: '名称', name: 'aboutName', index: 'aboutName', width: 80},
             {label: '链接', name: 'aboutUrl', index: 'aboutUrl', width: 100},
             {label: '描述', name: 'aboutDescription', index: 'aboutDescription', width: 120},
-            {label: '类型', name: 'aboutType', index: 'aboutType', width: 60},
+            {label: '类型', name: 'aboutType', index: 'aboutType', width: 60, formatter: aboutTypeFormatter},
             {label: '图片', name: 'aboutImage', index: 'aboutImage', width: 100,formatter: coverImageFormatter},
             {label: '添加时间', name: 'createTime', index: 'createTime', width: 60},
             {label: '更新时间', name: 'updateTime', index: 'updateTime', width: 60}
@@ -66,7 +66,8 @@ function saveButton() {
     var aboutName = $("#aboutName").val();
     var aboutUrl = $("#aboutUrl").val();
     var aboutDescription = $("#aboutDescription").val();
-    var aboutImage = $("#aboutImage").val();
+    var aboutImage = $("#aboutImage")[0].src;
+    var aboutType = $("#aboutType").val();
     if (isNull(aboutName)) {
         $('#edit-error-msg').css("display", "block");
         $('#edit-error-msg').html("名称不规范(不能为空)！");
@@ -82,20 +83,25 @@ function saveButton() {
         $('#edit-error-msg').html("描述不规范(不能为空)！");
         return;
     }
-   /* if (isNull(aboutImage)) {
-        $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("图片URL不规范(不能为空)！");
-        return;
-    }*/
-    var params = $("#aboutForm").serialize();
+    params= {
+        "aboutId":aboutId,
+        "aboutName":aboutName,
+        "aboutType":aboutType,
+        "aboutDescription":aboutDescription,
+        "aboutImage":aboutImage,
+        "aboutUrl":aboutUrl,
+    };
+  //  var params = $("#aboutForm").serialize();
     var url = '/admin/about/add';
     if (aboutId != null && aboutId > 0) {
         url = '/admin/about/update';
     }
+
     $.ajax({
         type: 'POST',//方法类型
         url: url,
         data: params,
+
         success: function (result) {
             if (result.resultCode == 200 && result.data) {
                 $('#aboutModal').modal('hide');
@@ -199,7 +205,7 @@ function reset() {
     $("#aboutType option:first").prop("selected", 'selected');
 }
 
-/*图片格式*/
+/**图片格式*/
 function coverImageFormatter(cellvalue) {
     return "<img src='" + cellvalue + "' height=\"120\" width=\"160\" alt='coverImage'/>";
 }
@@ -228,3 +234,15 @@ $(function () {
         }
     });
 });
+
+/**类型*/
+function aboutTypeFormatter(cellvalue) {
+    if (cellvalue == 1) {
+        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;\">作者信息</button>";
+    }
+    else if (cellvalue == 2) {
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;\">网站版本</button>";
+    }else{
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;\">其他</button>";
+    }
+}
