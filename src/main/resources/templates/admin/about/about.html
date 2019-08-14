@@ -89,51 +89,51 @@
                                 </div>
                                 <input type="hidden" class="form-control" id="aboutId" name="aboutId">
                                 <div class="form-group">
-                                    <label for="aboutType" class="control-label">类型:</label>
-                                    <select class="form-control" id="aboutType" name="aboutType">
-                                        <option selected="selected" value="0">类型</option>
-                                        <option value="1">作者信息</option>
-                                        <option value="2">网站版本</option>
-                                        <option value="3">其他</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="aboutName" class="control-label">名称:</label>
-                                    <input type="text" class="form-control" id="aboutName" name="aboutName"
-                                           placeholder="请输入名称" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="aboutUrl" class="control-label">链接:</label>
-                                    <input type="url" class="form-control" id="aboutUrl" name="aboutUrl"
-                                           placeholder="请输入链接" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="aboutDescription" class="control-label">描述:</label>
-                                    <input type="url" class="form-control" id="aboutDescription" name="aboutDescription"
-                                           placeholder="请输入描述" required="true">
-                                </div>
-
-                                <div class="form-group">
                                     <div class="col-sm-6">
                                         <th:block th:if="${null == about}">
-                                            <img id="blogCoverImage" src="/common/dist/img/img-upload.png"
-                                                 style="height: 64px;width: 64px;">
+                                            <img id="aboutImage" src="/common/dist/img/img-upload.png"
+                                                 style="height: 80px;width: 120px;">
                                         </th:block>
                                         <th:block th:unless="${null == about}">
                                             <img id="aboutImage" th:src="${about.aboutImage}"
-                                                 style="width:160px ;height: 120px;display:block;">
+                                                 style="width:160px ;height: 100px;display:block;">
                                         </th:block>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-4">
-                                        <button class="btn btn-info" style="margin-bottom: 5px;" id="uploadAboutImage">
-                                            <i class="fa fa-picture-o"></i>&nbsp;上传图片
-                                        </button>
+                                    <br>
+                                    <div class="form-group">
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-info" style="margin-bottom: 5px;"
+                                                    id="uploadAboutImage">
+                                                <i class="fa fa-picture-o"></i>&nbsp;上传图片
+                                            </button>
 
+                                        </div>
                                     </div>
-                                </div>
-
+                                    <div class="form-group">
+                                        <label for="aboutType" class="control-label">类型:</label>
+                                        <select class="form-control" id="aboutType" name="aboutType">
+                                            <option selected="selected" value="0">类型</option>
+                                            <option value="1">作者信息</option>
+                                            <option value="2">网站版本</option>
+                                            <option value="3">其他</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="aboutName" class="control-label">名称:</label>
+                                        <input type="text" class="form-control" id="aboutName" name="aboutName"
+                                               placeholder="请输入名称" required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="aboutUrl" class="control-label">链接:</label>
+                                        <input type="url" class="form-control" id="aboutUrl" name="aboutUrl"
+                                               placeholder="请输入链接" required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="aboutDescription" class="control-label">描述:</label>
+                                        <input type="url" class="form-control" id="aboutDescription"
+                                               name="aboutDescription"
+                                               placeholder="请输入描述" required="true">
+                                    </div>
                             </form>
                         </div><!--modal-body-->
 
