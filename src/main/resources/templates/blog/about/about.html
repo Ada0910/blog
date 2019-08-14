@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <head th:replace="blog/header::head-fragment"></head>
-
 
 <body id="blog">
 <div th:replace="blog/header::nav-fragment"></div>
@@ -10,21 +12,19 @@
 
 <div class="container-fluid">
     <div class="row">
-<!--<div class="am-g am-g-fixed blog-fixed">-->
-  <!--  <div class="am-u-lg-8 am-u-sm-12">-->
             <div class="col-sm-4"  th:unless="${#lists.isEmpty(myInfos)}" style="float: left;width:30%;">
                 <div class="title">
                     <h1 class="linkLine">作者信息</h1>
                 </div>
                 <div class="list">
-                        <div class="card" th:each="myInfo : ${myInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center">
-                            <div class="card-title">
+                        <div class="card" th:each="myInfo : ${myInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center;">
+                            <div class="card-title" >
                                 <a th:text="${myInfo.aboutName}" th:href="@{${myInfo.aboutUrl}}"
-                                   target="_blank" style="color:#5085FF">作者信息</a>
+                                   target="_blank" style="color:#5085FF;padding-top: 10px">作者信息</a>
                                 <p th:text="${myInfo.aboutDescription}"></p></div>
 
-                            <div class="card-body">
-                                <img class="img-thumbnail" th:src="@{${myInfo.aboutImage}}" style="width:120px; height:80px;"/></div>
+                            <div class="card-body" >
+                               <img class="img-thumbnail" th:src="@{${myInfo.aboutImage}}" style="width:120px; height:100px;padding-bottom: 16px"/></div>
                         </div>
 
                 </div>
@@ -43,7 +43,7 @@
                                 <p th:text="${webInfo.aboutDescription}"></p></div>
 
                             <div class="card-body">
-                                <img class="img-thumbnail" th:src="@{${webInfo.aboutImage}}" width="120px" height="80px"/></div>
+                                <img class="img-thumbnail" th:src="@{${webInfo.aboutImage}}" style="width:120px; height:100px;padding-bottom: 16px" /></div>
                         </div>
 
                 </div>
@@ -62,15 +62,14 @@
                                 <p th:text="${otherInfo.aboutDescription}"></p></div>
 
                             <div class="card-body">
-                                <img class="img-thumbnail" th:src="@{${otherInfo.aboutImage}}" width="120px" height="80px"/></div>
+                                <img class="img-thumbnail" th:src="@{${otherInfo.aboutImage}}" style="width:120px; height:100px;padding-bottom: 16px"/></div>
                         </div>
 
                 </div>
             </div>
-
-
     </div>
 </div>
+
 <!-- 引入页脚footer-fragment -->
 <footer th:replace="blog/footer::footer-fragment"></footer>
 </body>

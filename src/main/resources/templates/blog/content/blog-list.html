@@ -49,7 +49,7 @@
                                     <div style="height:100%;width:100%;margin-bottom: 20%">
 
 
-                                        <div th:text="${#strings.substring(blog.blogContent,0,54)}">
+                                        <div th:text="${#strings.substring(blog.blogContent,1,54)}">
                                         </div><a itemtype="url"
                                                  th:href="@{'/blog/' + ${blog.blogId}}">
                                         <div style="color:rgba(80, 159, 255, 0.8)">详情>>></div></a>
