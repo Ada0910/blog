@@ -25,4 +25,6 @@ public interface CategoryService {
     int getTotalCategory();
 
     List<Category> getAllCategory();
+
+    Category selectById(Integer categroyId);
 }

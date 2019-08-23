@@ -7,6 +7,7 @@ package com.ada.blog.controller.admin;
  * @Description:
  */
 
+import com.ada.blog.entity.Category;
 import com.ada.blog.service.CategoryService;
 import com.ada.blog.util.PageUtil;
 import com.ada.blog.util.ResultStatusUtil;
@@ -113,5 +114,20 @@ public class CategoryController {
             return ResultStatusUtil.failResult("删除失败");
         }
     }
+
+    /****
+     * @Author Ada
+     * @Date 23:30 2019/8/23
+     * @Param [id]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description  查找分类详情
+     **/
+    @RequestMapping("/category/info/{id}")
+    @ResponseBody
+    public ResultUtil info(@PathVariable("id") Integer id) {
+        Category category = categoryService.selectById(id);
+        return ResultStatusUtil.successResult(category);
+    }
+
 
 }

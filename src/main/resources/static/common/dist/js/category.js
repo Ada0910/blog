@@ -122,6 +122,15 @@ function categoryEdit() {
     if (id == null) {
         return;
     }
+    reset();
+    //请求
+    $.get("/admin/category/info/" + id, function (r) {
+        if (r.resultCode == 200 && r.data != null) {
+            //填充数据至modal
+            $("#categoryName").val(r.data.categoryName);
+        }
+    });
+
     $('.modal-title').html('分类编辑');
     $('#categoryModal').modal('show');
     $("#categoryId").val(id);
