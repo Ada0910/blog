@@ -3838,19 +3838,20 @@ code {
     padding-left: 1.5em;
 }
 
-.article-trigger h2::before,
-.article-trigger h3::before {
+/**::before*/
+.article-trigger h2 ::before,
+.article-trigger h3 ::before{
     position: absolute;
     left: 0;
     color: #337ab7;
 }
 
-.article-trigger h2::before {
+.article-trigger h2 ::before{
     font-weight: 600;
     content: '#';
 }
 
-.article-trigger h3::before {
+.article-trigger h3 ::before{
     font-weight: 500;
     content: '##';
 }
@@ -3858,7 +3859,7 @@ code {
 .article-trigger a {
     color: #5085ff;
 }
-
+/**::before*/
 .topic-header {
     padding-bottom: 0px;
     display: flex;

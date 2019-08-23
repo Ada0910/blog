@@ -17,7 +17,7 @@
                     <h1 class="linkLine">作者信息</h1>
                 </div>
                 <div class="list">
-                        <div class="card" th:each="myInfo : ${myInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center;">
+                        <div class="card" th:each="myInfo : ${myInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center;border-radius:24px;">
                             <div class="card-title" >
                                 <a th:text="${myInfo.aboutName}" th:href="@{${myInfo.aboutUrl}}"
                                    target="_blank" style="color:#5085FF;padding-top: 10px">作者信息</a>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="list" >
 
-                        <div class="card" th:each="webInfo : ${webInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center">
+                        <div class="card" th:each="webInfo : ${webInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center ;border-radius:24px;">
                             <div class="card-title">
                                 <a th:text="${webInfo.aboutName}" th:href="@{${webInfo.aboutUrl}}"
                                    target="_blank" style="color:#5085FF">网站信息</a>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="list">
 
-                        <div class="card" th:each="otherInfo : ${otherInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center">
+                        <div class="card" th:each="otherInfo : ${otherInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center;border-radius:24px;">
                             <div class="card-title">
                                 <a th:text="${otherInfo.aboutName}" th:href="@{${otherInfo.aboutUrl}}"
                                    target="_blank" style="color:#5085FF">其他</a>
