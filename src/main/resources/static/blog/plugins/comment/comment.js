@@ -52,12 +52,15 @@ function  commentSubmit() {
         data: data,
         success: function (result) {
             if (result.resultCode == 200) {
+                $('#commentContent').attr("style","display:none");
+                $('.modal-backdrop ').attr("style","display:none");
                 swal("评论提交成功请等待博主审核", {
                     icon: "success",
                 });
-                $('#commentBody').val('');
-                $('#verifyCode').val('');
+
             } else {
+                $('#commentContent').attr("style","display:none");
+                $('.modal-backdrop ').attr("style","display:none");
                 swal(result.message, {
                     icon: "error",
                 });
@@ -65,9 +68,24 @@ function  commentSubmit() {
             ;
         },
         error: function () {
+            $('#commentContent').attr("style","display:none");
+            $('.modal-backdrop ').attr("style","display:none");
             swal("操作失败", {
                 icon: "error",
             });
         }
     });
+
+
 }
+
+function reset() {
+     $('#blogId').val('');
+     $('#verifyCode').val('');
+     $('#commentator').val('');
+     $('#email').val('');
+     $('#websiteUrl').val('');
+     $('#commentBody').val('');
+}
+
+
