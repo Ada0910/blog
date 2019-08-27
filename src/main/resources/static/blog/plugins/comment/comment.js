@@ -52,15 +52,15 @@ function  commentSubmit() {
         data: data,
         success: function (result) {
             if (result.resultCode == 200) {
+                $("#popLayer").attr("style","display:none");
                 $('#commentContent').attr("style","display:none");
-                $('.modal-backdrop ').attr("style","display:none");
                 swal("评论提交成功请等待博主审核", {
                     icon: "success",
                 });
 
             } else {
+                $("#popLayer").attr("style","display:none");
                 $('#commentContent').attr("style","display:none");
-                $('.modal-backdrop ').attr("style","display:none");
                 swal(result.message, {
                     icon: "error",
                 });
@@ -68,8 +68,8 @@ function  commentSubmit() {
             ;
         },
         error: function () {
+            $("#popLayer").attr("style","display:none");
             $('#commentContent').attr("style","display:none");
-            $('.modal-backdrop ').attr("style","display:none");
             swal("操作失败", {
                 icon: "error",
             });
@@ -88,4 +88,18 @@ function reset() {
      $('#commentBody').val('');
 }
 
+function  cancelComment() {
+    $("#popLayer").attr("style","display:none");
+    $('#commentContent').attr("style","display:none");
+}
+
+function showModal() {
+    reset();
+    $('#commentContent').show();
+    $('#popLayer').show();
+
+
+
+
+}
 

@@ -6065,3 +6065,68 @@ button.close {
     align-items: center;
     margin-bottom: 0;
 }
+
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#commentContent{
+    position: absolute;
+    display:none;
+    width:600px;
+    height:800px;
+    left:30%;
+    top:1%;
+    z-index:99;
+    background-color: white;
+}
+
+#popLayer{
+    position: absolute;
+    display:none;
+    left:0;
+    top:0;
+    z-index:10;
+    background:rgba(12,8,18,0.99);
+    -moz-opacity: 0.8;
+    opacity:.80;
+    width: 10000px;
+    height: 10000px;
+}
