@@ -78,4 +78,3 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf +sweetalert2
 ![](_v_images/_1566996304_27088.png)
 - 添加“关于”模块
 ![](_v_images/_1566996425_16270.png)
->>>>>>> b04d791023d53238916b810db2415a50475ebac0
