@@ -50,6 +50,7 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf +sweetalert2
 
 ![](_v_images/_1564302391_29948.png)
 
+
 # 4. 使用
 - 在_v_images下的web_db.sql是数据库文件，导入到mysql中
 - 在idea上导入github项目，修改数据库端口就可以运行了
