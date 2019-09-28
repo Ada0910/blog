@@ -1,29 +1,72 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <head th:replace="blog/header::head-fragment"></head>
-
 
 <body id="blog">
 <div th:replace="blog/header::nav-fragment"></div>
 <div th:replace="blog/header::header-fragment"></div>
 
 
-<div class="am-g am-g-fixed blog-fixed">
-    <div class="am-u-lg-8 am-u-sm-12">
-        <main class="links-list">
-            <h1 id="个人介绍" class="linkLine">网站信息</h1>
-            <p>我的邮箱是
-                <th:block th:text="${configuration.get('yourEmail')}"></th:block>
-            </p>
-            <ul>
-                <li>网站名称：Ada</li>
-                <li>网站链接：</li>
-                <li>网站描述：Ada的个人网站</li>
-                <li>GitHub地址：https://github.com/Ada0910</li>
-                <li>码云地址：https://gitee.com/adaXie</li>
-            </ul>
+<div class="container-fluid">
+    <div class="row">
+            <div class="col-sm-4"  th:unless="${#lists.isEmpty(myInfos)}" style="float: left;width:30%;">
+                <div class="title">
+                    <h1 class="linkLine">作者信息</h1>
+                </div>
+                <div class="list">
+                        <div class="card" th:each="myInfo : ${myInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center;border-radius:24px;">
+                            <div class="card-title" >
+                                <a th:text="${myInfo.aboutName}" th:href="@{${myInfo.aboutUrl}}"
+                                   target="_blank" style="color:#5085FF;padding-top: 10px">作者信息</a>
+                                <p th:text="${myInfo.aboutDescription}"></p></div>
 
-        </main>
+                            <div class="card-body" >
+                               <img class="img-thumbnail" th:src="@{${myInfo.aboutImage}}" style="width:120px; height:100px;padding-bottom: 16px"/></div>
+                        </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-4" th:unless="${#lists.isEmpty(webInfos)}" style="float: left;width:30% ;margin-left: 5%" >
+                <div class="title">
+                    <h1 class="linkLine">网站版本</h1>
+                </div>
+                <div class="list" >
+
+                        <div class="card" th:each="webInfo : ${webInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center ;border-radius:24px;">
+                            <div class="card-title">
+                                <a th:text="${webInfo.aboutName}" th:href="@{${webInfo.aboutUrl}}"
+                                   target="_blank" style="color:#5085FF">网站信息</a>
+                                <p th:text="${webInfo.aboutDescription}"></p></div>
+
+                            <div class="card-body">
+                                <img class="img-thumbnail" th:src="@{${webInfo.aboutImage}}" style="width:120px; height:100px;padding-bottom: 16px" /></div>
+                        </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-4" th:unless="${#lists.isEmpty(otherInfos)}" style="float: right;width:30% ;margin-left: 5% ;">
+                <div class="title" >
+                    <h1 class="linkLine">其他</h1>
+                </div>
+                <div class="list">
+
+                        <div class="card" th:each="otherInfo : ${otherInfos}" style="margin-top: 24px;border:1px solid grey;text-align: center;border-radius:24px;">
+                            <div class="card-title">
+                                <a th:text="${otherInfo.aboutName}" th:href="@{${otherInfo.aboutUrl}}"
+                                   target="_blank" style="color:#5085FF">其他</a>
+                                <p th:text="${otherInfo.aboutDescription}"></p></div>
+
+                            <div class="card-body">
+                                <img class="img-thumbnail" th:src="@{${otherInfo.aboutImage}}" style="width:120px; height:100px;padding-bottom: 16px"/></div>
+                        </div>
+
+                </div>
+            </div>
     </div>
 </div>
 

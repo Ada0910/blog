@@ -100,5 +100,13 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getAllCategory() {
         return categoryMapper.findCategoryList(null);
     }
+
+    /**
+     * 根据id查找category
+     */
+    @Override
+    public Category selectById(Integer categroyId) {
+        return categoryMapper.selectByPrimaryKey(categroyId);
+    }
 }
 

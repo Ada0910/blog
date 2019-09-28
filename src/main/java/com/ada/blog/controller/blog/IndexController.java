@@ -31,9 +31,6 @@ public class IndexController {
     public TagService tagService;
 
     @Autowired
-    public LinkService linkService;
-
-    @Autowired
     public CommentService commentService;
 
     @Autowired
@@ -71,7 +68,6 @@ public class IndexController {
         request.setAttribute("pageName", "首页");
         request.setAttribute("hotTags", tagService.getBlogTagCountForIndex());
         request.setAttribute("configuration", configService.getAllConfigs());
-        //request.setAttribute("blog");
         return "blog/index";
     }
 
@@ -82,7 +78,6 @@ public class IndexController {
      * @Param [request, blogId, commentPage]
      * @return java.lang.String
      * @Description 详情页
-     * , @PathParam(value = "commentPage",required= false,defaultValue="1")Integer commentPage
      **/
     @RequestMapping(value = {"/blog/{blogId}", "/article/{blogId}"}, method = RequestMethod.GET)
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
@@ -130,48 +125,6 @@ public class IndexController {
         return "blog/content/list";
     }
 
-    /***
-     * @Author Ada
-     * @Date 20:21 2019/7/20
-     * @Param [request]
-     * @return java.lang.String
-     * @Description 友情链接
-     **/
-    @RequestMapping(value = {"/link"}, method = RequestMethod.GET)
-    public String link(HttpServletRequest request) {
-        request.setAttribute("pageName", "友情链接");
-        Map<Byte, List<Link>> listMap = linkService.getLinksForLinkPage();
-        if (listMap != null) {
-            //判断友链类别并封装数据0-友链 1-社区 2-网站
-
-            if (listMap.containsKey((byte) 0)) {
-                request.setAttribute("favoriteLinks", listMap.get((byte) 0));
-            }
-            if (listMap.containsKey((byte) 1)) {
-                request.setAttribute("recommendLinks", listMap.get((byte) 1));
-            }
-            if (listMap.containsKey((byte) 2)) {
-                request.setAttribute("webLinks", listMap.get((byte) 2));
-            }
-        }
-        request.setAttribute("configuration", configService.getAllConfigs());
-        return "blog/link/link";
-    }
-
-
-    /***
-     * @Author Ada
-     * @Date 21:08 2019/7/20
-     * @Param [request]
-     * @return java.lang.String
-     * @Description 关于
-     **/
-    @RequestMapping(value = {"/about"}, method = RequestMethod.GET)
-    public String about(HttpServletRequest request) {
-        request.setAttribute("configuration", configService.getAllConfigs());
-        request.setAttribute("pageName", "关于");
-        return "blog/about/about";
-    }
 
     /***
      * @Author Ada

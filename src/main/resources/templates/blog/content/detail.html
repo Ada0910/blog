@@ -8,6 +8,12 @@
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" th:href="@{${configuration.get('websiteIcon')}}"/>
     <link rel="stylesheet" th:href="@{/blog/amaze/css/base.css}">
+    <script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
+    <script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/common/dist/js/public.js}"></script>
+    <script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap 4 -->
+    <script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
 
 <script th:src="@{/blog/plugins/jquery/jquery.min.js}"></script>
@@ -44,45 +50,45 @@
 </script>
 
 <!--body-->
-<body>
+<body >
 <div th:replace="blog/header::nav-fragment"></div>
 
 <!--详情页头部（文章标题，浏览次数和标签）-->
-<header th:fragment="header-fragment" class="intro-header"
-        th:style="'background-image:url(' + @{/blog/amaze/images/header.jpg} + ');'">
-
-</header>
-
+<div th:replace="blog/header::header-fragment"></div>
 <div class="container">
 
 
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-2 col-md-10 col-md-offset-1" >
-                <div class="post-heading">
-                    <h1 th:text="'标題：'+${blogDetail.blogTitle}" style="color:black "></h1>
+    <div class="row">
+        <div class="col-lg-10col-md-10 ">
+            <div class="post-heading">
+                <h1 th:text="'标題：'+${blogDetail.blogTitle}" style="color:black "></h1>
 
-                    <span class="meta" style="color:black">
+                <span class="meta" style="color:black">
                         <th:block th:text="${#dates.format(blogDetail.createTime, 'yyyy-MM-dd')}"></th:block> &nbsp;
                             <div class="comments-view" style="display: inline-block">
                                 <a href="#comments" class="article-comments" style="color:black"><th:block
-                                        th:text="${blogDetail.commentCount}" ></th:block>条评论</a> &nbsp;
-                                <th:block th:text="${blogDetail.blogViews}"></th:block>浏览
+                                        th:text="${blogDetail.commentCount}"></th:block>条评论</a> &nbsp;
+                                <th:block th:text="${blogDetail.blogViews}"></th:block>浏览 &nbsp;&nbsp;&nbsp;&nbsp;
+                                  <button type="button" class="btn btn-primary"
+                                           onclick="showModal()"><i
+                                          class="fa fa-pencil-square-o"></i>评论</button>
+                                <!--data-target="#commentContent"-->
                             </div>
                     </span>
 
-                    <div class="tags post-tags" >
-                        <th:block th:each="tag : ${blogDetail.blogTags}">
-                            <p th:text="标签" style="display: inline-block"></p>&nbsp;&nbsp;
-                            <a class="tag" rel="tag" th:href="@{'/tag/' + ${tag}}"  style="background-color: rgba(80, 159, 255, 0.8)">
-                                <th:block th:text="${tag}" ></th:block>
-                            </a>&nbsp;&nbsp;
-                        </th:block>
-                    </div>
-
+                <div class="tags post-tags">
+                    <th:block th:each="tag : ${blogDetail.blogTags}">
+                        <p th:text="标签" style="display: inline-block"></p>&nbsp;&nbsp;
+                        <a class="tag" rel="tag" th:href="@{'/tag/' + ${tag}}"
+                           style="background-color: rgba(80, 159, 255, 0.8)">
+                            <th:block th:text="${tag}"></th:block>
+                        </a>&nbsp;&nbsp;
+                    </th:block>
                 </div>
-            </div>
-        </div><!--row-->
 
+            </div>
+        </div>
+    </div><!--row-->
 
 
     <div class="am-g am-g-fixed blog-fixed">
@@ -90,15 +96,12 @@
             <article class="am-article blog-article-p article-trigger">
                 <div id="post-content" class="am-article-bd article-body">
                     <th:block th:utext="${blogDetail.blogContent}"/>
-                    <!--<aside class="blog-rights clearfix">
-                        <p>本站文章除注明转载/出处外，皆为作者原创，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利。</p>
-                    </aside>-->
+
                 </div>
             </article>
             <hr>
         </div>
     </div>
-
 
 
     <aside class="comments" id="comments">
@@ -194,61 +197,87 @@
 
     </aside>
 
+
     <!--添加评论-->
-    <th:block th:if="${blogDetail.enableComment==0}">
-        <aside class="create-comment" id="create-comment">
-            <hr>
-            <h2><i class="fa fa-pencil"></i> 添加评论</h2>
-            <table id="commentForm" class="form">
-                <tbody>
-                <tr>
-                    <td>
-                        <input type="hidden" id="blogId" name="blogId" th:value="${blogDetail.blogId}"></input>
-                        <input type="text" name="commentator" id="commentator" placeholder="(*必填)怎么称呼你?">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="email" name="email" id="email" placeholder="(*必填)你的联系邮箱">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" name="websiteUrl" id="websiteUrl" placeholder="你的网站地址(可不填)">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input style="width:50%" type="text" name="verifyCode" id="verifyCode"
-                               placeholder="(*必填)请输入验证码">&nbsp;&nbsp;
-                        <img alt="单击图片刷新！" class="pointer" style="margin-top: 15px; border-radius: 25px;"
-                             th:src="@{/admin/kaptcha}"
-                             onclick="this.src='/admin/kaptcha?d='+new Date()*1">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <textarea rows="5" name="commentBody" id="commentBody" placeholder="(*必填)请输入你的评论"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="6" align="center">
-                        <button id="commentSubmit" type="submit"
-                                class="submit am-btn am-btn-primary " onclick="commentSubmit()">提交
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </aside>
-    </th:block>
+    <!-- 模态框（Modal） -->
+            <div  id="commentContent" >
+                <div class="modal-header">
+                    <h4 class="">添加评论</h4>
+                    <button type="button" class="close" onclick="cancelComment()">&times;</button>
+                </div>
+
+
+                <div class="modal-body">
+                    <form id="aboutForm">
+                        <div class="form-group">
+                            <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                错误信息展示栏。
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="commentator" class="control-label">名字:</label>
+                                <input type="hidden" id="blogId" name="blogId" th:value="${blogDetail.blogId}">
+                                <input type="text" class="form-control" name="commentator" id="commentator"
+                                       placeholder="(*必填)怎么称呼你?">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="email" class="control-label">邮箱:</label>
+                                <input type="email" class="form-control" name="email" id="email"
+                                       placeholder="(*必填)你的联系邮箱">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="websiteUrl" class="control-label">网址:</label>
+                                <input type="text" class="form-control" name="websiteUrl" id="websiteUrl"
+                                       placeholder="你的网站地址(可不填)">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="commentBody" class="control-label">评论:</label>
+                                <textarea rows="5" name="commentBody" id="commentBody"
+                                          placeholder="(*必填)请输入你的评论"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left">
+                                <label for="verifyCode" class="control-label">验证码:</label>
+                                <input class="form-control" style="width:90%;" type="text" name="verifyCode"
+                                       id="verifyCode"
+                                       placeholder="(*必填)请输入验证码">&nbsp;&nbsp;
+                            </div>
+                            <div class="col-sm-6">
+                                <img alt="单击图片刷新！" class="pointer" style="margin-top: 25px; border-radius: 25px;"
+                                     th:src="@{/admin/kaptcha}"
+                                     onclick="this.src='/admin/kaptcha?d='+new Date()*1">
+                            </div>
+                        </div>
+
+                    </form>
+                </div><!--modal-body-->
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="cancelComment()">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveButton" onclick="commentSubmit()">确认
+                    </button>
+                </div>
+
+            </div><!--modal-content-->
+
 
     <p class="back-top" id="back-top" style="display:none"><a href="#top"><span></span></a></p>
 
 
+    <div id="popLayer"></div>
 </div>
 
 <footer th:replace="blog/footer::footer-fragment"></footer>
 </body>
-
 </html>

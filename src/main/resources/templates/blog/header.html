@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Window-target" content="_top"/>
     <link rel="stylesheet" th:href="@{/blog/amaze/css/base.css}">
+    <script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
+    <script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
 
 <!--导航栏-->
@@ -22,47 +24,70 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/" th:text="${configuration.get('websiteName')}">
+            <a class="navbar-brand" href="/" th:text="${configuration.get('websiteName')}"style="color:black">
             </a>
         </div>
 
 
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a th:href="@{/index}">主页</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/link}">友情链接</a>
-                    </li>
-                    <li>
-                        <a th:href="@{/about}">关于</a>
-                    </li>
-                    <!--<li>
-                        <a href="https://github.com/Ada0910">GitHub</a>
-                    </li>-->
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="nav navbar-nav navbar-right ">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}" style="color:black">主页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/link}"style="color:black">友情链接</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/about}"style="color:black">关于</a>
+                </li>
+            </ul>
         </div><!-- navbar-collapse -->
+
     </div><!-- container -->
 </nav>
 
 
-<header th:fragment="header-fragment" class="intro-header"
-        th:style="'background-image:url('+ @{/blog/amaze/images/header.jpg} +');'">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-        <!--  <span class="subheading">
-              千里之行，始于足下
-          </span>-->
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+<header th:fragment="header-fragment"  class="intro-header"><!--class="intro-header"-->
 
+                <div id="headerCarousel" class="carousel slide" data-ride="carousel">
+                    <!-- 指示符 -->
+                    <ul class="carousel-indicators">
+                        <li data-target="#headerCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#headerCarousel" data-slide-to="1"></li>
+                        <li data-target="#headerCarousel" data-slide-to="2"></li>
+                    </ul>
+
+                    <!-- 轮播图片 --><!--background-repeat: no-repeat;-->
+                    <div class="carousel-inner"  style="background-size:cover;">
+                        <div class="carousel-item active"  >
+                            <img th:src="@{/blog/amaze/images/header.jpg}"  style="width: 100%;height: 400px">
+                    </div>
+                        <div class="carousel-item">
+                            <img th:src="@{/blog/amaze/images/header1.jpg}" style="width: 100%;height: 400px">
+                        </div>
+                        <div class="carousel-item">
+                            <img th:src="@{/blog/amaze/images/header2.jpg}" style="width: 100%;height: 400px">
+                        </div>
+                    </div>
+
+                    <!-- 左右切换按钮 -->
+                    <a class="carousel-control-prev" href="#headerCarousel" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#headerCarousel" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
+
+                </div>
+
+
+</header>
+<style>
+    /* Make the image fully responsive */
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
 
 </html>

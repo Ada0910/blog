@@ -57,4 +57,5 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category category);
 
     List<Category> selectByCategoryId(@Param("categoryId") List<Integer> categoryId);
+
 }
