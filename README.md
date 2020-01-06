@@ -70,7 +70,7 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf +sweetalert2
 # 6. 感谢
 感谢13的博客
 # 7. 更新
-2.0更新
+## 7.1. 2.0版本
 -首页调整
 ![](_v_images/_1566996219_18389.png)
 
@@ -78,4 +78,3 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf +sweetalert2
 ![](_v_images/_1566996304_27088.png)
 - 添加“关于”模块
 ![](_v_images/_1566996425_16270.png)
->>>>>>> b04d791023d53238916b810db2415a50475ebac0

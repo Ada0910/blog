@@ -135,13 +135,6 @@
         where blog_id = #{blogId,jdbcType=BIGINT}
     </update>
 
-    <!--<update id="deleteBatch">
-        update tb_blog
-        set is_deleted=1 where blog_id in
-        <foreach item="id" collection="array" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </update>-->
 
     <delete id="deleteBatch">
         delete from tb_blog
