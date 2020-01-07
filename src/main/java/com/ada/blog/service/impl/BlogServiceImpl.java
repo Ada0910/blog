@@ -343,7 +343,7 @@ public class BlogServiceImpl implements BlogService {
                 map.put("page", page);
                 map.put("limit", 9);
 
-                map.put("categoryId", category.getCategoryId());
+                map.put("blogCategoryId", category.getCategoryId());
                 map.put("blogStatus", 1);
                 PageUtil pageUtil = new PageUtil(map);
                 List<Blog> blog = blogMapper.findBlogList(pageUtil);
