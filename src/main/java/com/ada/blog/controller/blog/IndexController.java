@@ -2,8 +2,10 @@ package com.ada.blog.controller.blog;
 
 import com.ada.blog.entity.BlogDetail;
 import com.ada.blog.entity.Comment;
-import com.ada.blog.entity.Link;
-import com.ada.blog.service.*;
+import com.ada.blog.service.BlogService;
+import com.ada.blog.service.CommentService;
+import com.ada.blog.service.ConfigService;
+import com.ada.blog.service.TagService;
 import com.ada.blog.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Ada
@@ -177,6 +177,7 @@ public class IndexController {
         comment.setBlogId(blogId);
         comment.setCommentator(MyBlogUtil.cleanString(commentator));
         comment.setEmail(email);
+        comment.setCommentatorIp(getIpAddress(request));
         if (!PatternUtil.isURL(websiteUrl)) {
             comment.setWebsiteUrl(websiteUrl);
         }
@@ -254,5 +255,32 @@ public class IndexController {
         } else {
             return "error/error_400";
         }
+    }
+
+    /***
+     * @Author Ada
+     * @Date 20:41 2020/1/12
+     * @Param [request]
+     * @return java.lang.String
+     * @Description 获取真实的IP
+     **/
+    public static String getIpAddress(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 }
