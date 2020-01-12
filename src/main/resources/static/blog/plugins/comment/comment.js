@@ -1,5 +1,5 @@
 function  commentSubmit() {
-    var blogId = $('#blogId').val();
+    var blogId = $('input[name="blogId"]').val();
     var verifyCode = $('#verifyCode').val();
     var commentator = $('#commentator').val();
     var email = $('#email').val();
@@ -80,7 +80,6 @@ function  commentSubmit() {
 }
 
 function reset() {
-     $('#blogId').val('');
      $('#verifyCode').val('');
      $('#commentator').val('');
      $('#email').val('');
