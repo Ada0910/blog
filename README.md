@@ -74,7 +74,7 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf +sweetalert2
 # 6. 感谢
 感谢13的博客
 # 7. 更新
-## 7.1. 2.0版本
+## 7.1. 1.2.0版本
 -首页调整
 ![](_v_images/_1566996219_18389.png)
 
@@ -82,3 +82,11 @@ bootstrap4 + html + CSS+ jQuery +thymeleaf +sweetalert2
 ![](_v_images/_1566996304_27088.png)
 - 添加“关于”模块
 ![](_v_images/_1566996425_16270.png)
+## 7.2. 1.3.0版本更新
+- 可以获取评论者的IP
+![](_v_images/20200117001030647_10602.png)
+- 修改了评论的bug
+![](_v_images/20200119223339039_9262.png)
+- 修改了分类的bug
+![](_v_images/20200117001009306_14482.png)
+- 更新网站为2020年
