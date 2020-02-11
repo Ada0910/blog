@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ada.blog.mapper.VersionMapper">
+    <resultMap id="BaseResultMap" type="com.ada.blog.entity.Version">
+        <id column="version_id" jdbcType="INTEGER" property="versionId"/>
+        <result column="version_type" jdbcType="TINYINT" property="versionType"/>
+        <result column="version_description" jdbcType="VARCHAR" property="versionDescription"/>
+        <result column="version_serial_num" jdbcType="VARCHAR" property="versionSerialNum"/>
+        <result column="version_create_time" jdbcType="TIMESTAMP" property="versionCreateTime"/>
+        <result column="version_update_time" jdbcType="TIMESTAMP" property="versionUpdateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        version_id ,version_serial_num ,version_description,version_type,version_create_time,version_update_time
+    </sql>
+
+    <select id="getVersionList" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_version
+        order by version_id desc
+        <if test="start != null and limit!= null">
+            limit #{start} ,#{limit}
+        </if>
+    </select>
+
+    <select id="getTotalList" parameterType="Map" resultType="java.lang.Integer">
+        select count(1)
+        from tb_version
+    </select>
+
+   <insert id="insertVersionSelective" parameterType="com.ada.blog.entity.Version">
+        insert into tb_version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="versionId != null">
+                version_id,
+            </if>
+            <if test="versionType != null">
+                version_type,
+            </if>
+            <if test="versionSerialNum != null">
+                version_serial_num,
+            </if>
+            <if test="versionDescription != null">
+                version_description,
+            </if>
+            <if test="versionCreateTime != null">
+                version_create_time,
+            </if>
+            <if test="versionUpdateTime != null">
+                version_update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="versionId != null">
+                #{versionId,jdbcType=INTEGER},
+            </if>
+            <if test="versionType != null">
+                #{versionType,jdbcType=TINYINT},
+            </if>
+            <if test="versionSerialNum != null">
+                #{versionSerialNum,jdbcType=VARCHAR},
+            </if>
+
+            <if test="versionDescription != null">
+                #{versionDescription,jdbcType=VARCHAR},
+            </if>
+
+            <if test="versionCreateTime != null">
+                #{versionCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="versionUpdateTime != null">
+                #{versionUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <!--
+       <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.Version">
+           update tb_version
+           <set>
+               <if test="versionType != null">
+                   version_type = #{versionType,jdbcType=TINYINT},
+               </if>
+               <if test="versionName != null">
+                   version_name = #{versionName,jdbcType=VARCHAR},
+               </if>
+               <if test="versionUrl != null">
+                   version_url = #{versionUrl,jdbcType=VARCHAR},
+               </if>
+               <if test="versionDescription != null">
+                   version_description = #{versionDescription,jdbcType=VARCHAR},
+               </if>
+               <if test="versionImage != null">
+                   version_image = #{versionImage,jdbcType=INTEGER},
+               </if>
+               update_time = Now(),
+
+           </set>
+           where version_id = #{versionId,jdbcType=INTEGER}
+       </update>
+
+
+       <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+           select
+           <include refid="Base_Column_List"/>
+           from tb_version
+           where version_id = #{versionId,jdbcType=INTEGER}
+       </select>
+
+       <delete id="deleteBatch">
+           delete from tb_version
+           where version_id in
+           <foreach item="id" collection="array" open="(" separator="," close=")">
+               #{id}
+           </foreach>
+       </delete>-->
+
+</mapper>

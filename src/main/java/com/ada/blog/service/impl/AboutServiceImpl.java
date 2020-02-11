@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * @date 2019/8/10 16:02
  * @Description:
  */
-@Service("/aboutService")
+@Service("aboutService")
 public class AboutServiceImpl implements AboutService {
 
     @Autowired

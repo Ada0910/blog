@@ -6,7 +6,7 @@ $(function () {
             {label: 'id', name: 'versionId', index: 'versionId', width: 10, key: true, hidden: true},
             {label: '版本号', name: 'versionSerialNum', index: 'versionSerialNum', width: 80},
             {label: '类型', name: 'versionType', index: 'versionType', width: 60, formatter: versionTypeFormatter},
-            {label: '描述', name: 'versionDescription', index: 'versionDescription', width: 180},
+            {label: '描述', name: 'versionDescription', index: 'versionDescription', width: 120},
             {label: '发布时间', name: 'versionCreateTime', index: 'createTime', width: 60},
             {label: '修改时间', name: 'versionUpdateTime', index: 'updateTime', width: 60}
         ],
@@ -51,7 +51,18 @@ function reload() {
     }).trigger("reloadGrid");
 }
 
-function addversion() {
+/**类型*/
+function versionTypeFormatter(cellvalue) {
+    if (cellvalue == 0) {
+        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;background-color:#c82333;\">BUG修改</button>";
+    } else if (cellvalue == 1) {
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;background-color:green;\">添加新功能</button>";
+    } else {
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;background-color:blue;\">其他</button>";
+    }
+}
+
+function addVersion() {
     reset();
     $('.modal-title').html('版本添加');
     $('#versionModal').modal('show');
@@ -79,12 +90,10 @@ function saveButton() {
     if (versionId != null && versionId > 0) {
         url = '/admin/version/update';
     }
-
     $.ajax({
         type: 'POST',//方法类型
         url: url,
         data: params,
-
         success: function (result) {
             if (result.resultCode == 200 && result.data) {
                 $('#versionModal').modal('hide');
@@ -109,7 +118,7 @@ function saveButton() {
 
 }
 
-function editversion() {
+function editVersion() {
     var id = getSelectedRow();
     if (id == null) {
         return;
@@ -138,7 +147,7 @@ function editversion() {
     $("#versionId").val(id);
 }
 
-function deleteversion() {
+function deleteVersion() {
     var ids = getSelectedRows();
     if (ids == null) {
         return;
@@ -183,14 +192,3 @@ function reset() {
 }
 
 
-/**类型*/
-function versionTypeFormatter(cellvalue) {
-    if (cellvalue == 0) {
-        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;color:red;\">BUG修改</button>";
-    }
-    else if (cellvalue == 1) {
-        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;color:green;\">添加新功能</button>";
-    }else{
-        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;color:blue;\">其他</button>";
-    }
-}
