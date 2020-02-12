@@ -14,4 +14,10 @@ public interface VersionService {
     PageResultUtil getVersionPage(PageUtil pageUtil);
 
     Boolean addVersion(Version version);
+
+    Version selectById(Integer versionId);
+
+    Boolean updateVersion(Version version);
+
+    Boolean deleteBatch(Integer[] ids);
 }

@@ -74,45 +74,37 @@
             </if>
         </trim>
     </insert>
-    <!--
-       <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.Version">
-           update tb_version
-           <set>
-               <if test="versionType != null">
-                   version_type = #{versionType,jdbcType=TINYINT},
-               </if>
-               <if test="versionName != null">
-                   version_name = #{versionName,jdbcType=VARCHAR},
-               </if>
-               <if test="versionUrl != null">
-                   version_url = #{versionUrl,jdbcType=VARCHAR},
-               </if>
-               <if test="versionDescription != null">
-                   version_description = #{versionDescription,jdbcType=VARCHAR},
-               </if>
-               <if test="versionImage != null">
-                   version_image = #{versionImage,jdbcType=INTEGER},
-               </if>
-               update_time = Now(),
 
-           </set>
-           where version_id = #{versionId,jdbcType=INTEGER}
-       </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_version
+        where version_id = #{versionId,jdbcType=INTEGER}
+    </select>
 
+    <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.Version">
+        update tb_version
+        <set>
+            <if test="versionType != null">
+                version_type = #{versionType,jdbcType=TINYINT},
+            </if>
+            <if test="versionSerialNum != null">
+                version_serial_num = #{versionSerialNum,jdbcType=VARCHAR},
+            </if>
+            <if test="versionDescription != null">
+                version_description = #{versionDescription,jdbcType=VARCHAR},
+            </if>
+            version_update_time = Now(),
 
-       <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-           select
-           <include refid="Base_Column_List"/>
-           from tb_version
-           where version_id = #{versionId,jdbcType=INTEGER}
-       </select>
-
+        </set>
+        where version_id = #{versionId,jdbcType=INTEGER}
+    </update>
        <delete id="deleteBatch">
            delete from tb_version
            where version_id in
            <foreach item="id" collection="array" open="(" separator="," close=")">
                #{id}
            </foreach>
-       </delete>-->
+       </delete>
 
 </mapper>

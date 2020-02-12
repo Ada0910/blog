@@ -8,10 +8,7 @@ import com.ada.blog.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -84,5 +81,70 @@ public class VersionController {
         version.setVersionCreateTime(new Date());
         version.setVersionUpdateTime(new Date());
         return ResultStatusUtil.successResult(versionService.addVersion(version));
+    }
+
+    /***
+     * @Author Ada
+     * @Date 21:57 2020/2/12
+     * @Param [versionId, versionType, versionName, versionUrl, versionImage, versionDescription]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 修改
+     **/
+    @PostMapping("/version/update")
+    @ResponseBody
+    public ResultUtil update(@RequestParam("versionId") Integer versionId,
+                             @RequestParam("versionType") int versionType,
+                             @RequestParam("versionSerialNum") String versionSerialNum,
+                             @RequestParam("versionDescription") String versionDescription) {
+
+        Version version = versionService.selectById(versionId);
+        if (version == null) {
+            return ResultStatusUtil.failResult("无数据！");
+        }
+        if (StringUtils.isEmpty(versionSerialNum) || StringUtils.isEmpty(versionDescription) || versionType < 0) {
+            ResultStatusUtil.failResult("参数异常");
+        }
+        version.setVersionUpdateTime(new Date());
+        version.setVersionSerialNum(versionSerialNum);
+        version.setVersionType(versionType);
+        version.setVersionDescription(versionDescription);
+        return ResultStatusUtil.successResult(versionService.updateVersion(version));
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:15 2020/2/12
+     * @Param [id, request]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 修改按钮获取选中信息
+     **/
+    @RequestMapping("version/info/{id}")
+    @ResponseBody
+    public ResultUtil info(@PathVariable("id") Integer id, HttpServletRequest request) {
+        Version about = versionService.selectById(id);
+        request.setAttribute("about", about);
+        return ResultStatusUtil.successResult(about);
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:19 2020/2/12
+     * @Param [ids]
+     * @return com.ada.blog.util.ResultUtil
+     * @Description 批量删除版本信息
+     **/
+    @RequestMapping("/version/delete")
+    @ResponseBody
+    public ResultUtil delete(@RequestBody Integer[] ids) {
+        if (ids.length < 1) {
+            return ResultStatusUtil.failResult("参数异常");
+        }
+
+        if (versionService.deleteBatch(ids)) {
+
+            return ResultStatusUtil.successResult();
+        } else {
+            return ResultStatusUtil.failResult("删除失败");
+        }
     }
 }

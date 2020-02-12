@@ -46,8 +46,42 @@ public class VersionServiceImpl implements VersionService {
      **/
     @Override
     public Boolean addVersion(Version version) {
-        return versionMapper.insertVersionSelective(version)>0;
+        return versionMapper.insertVersionSelective(version) > 0;
     }
 
+    /***
+     * @Author Ada
+     * @Date 22:06 2020/2/12
+     * @Param [versionId]
+     * @return com.ada.blog.entity.Version
+     * @Description 根据id选择一条版本信息
+     **/
+    @Override
+    public Version selectById(Integer versionId) {
+        return versionMapper.selectByPrimaryKey(versionId);
+    }
 
+    /***
+     * @Author Ada
+     * @Date 22:07 2020/2/12
+     * @Param [version]
+     * @return java.lang.Boolean
+     * @Description 更新
+     **/
+    @Override
+    public Boolean updateVersion(Version version) {
+        return versionMapper.updateByPrimaryKey(version) > 0;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:21 2020/2/12
+     * @Param [ids]
+     * @return java.lang.Boolean
+     * @Description 批量删除
+     **/
+    @Override
+    public Boolean deleteBatch(Integer[] ids) {
+        return versionMapper.deleteBatch(ids) > 0;
+    }
 }

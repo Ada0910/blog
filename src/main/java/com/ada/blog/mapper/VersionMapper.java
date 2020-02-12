@@ -19,4 +19,10 @@ public interface VersionMapper {
     Integer getTotalList(PageUtil pageUtil);
 
     Integer insertVersionSelective(Version version);
+
+    Version selectByPrimaryKey(Integer versionId);
+
+    Integer updateByPrimaryKey(Version version);
+
+    Integer deleteBatch(Integer[] ids);
 }
