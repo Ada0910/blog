@@ -14,31 +14,35 @@
 </head>
 
 <!--导航栏-->
-<nav th:fragment="nav-fragment" class="navbar navbar-default navbar-custom navbar-fixed-top">
+<nav th:fragment="nav-fragment" class="navbar  navbar-custom navbar-fixed-top navbar-expand-sm bg-light">
     <div class="container-fluid">
 
         <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
+            <button type="button" class="navbar-toggle collapsed"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/" th:text="${configuration.get('websiteName')}"style="color:black">
+            <a class="navbar-brand" href="/" th:text="${configuration.get('websiteName')}" style="color:black">
             </a>
         </div>
 
-
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <div class="navbar-collapse collapse" id="collapsibleNavbar">
             <ul class="nav navbar-nav navbar-right ">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/}" style="color:black">主页</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/link}"style="color:black">友情链接</a>
+                    <a class="nav-link" th:href="@{/link}" style="color:black">友情链接</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/about}"style="color:black">关于</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" th:href="@{/about}" data-toggle="dropdown" style="color:black">关于</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"  th:href="@{/about}" style="color:black;">关于</a>
+                        <a class="dropdown-item"  href="#" style="color:black;">查看最新版本信息</a>
+                    </div>
                 </li>
             </ul>
         </div><!-- navbar-collapse -->
@@ -47,38 +51,38 @@
 </nav>
 
 
-<header th:fragment="header-fragment"  class="intro-header"><!--class="intro-header"-->
+<header th:fragment="header-fragment" class="intro-header"><!--class="intro-header"-->
 
-                <div id="headerCarousel" class="carousel slide" data-ride="carousel">
-                    <!-- 指示符 -->
-                    <ul class="carousel-indicators">
-                        <li data-target="#headerCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#headerCarousel" data-slide-to="1"></li>
-                        <li data-target="#headerCarousel" data-slide-to="2"></li>
-                    </ul>
+    <div id="headerCarousel" class="carousel slide" data-ride="carousel">
+        <!-- 指示符 -->
+        <ul class="carousel-indicators">
+            <li data-target="#headerCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#headerCarousel" data-slide-to="1"></li>
+            <li data-target="#headerCarousel" data-slide-to="2"></li>
+        </ul>
 
-                    <!-- 轮播图片 --><!--background-repeat: no-repeat;-->
-                    <div class="carousel-inner"  style="background-size:cover;">
-                        <div class="carousel-item active"  >
-                            <img th:src="@{/blog/amaze/images/header.jpg}"  style="width: 100%;height: 400px">
-                    </div>
-                        <div class="carousel-item">
-                            <img th:src="@{/blog/amaze/images/header1.jpg}" style="width: 100%;height: 400px">
-                        </div>
-                        <div class="carousel-item">
-                            <img th:src="@{/blog/amaze/images/header2.jpg}" style="width: 100%;height: 400px">
-                        </div>
-                    </div>
+        <!-- 轮播图片 --><!--background-repeat: no-repeat;-->
+        <div class="carousel-inner" style="background-size:cover;">
+            <div class="carousel-item active">
+                <img th:src="@{/blog/amaze/images/header.jpg}" style="width: 100%;height: 400px">
+            </div>
+            <div class="carousel-item">
+                <img th:src="@{/blog/amaze/images/header1.jpg}" style="width: 100%;height: 400px">
+            </div>
+            <div class="carousel-item">
+                <img th:src="@{/blog/amaze/images/header2.jpg}" style="width: 100%;height: 400px">
+            </div>
+        </div>
 
-                    <!-- 左右切换按钮 -->
-                    <a class="carousel-control-prev" href="#headerCarousel" data-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </a>
-                    <a class="carousel-control-next" href="#headerCarousel" data-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </a>
+        <!-- 左右切换按钮 -->
+        <a class="carousel-control-prev" href="#headerCarousel" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#headerCarousel" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
 
-                </div>
+    </div>
 
 
 </header>
