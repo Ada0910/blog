@@ -238,10 +238,10 @@ $(function () {
 /**类型*/
 function aboutTypeFormatter(cellvalue) {
     if (cellvalue == 1) {
-        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;\">作者信息</button>";
+        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;background-color:#28a745;\">作者信息</button>";
     }
     else if (cellvalue == 2) {
-        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;\">网站版本</button>";
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;background-color:#6c757d;\">网站版本</button>";
     }else{
         return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;\">其他</button>";
     }

@@ -43,10 +43,10 @@ $(function () {
     });
     function statusFormatter(cellvalue) {
         if (cellvalue == 0) {
-            return "<button type=\"button\" class=\"btn btn-block btn-secondary btn-sm\" style=\"width: 50%;\">待审核</button>";
+            return "<button type=\"button\" class=\"btn btn-block btn-secondary btn-sm\" >待审核</button>";
         }
         else if (cellvalue == 1) {
-            return "<button type=\"button\" class=\"btn btn-block btn-success btn-sm\" style=\"width: 50%;\">已审核</button>";
+            return "<button type=\"button\" class=\"btn btn-block btn-success btn-sm\" >已审核</button>";
         }
     }
 

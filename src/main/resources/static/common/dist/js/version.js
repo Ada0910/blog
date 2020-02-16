@@ -54,11 +54,11 @@ function reload() {
 /**类型*/
 function versionTypeFormatter(cellvalue) {
     if (cellvalue == 0) {
-        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;background-color:#dc3545;\">BUG修改</button>";
+        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 60%;background-color:#dc3545;\">BUG修改</button>";
     } else if (cellvalue == 1) {
-        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;background-color:#28a745;\">添加新功能</button>";
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 60%;background-color:#28a745;\">添加新功能</button>";
     } else {
-        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;background-color:#17a2b8;\">其他</button>";
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 60%;background-color:#17a2b8;\">其他</button>";
     }
 }
 
