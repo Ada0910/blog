@@ -107,4 +107,11 @@
            </foreach>
        </delete>
 
+    <select id="getLatestVersion"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_version
+        order by version_create_time desc
+        limit 1
+    </select>
 </mapper>

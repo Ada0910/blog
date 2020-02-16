@@ -20,4 +20,6 @@ public interface VersionService {
     Boolean updateVersion(Version version);
 
     Boolean deleteBatch(Integer[] ids);
+
+    Version getLatestVersion();
 }

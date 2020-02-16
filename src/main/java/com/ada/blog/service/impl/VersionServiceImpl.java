@@ -84,4 +84,9 @@ public class VersionServiceImpl implements VersionService {
     public Boolean deleteBatch(Integer[] ids) {
         return versionMapper.deleteBatch(ids) > 0;
     }
+
+    @Override
+    public Version getLatestVersion() {
+        return versionMapper.getLatestVersion();
+    }
 }

@@ -2,10 +2,7 @@ package com.ada.blog.controller.blog;
 
 import com.ada.blog.entity.BlogDetail;
 import com.ada.blog.entity.Comment;
-import com.ada.blog.service.BlogService;
-import com.ada.blog.service.CommentService;
-import com.ada.blog.service.ConfigService;
-import com.ada.blog.service.TagService;
+import com.ada.blog.service.*;
 import com.ada.blog.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +32,9 @@ public class IndexController {
 
     @Autowired
     public ConfigService configService;
+
+    @Autowired
+    public VersionService versionService;
 
     /***
      * @Author Ada
@@ -283,4 +283,5 @@ public class IndexController {
         }
         return ip;
     }
+
 }

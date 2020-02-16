@@ -6298,7 +6298,7 @@ button.close {
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
-    color  #fff;
+    color: #fff;
     text-decoration: none;
     background-color: #5085FF;
 }
@@ -6331,4 +6331,11 @@ button.close {
     display: block;
     padding: 0.25rem 1.5rem;
     color: #212529;
+}
+
+
+/* Make the image fully responsive */
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
 }

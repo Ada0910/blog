@@ -25,4 +25,6 @@ public interface VersionMapper {
     Integer updateByPrimaryKey(Version version);
 
     Integer deleteBatch(Integer[] ids);
+
+    Version getLatestVersion();
 }

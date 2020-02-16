@@ -10,7 +10,7 @@
     <meta http-equiv="Window-target" content="_top"/>
     <link rel="stylesheet" th:href="@{/blog/amaze/css/base.css}">
     <script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
-    <script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/common/plugins/bootstrap/js/bootstrap.js}"></script>
 </head>
 
 <!--导航栏-->
@@ -37,13 +37,12 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/link}" style="color:black">友情链接</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" th:href="@{/about}" data-toggle="dropdown" style="color:black">关于</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item"  th:href="@{/about}" style="color:black;">关于</a>
-                        <a class="dropdown-item"  href="#" style="color:black;">查看最新版本信息</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link"  th:href="@{/about}" style="color:black;">关于</a>
                 </li>
+               <!-- <li class="nav-item">
+                   <a class="nav-link" th:href="@{/version}" style="color:black">最新版本</a>
+                </li>-->
             </ul>
         </div><!-- navbar-collapse -->
 
@@ -86,12 +85,4 @@
 
 
 </header>
-<style>
-    /* Make the image fully responsive */
-    .carousel-inner img {
-        width: 100%;
-        height: 100%;
-    }
-</style>
-
 </html>
