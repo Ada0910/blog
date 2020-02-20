@@ -148,17 +148,5 @@ public class VersionController {
         }
     }
 
-    /***
-     * @Author Ada
-     * @Date 20:33 2020/2/15
-     * @Param [request]
-     * @return com.ada.blog.util.ResultUtil
-     * @Description 获取最新的版本信息
-     **/
-    @RequestMapping("version/getLatestVersion")
-    @ResponseBody
-    public ResultUtil info(HttpServletRequest request) {
-        Version version = versionService.getLatestVersion();
-        return ResultStatusUtil.successResult(version);
-    }
+
 }

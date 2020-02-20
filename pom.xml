@@ -105,6 +105,11 @@
             <artifactId>commonmark-ext-gfm-tables</artifactId>
             <version>0.8.0</version>
         </dependency>
+        <!-- redis依赖包 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
