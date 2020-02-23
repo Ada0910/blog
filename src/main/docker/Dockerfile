@@ -9,7 +9,7 @@ MAINTAINER ada
 #开机启动
 #ENTRYPOINT ["nohup" ,"java","-jar","blog-0.0.1-SNAPSHOT.jar>log.txt" ,"&"]
 #ENTRYPOINT ["java ","-jar"," blog-0.0.1-SNAPSHOT.jar"]
+VOLUME /tmp
+ADD blog-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
 
-ADD *.jar app.jar
-ENTRYPOINT ["java","-jar","blog-0.0.1-SNAPSHOT.jar"]
-#ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
