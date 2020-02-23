@@ -10,6 +10,7 @@ import com.ada.blog.util.PatternUtil;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -40,6 +41,11 @@ public class BlogServiceImpl implements BlogService {
 
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    private static final String REDIS_BLOG_CONTENT_KEY = "WEB:BLOG:CONTENT";
 
     /***
      * @Author Ada
@@ -284,12 +290,20 @@ public class BlogServiceImpl implements BlogService {
      **/
     @Override
     public BlogDetail getBlogDetail(Long blogId) {
-        Blog blog = blogMapper.selectByPrimaryKey(blogId);
+        Blog blog=null;
+        //判断是否有缓存
+        if (redisTemplate.hasKey(REDIS_BLOG_CONTENT_KEY)) {
+            blog.setBlogContent(redisTemplate.opsForValue().get(REDIS_BLOG_CONTENT_KEY));
+        } else {
+            blog = blogMapper.selectByPrimaryKey(blogId);
+            redisTemplate.opsForValue().set(REDIS_BLOG_CONTENT_KEY, blog.getBlogContent());
+        }
         //不为空且状态已发布
         BlogDetail blogDetail = getBlogDetail(blog);
         if (blogDetail != null) {
             return blogDetail;
         }
+
         return null;
     }
 
