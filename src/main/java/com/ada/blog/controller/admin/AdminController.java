@@ -3,6 +3,7 @@ package com.ada.blog.controller.admin;
 import com.ada.blog.entity.AdminUser;
 import com.ada.blog.service.*;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,12 @@ public class AdminController {
      * @Param [userName, password, verifyCode, session]
      * @Description 登陆
      **/
+    @ApiOperation(value="登陆校验", notes="登陆校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "verifyCode", value = "验证码", required = true, dataType = "String")
+    })
     @PostMapping(value = "/login")
     public String login(@RequestParam("userName") String userName,
                         @RequestParam("password") String password,
@@ -99,6 +106,10 @@ public class AdminController {
      * @return java.lang.String
      * @Description 首页跳转请求
      **/
+    @ApiOperation(value="首页验证", notes="首页跳转")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "request", value = "request请求域", required = true, dataType = "HttpServletRequest")
+    })
     @GetMapping({"", "/", "/index", "/index.html"})
     public String index(HttpServletRequest request) {
         request.setAttribute("path", "index");
@@ -119,6 +130,10 @@ public class AdminController {
      * @Param [request]
      * @Description 退出
      **/
+    @ApiOperation(value="退出", notes="退出")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "HttpServletRequest")
+    })
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("loginUserId");
@@ -134,6 +149,10 @@ public class AdminController {
      * @return java.lang.String
      * @Description 用户信息修改页面
      **/
+    @ApiOperation(value="用户修改信息", notes="用户修改信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "HttpServletRequest")
+    })
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {
         Integer loginUserId = (Integer) request.getSession().getAttribute("loginUserId");
@@ -155,6 +174,11 @@ public class AdminController {
      * @Param [request, originalPassword, newPassword]
      * @Description 修改密码
      **/
+    @ApiOperation(value="修改密码", notes="修改密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "originalPassword", value = "原始密码", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "newPassword", value = "新密码", required = true, dataType = "String")
+    })
     @PostMapping("/profile/password")
     @ResponseBody
     public String passwordUpdate(HttpServletRequest request, @RequestParam("originalPassword") String originalPassword, @RequestParam("newPassword") String newPassword) {
@@ -180,6 +204,12 @@ public class AdminController {
      * @return java.lang.String
      * @Description 修改登录名和昵称
      **/
+    @ApiOperation(value="登陆校验", notes="登陆校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "verifyCode", value = "验证码", required = true, dataType = "String")
+    })
     @PostMapping("/profile/name")
     @ResponseBody
     public String nameUpdate(HttpServletRequest request, @RequestParam("loginUserName") String loginUserName,
