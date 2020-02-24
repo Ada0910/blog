@@ -290,14 +290,15 @@ public class BlogServiceImpl implements BlogService {
      **/
     @Override
     public BlogDetail getBlogDetail(Long blogId) {
-        Blog blog=null;
+       /*Blog blog=null;
         //判断是否有缓存
         if (redisTemplate.hasKey(REDIS_BLOG_CONTENT_KEY)) {
             blog.setBlogContent(redisTemplate.opsForValue().get(REDIS_BLOG_CONTENT_KEY));
         } else {
             blog = blogMapper.selectByPrimaryKey(blogId);
             redisTemplate.opsForValue().set(REDIS_BLOG_CONTENT_KEY, blog.getBlogContent());
-        }
+        }*/
+        Blog  blog=blogMapper.selectByPrimaryKey(blogId);
         //不为空且状态已发布
         BlogDetail blogDetail = getBlogDetail(blog);
         if (blogDetail != null) {

@@ -2,6 +2,8 @@ package com.ada.blog.controller.admin;
 
 import com.ada.blog.entity.AdminUser;
 import com.ada.blog.service.*;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -39,7 +41,8 @@ public class AdminController {
     @Autowired
     private CommentService commentService;
 
-
+    @ApiOperation(value = "登录", notes = "根据 用户名，密码和验证码登录")
+    @ApiImplicitParam(name = "login", value = "登录", required = true, dataType = "login")
     @GetMapping({"/login"})
     public String login() {
         return "admin/login";
