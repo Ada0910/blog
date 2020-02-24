@@ -41,8 +41,7 @@ public class AdminController {
     @Autowired
     private CommentService commentService;
 
-    @ApiOperation(value = "登录", notes = "根据 用户名，密码和验证码登录")
-    @ApiImplicitParam(name = "login", value = "登录", required = true, dataType = "login")
+    @ApiOperation(value="登陆", notes="登陆请求")
     @GetMapping({"/login"})
     public String login() {
         return "admin/login";

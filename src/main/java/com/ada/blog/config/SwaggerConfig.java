@@ -24,16 +24,14 @@ public class SwaggerConfig {
     @Bean
     public Docket blogApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select().apis(RequestHandlerSelectors.basePackage("com.ada.blog.controller")).paths(PathSelectors.any()).build();
-
     }
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 // 文档标题
                 .title("API 文档")
                 // 文档描述
-                .description("https://github.com/einverne/thrift-swift-demo/tree/master/spring-boot-demo")
-                .termsOfServiceUrl("https://github.com/einverne/thrift-swift-demo/tree/master/spring-boot-demo")
+                .description("Ada 个人博客网站 API接口")
+                .termsOfServiceUrl("http://www.isada.cn/")
                 .version("v1")
                 .build();
     }

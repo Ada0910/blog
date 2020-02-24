@@ -238,25 +238,6 @@ public class IndexController {
         return "blog/content/list";
     }
 
-    /***
-     * @Author Ada
-     * @Date 15:10 2019/7/21
-     * @Param [request, subUrl]
-     * @return java.lang.String
-     * @Description其他的一些配置页面
-     **/
-    @GetMapping({"/{subUrl}"})
-    public String detail(HttpServletRequest request, @PathVariable("subUrl") String subUrl) {
-        BlogDetail blogDetail = blogService.getBlogDetailBySubUrl(subUrl);
-        if (blogDetail != null) {
-            request.setAttribute("blogDetail", blogDetail);
-            request.setAttribute("pageName", subUrl);
-            request.setAttribute("configuration", configService.getAllConfigs());
-            return "blog/content/detail";
-        } else {
-            return "error/error_400";
-        }
-    }
 
     /***
      * @Author Ada
