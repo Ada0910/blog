@@ -3,10 +3,7 @@ package com.ada.blog.service.impl;
 import com.ada.blog.entity.*;
 import com.ada.blog.mapper.*;
 import com.ada.blog.service.BlogService;
-import com.ada.blog.util.MarkDownUtil;
-import com.ada.blog.util.PageResultUtil;
-import com.ada.blog.util.PageUtil;
-import com.ada.blog.util.PatternUtil;
+import com.ada.blog.util.*;
 import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +40,7 @@ public class BlogServiceImpl implements BlogService {
     private CommentMapper commentMapper;
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    private static final String REDIS_BLOG_CONTENT_KEY = "WEB:BLOG:CONTENT";
+    private  RedisTemplate<Object, Object> redisTemplate;
 
     /***
      * @Author Ada
@@ -290,21 +285,38 @@ public class BlogServiceImpl implements BlogService {
      **/
     @Override
     public BlogDetail getBlogDetail(Long blogId) {
-       /*Blog blog=null;
+        String blogRedisKey = "WEB:BLOG:" + blogId;
+        Blog blog = null;
+
+      /* Blog blog=null;
         //判断是否有缓存
         if (redisTemplate.hasKey(REDIS_BLOG_CONTENT_KEY)) {
             blog.setBlogContent(redisTemplate.opsForValue().get(REDIS_BLOG_CONTENT_KEY));
         } else {
             blog = blogMapper.selectByPrimaryKey(blogId);
             redisTemplate.opsForValue().set(REDIS_BLOG_CONTENT_KEY, blog.getBlogContent());
-        }*/
-        Blog  blog=blogMapper.selectByPrimaryKey(blogId);
+        } Blog blog = blogMapper.selectByPrimaryKey(blogId);
+        */
+        if (redisTemplate.hasKey(blogRedisKey)) {
+           Map<Object, Object> map = new HashMap<>();
+          map = redisTemplate.opsForHash().entries(blogRedisKey);
+           blog.setBlogContent((String) map.get("blogContent"));
+        } else {
+            blog = blogMapper.selectByPrimaryKey(blogId);
+            Map<Object, Object> map = new HashMap<>();
+            map.put("blogId",blog.getBlogId());
+            map.put("blogContent",blog.getBlogContent());
+            redisTemplate.opsForHash().putAll(blogRedisKey,map);
+
+        }
+
+
+
         //不为空且状态已发布
         BlogDetail blogDetail = getBlogDetail(blog);
         if (blogDetail != null) {
             return blogDetail;
         }
-
         return null;
     }
 
