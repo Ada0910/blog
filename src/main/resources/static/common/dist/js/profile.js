@@ -14,9 +14,9 @@ $(function () {
                 success: function (r) {
                     console.log(r);
                     if (r == 'success') {
-                        alert('修改成功');
+                        sweetAlert('修改成功');
                     } else {
-                        alert('修改失败');
+                        sweetAlert('修改失败');
                     }
                 }
             });
@@ -36,10 +36,10 @@ $(function () {
                 success: function (r) {
                     console.log(r);
                     if (r == 'success') {
-                        alert('修改成功');
+                        swal('修改成功');
                         window.location.href = '/admin/login';
                     } else {
-                        alert('修改失败');
+                        swal('修改失败');
                     }
                 }
             });
