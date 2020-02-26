@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,7 +42,7 @@ public class BlogServiceImpl implements BlogService {
     private CommentMapper commentMapper;
 
     @Autowired
-    private  RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     /***
      * @Author Ada
@@ -286,29 +288,46 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public BlogDetail getBlogDetail(Long blogId) {
         String blogRedisKey = "WEB:BLOG:" + blogId;
-        Blog blog = null;
+        Blog blog = new Blog();
 
-      /* Blog blog=null;
         //判断是否有缓存
-        if (redisTemplate.hasKey(REDIS_BLOG_CONTENT_KEY)) {
-            blog.setBlogContent(redisTemplate.opsForValue().get(REDIS_BLOG_CONTENT_KEY));
-        } else {
-            blog = blogMapper.selectByPrimaryKey(blogId);
-            redisTemplate.opsForValue().set(REDIS_BLOG_CONTENT_KEY, blog.getBlogContent());
-        } Blog blog = blogMapper.selectByPrimaryKey(blogId);
-        */
         if (redisTemplate.hasKey(blogRedisKey)) {
-           /*Map<Object, Object> map = new HashMap<>();
-          map = redisTemplate.opsForHash().entries(blogRedisKey);
-           blog.setBlogContent((String) map.get("blogContent"));*/
+            blog.setBlogId(blogId);
+            blog.setBlogTitle((String) redisTemplate.opsForHash().get(blogRedisKey, "blogTitle"));
+            blog.setBlogSubUrl((String) redisTemplate.opsForHash().get(blogRedisKey, "blogSubUrl"));
+            blog.setBlogCoverImage((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCoverImage"));
+            blog.setBlogCategoryId(Integer.parseInt((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCategoryId")));
+            blog.setBlogCategoryName((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCategoryName"));
+            blog.setBlogStatus(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "blogStatus")));
+            blog.setBlogViews(Long.parseLong((String) redisTemplate.opsForHash().get(blogRedisKey, "blogViews")));
+            blog.setEnableComment(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "enableComment")));
+            blog.setIsDeleted(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "isDeleted")));
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                format.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+                blog.setCreateTime(format.parse((String) redisTemplate.opsForHash().get(blogRedisKey, "createTime")));
+                blog.setUpdateTime(format.parse((String) redisTemplate.opsForHash().get(blogRedisKey, "updateTime")));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
         } else {
-            blog = blogMapper.selectByPrimaryKey(blogId);
-           /* Map<Object, Object> map = new HashMap<>();
-            map.put("blogId",blog.getBlogId());
-            map.put("blogContent",blog.getBlogContent());
-            redisTemplate.opsForHash().putAll(blogRedisKey,map);*/
-
+        blog = blogMapper.selectByPrimaryKey(blogId);
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("blogId", blogId.toString());
+            param.put("blogTitle", blog.getBlogTitle());
+            param.put("blogSubUrl", blog.getBlogSubUrl());
+            param.put("blogCoverImage", blog.getBlogCoverImage());
+            param.put("blogCategoryId", blog.getBlogCategoryId().toString());
+            param.put("blogCategoryName", blog.getBlogCategoryName());
+            param.put("blogTags", blog.getBlogTags());
+            param.put("blogStatus", blog.getBlogStatus().toString());
+            param.put("blogViews", blog.getBlogViews().toString());
+            param.put("enableComment", blog.getEnableComment().toString());
+            param.put("isDeleted", blog.getIsDeleted().toString());
+            param.put("createTime", blog.getCreateTime().toString());
+            param.put("updateTime", blog.getUpdateTime().toString());
+            redisTemplate.opsForHash().putAll(blogRedisKey,param);
         }
 
         //不为空且状态已发布
