@@ -40,7 +40,7 @@ public class BlogServiceImpl implements BlogService {
     private CommentMapper commentMapper;
 
     @Autowired
-    private  RedisTemplate<Object, Object> redisTemplate;
+    private  RedisTemplate<String, Object> redisTemplate;
 
     /***
      * @Author Ada
@@ -298,19 +298,18 @@ public class BlogServiceImpl implements BlogService {
         } Blog blog = blogMapper.selectByPrimaryKey(blogId);
         */
         if (redisTemplate.hasKey(blogRedisKey)) {
-           Map<Object, Object> map = new HashMap<>();
+           /*Map<Object, Object> map = new HashMap<>();
           map = redisTemplate.opsForHash().entries(blogRedisKey);
-           blog.setBlogContent((String) map.get("blogContent"));
+           blog.setBlogContent((String) map.get("blogContent"));*/
+
         } else {
             blog = blogMapper.selectByPrimaryKey(blogId);
-            Map<Object, Object> map = new HashMap<>();
+           /* Map<Object, Object> map = new HashMap<>();
             map.put("blogId",blog.getBlogId());
             map.put("blogContent",blog.getBlogContent());
-            redisTemplate.opsForHash().putAll(blogRedisKey,map);
+            redisTemplate.opsForHash().putAll(blogRedisKey,map);*/
 
         }
-
-
 
         //不为空且状态已发布
         BlogDetail blogDetail = getBlogDetail(blog);
