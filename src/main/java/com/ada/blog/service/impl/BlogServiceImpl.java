@@ -297,33 +297,36 @@ public class BlogServiceImpl implements BlogService {
 
         //判断是否有缓存
         if (redisTemplate.hasKey(blogRedisKey)) {
-            blog.setBlogId(blogId);
-            blog.setBlogTitle((String) redisTemplate.opsForHash().get(blogRedisKey, "blogTitle"));
-            blog.setBlogContent((String) redisTemplate.opsForHash().get(blogRedisKey, "blogContent"));
-            blog.setBlogSubUrl((String) redisTemplate.opsForHash().get(blogRedisKey, "blogSubUrl"));
-            blog.setBlogCoverImage((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCoverImage"));
-            blog.setBlogCategoryId(Integer.parseInt((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCategoryId")));
-            blog.setBlogCategoryName((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCategoryName"));
-            blog.setBlogTags((String) redisTemplate.opsForHash().get(blogRedisKey, "blogTags"));
-            blog.setBlogStatus(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "blogStatus")));
-            blog.setBlogViews(Long.parseLong((String) redisTemplate.opsForHash().get(blogRedisKey, "blogViews")));
-            blog.setEnableComment(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "enableComment")));
-            blog.setIsDeleted(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "isDeleted")));
-            try {
-                //将String类型的日期转化为Date类型
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                blog.setCreateTime(format.parse((String) redisTemplate.opsForHash().get(blogRedisKey, "createTime")));
-                blog.setUpdateTime(format.parse((String) redisTemplate.opsForHash().get(blogRedisKey, "updateTime")));
-            } catch (ParseException e) {
-                e.printStackTrace();
+            //加入同步锁，在高并发的时候能够确保资源能够同步的被访问
+            synchronized (this) {
+                blog.setBlogId(blogId);
+                blog.setBlogTitle((String) redisTemplate.opsForHash().get(blogRedisKey, "blogTitle"));
+                blog.setBlogSubUrl((String) redisTemplate.opsForHash().get(blogRedisKey, "blogSubUrl"));
+                blog.setBlogContent((String) redisTemplate.opsForHash().get(blogRedisKey, "blogContent"));
+                blog.setBlogTags((String) redisTemplate.opsForHash().get(blogRedisKey, "blogTags"));
+                blog.setBlogCoverImage((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCoverImage"));
+                blog.setBlogCategoryId(Integer.parseInt((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCategoryId")));
+                blog.setBlogCategoryName((String) redisTemplate.opsForHash().get(blogRedisKey, "blogCategoryName"));
+                blog.setBlogStatus(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "blogStatus")));
+                blog.setBlogViews(Long.parseLong((String) redisTemplate.opsForHash().get(blogRedisKey, "blogViews")));
+                blog.setEnableComment(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "enableComment")));
+                blog.setIsDeleted(Byte.parseByte((String) redisTemplate.opsForHash().get(blogRedisKey, "isDeleted")));
+                try {
+                    //将String类型的日期转化为Date类型
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    blog.setCreateTime(format.parse((String) redisTemplate.opsForHash().get(blogRedisKey, "createTime")));
+                    blog.setUpdateTime(format.parse((String) redisTemplate.opsForHash().get(blogRedisKey, "updateTime")));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             blog = blogMapper.selectByPrimaryKey(blogId);
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("blogId", blogId.toString());
             param.put("blogTitle", blog.getBlogTitle());
-            param.put("blogContent", blog.getBlogContent());
             param.put("blogSubUrl", blog.getBlogSubUrl());
+            param.put("blogContent", blog.getBlogContent());
             param.put("blogCoverImage", blog.getBlogCoverImage());
             param.put("blogCategoryId", blog.getBlogCategoryId().toString());
             param.put("blogCategoryName", blog.getBlogCategoryName());
@@ -332,14 +335,15 @@ public class BlogServiceImpl implements BlogService {
             param.put("blogViews", blog.getBlogViews().toString());
             param.put("enableComment", blog.getEnableComment().toString());
             param.put("isDeleted", blog.getIsDeleted().toString());
-
             //将datetime数据类型转化为String类型
             Date createTime = blog.getCreateTime();
             Date updateTime = blog.getUpdateTime();
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             param.put("createTime", format.format(createTime));
             param.put("updateTime", format.format(updateTime));
+            //value值是用hash类型
             redisTemplate.opsForHash().putAll(blogRedisKey, param);
+            //设置过期时间
             redisTemplate.expire(blogRedisKey, 60 * 60, TimeUnit.SECONDS);
         }
 

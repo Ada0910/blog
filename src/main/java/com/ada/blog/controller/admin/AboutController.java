@@ -5,6 +5,9 @@ import com.ada.blog.service.AboutService;
 import com.ada.blog.util.PageUtil;
 import com.ada.blog.util.ResultStatusUtil;
 import com.ada.blog.util.ResultUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -35,6 +38,10 @@ public class AboutController {
      * @return java.lang.String
      * @Description 首页跳转链接
      **/
+    @ApiOperation(value = "关于页面跳转", notes = "关于页面跳转")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "HttpServletRequest")
+    })
     @RequestMapping("/about")
     public String aboutPage(HttpServletRequest request) {
         request.setAttribute("path", "about");
@@ -48,6 +55,10 @@ public class AboutController {
      * @return com.ada.blog.util.ResultUtil
      * @Description 列表
      **/
+    @ApiOperation(value = "关于信息展示", notes = "关于信息展示")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "params", value = "条数，页面数", required = true, dataType = "Map")
+    })
     @GetMapping("/about/list")
     @ResponseBody
     public ResultUtil list(@RequestParam Map<String, Object> params) {
@@ -65,6 +76,14 @@ public class AboutController {
      * @return com.ada.blog.util.ResultUtil
      * @Description 添加
      **/
+    @ApiOperation(value = "关于信息添加", notes = "关于信息添加")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "aboutType", value = "类型", required = true, dataType = "Byte"),
+            @ApiImplicitParam(name = "aboutName", value = "名字", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "aboutUrl", value = "链接", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "aboutImage", value = "图片的URL", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "aboutDescription", value = "描述", required = true, dataType = "String"),
+    })
     @RequestMapping("/about/add")
     @ResponseBody
     public ResultUtil add(@RequestParam("aboutType") Byte aboutType,
@@ -87,7 +106,14 @@ public class AboutController {
         return ResultStatusUtil.successResult(aboutService.addAbout(about));
     }
 
-
+    @ApiOperation(value = "关于信息更新", notes = "关于信息更新")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "aboutType", value = "类型", required = true, dataType = "Byte"),
+            @ApiImplicitParam(name = "aboutName", value = "名字", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "aboutUrl", value = "链接", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "aboutImage", value = "图片的URL", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "aboutDescription", value = "描述", required = true, dataType = "String"),
+    })
     @PostMapping("/about/update")
     @ResponseBody
     public ResultUtil update(@RequestParam("aboutId") Integer aboutId,
@@ -122,6 +148,11 @@ public class AboutController {
      * @return com.ada.blog.util.ResultUtil
      * @Description 编辑选中的数据加载到modal
      **/
+    @ApiOperation(value = "根据id获取信息", notes = "根据id获取信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "Id", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "HttpServletRequest")
+    })
     @RequestMapping("about/info/{id}")
     @ResponseBody
     public ResultUtil info(@PathVariable("id") Integer id, HttpServletRequest request) {
@@ -130,6 +161,10 @@ public class AboutController {
         return ResultStatusUtil.successResult(about);
     }
 
+    @ApiOperation(value = "关于页面删除", notes = "关于页面删除")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = " ids", value = "删除Id数组", required = true, dataType = "Integer[]")
+    })
     @RequestMapping("/about/delete")
     @ResponseBody
     public ResultUtil delete(@RequestBody Integer[] ids) {
