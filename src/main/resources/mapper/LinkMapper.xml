@@ -7,21 +7,18 @@
         <result column="link_name" jdbcType="VARCHAR" property="linkName"/>
         <result column="link_url" jdbcType="VARCHAR" property="linkUrl"/>
         <result column="link_description" jdbcType="VARCHAR" property="linkDescription"/>
-        <result column="link_rank" jdbcType="INTEGER" property="linkRank"/>
-        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        link_id, link_type, link_name, link_url, link_description, link_rank, is_deleted,
-    create_time
+        link_id, link_type, link_name, link_url, link_description, create_time
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tb_link
-        where link_id = #{linkId,jdbcType=INTEGER} AND is_deleted = 0
+        where link_id = #{linkId,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -42,7 +39,6 @@
         select
         <include refid="Base_Column_List"/>
         from tb_link
-        where is_deleted = 0
         order by link_id desc
         <if test="start != null and limit!= null">
             limit #{start} ,#{limit}
@@ -52,15 +48,13 @@
     <select id="getTotalLinks" parameterType="Map" resultType="java.lang.Integer">
         select count(1)
         from tb_link
-        where  is_deleted =0
     </select>
 
     <insert id="insert" parameterType="com.ada.blog.entity.Link">
-        insert into tb_link (link_id, link_type, link_name,link_url, link_description, link_rank,is_deleted, create_time)
+        insert into tb_link (link_id, link_type, link_name,link_url, link_description, create_time)
       values
       (#{linkId,jdbcType=INTEGER}, #{linkType,jdbcType=TINYINT}, #{linkName,jdbcType=VARCHAR},
-      #{linkUrl,jdbcType=VARCHAR}, #{linkDescription,jdbcType=VARCHAR}, #{linkRank,jdbcType=INTEGER},
-      #{isDeleted,jdbcType=TINYINT}, Now())
+      #{linkUrl,jdbcType=VARCHAR}, #{linkDescription,jdbcType=VARCHAR},Now())
     </insert>
 
     <insert id="insertSelective" parameterType="com.ada.blog.entity.Link">
@@ -81,12 +75,6 @@
             <if test="linkDescription != null">
                 link_description,
             </if>
-            <if test="linkRank != null">
-                link_rank,
-            </if>
-            <if test="isDeleted != null">
-                is_deleted,
-            </if>
             <if test="createTime != null">
                 create_time,
             </if>
@@ -106,12 +94,6 @@
             </if>
             <if test="linkDescription != null">
                 #{linkDescription,jdbcType=VARCHAR},
-            </if>
-            <if test="linkRank != null">
-                #{linkRank,jdbcType=INTEGER},
-            </if>
-            <if test="isDeleted != null">
-                #{isDeleted,jdbcType=TINYINT},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -135,12 +117,6 @@
             <if test="linkDescription != null">
                 link_description = #{linkDescription,jdbcType=VARCHAR},
             </if>
-            <if test="linkRank != null">
-                link_rank = #{linkRank,jdbcType=INTEGER},
-            </if>
-            <if test="isDeleted != null">
-                is_deleted = #{isDeleted,jdbcType=TINYINT},
-            </if>
             create_time = Now(),
 
         </set>
@@ -153,8 +129,6 @@
       link_name = #{linkName,jdbcType=VARCHAR},
       link_url = #{linkUrl,jdbcType=VARCHAR},
       link_description = #{linkDescription,jdbcType=VARCHAR},
-      link_rank = #{linkRank,jdbcType=INTEGER},
-      is_deleted = #{isDeleted,jdbcType=TINYINT},
       create_time = Now()
     where link_id = #{linkId,jdbcType=INTEGER}
   </update>

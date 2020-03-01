@@ -43,15 +43,6 @@ public class Link {
      */
     private String linkDescription;
 
-    /**
-     * 用于列表排序
-     */
-    private Integer linkRank;
-
-    /**
-     * 是否删除 0-未删除 1-已删除
-     */
-    private Byte isDeleted;
 
     /**
      * 添加时间

@@ -7,7 +7,7 @@ $(function () {
             {label: '网站名称', name: 'linkName', index: 'linkName', width: 100},
             {label: '网站链接', name: 'linkUrl', index: 'linkUrl', width: 120},
             {label: '网站描述', name: 'linkDescription', index: 'linkDescription', width: 120},
-            {label: '排序值', name: 'linkRank', index: 'linkRank', width: 30},
+            {label: '友链类型', name: 'linkType', index: 'linkType', width: 50,formatter: linkTypeFormatter},
             {label: '添加时间', name: 'createTime', index: 'createTime', width: 100}
         ],
         height: 560,
@@ -41,6 +41,16 @@ $(function () {
     });
 });
 
+function linkTypeFormatter(cellvalue) {
+    if (cellvalue == 1) {
+        return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"width: 80%;background-color:#28a745;\">推荐社区</button>";
+    }
+    else if (cellvalue == 2) {
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;background-color:#6c757d;\">推荐网站</button>";
+    }else{
+        return "<button type=\"button\" class=\"btn btn-block  btn-info btn-sm\" style=\"width: 80%;\">友情链接</button>";
+    }
+}
 /**
  * jqGrid重新加载
  */
@@ -65,7 +75,6 @@ function saveButton(){
     var linkName = $("#linkName").val();
     var linkUrl = $("#linkUrl").val();
     var linkDescription = $("#linkDescription").val();
-    var linkRank = $("#linkRank").val();
     if (!validCN_ENString2_100(linkName)) {
         $('#edit-error-msg').css("display", "block");
         $('#edit-error-msg').html("名称不规范(2-100位的中英文字符串)！");
@@ -81,11 +90,7 @@ function saveButton(){
         $('#edit-error-msg').html("描述不规范(2-100位的中英文字符串)！");
         return;
     }
-    if (isNull(linkRank) || linkRank < 0) {
-        $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("排序值不规范(不能为空和小于0)！");
-        return;
-    }
+
     var params = $("#linkForm").serialize();
     var url = '/admin/link/add';
     if (linkId != null && linkId > 0) {
@@ -132,13 +137,15 @@ function linkEdit() {
             $("#linkName").val(r.data.linkName);
             $("#linkUrl").val(r.data.linkUrl);
             $("#linkDescription").val(r.data.linkDescription);
-            $("#linkRank").val(r.data.linkRank);
             //根据原linkType值设置select选择器为选中状态
             if (r.data.linkType == 1) {
                 $("#linkType option:eq(1)").prop("selected", 'selected');
             }
             if (r.data.linkType == 2) {
                 $("#linkType option:eq(2)").prop("selected", 'selected');
+            }
+            if (r.data.linkType == 0) {
+                $("#linkType option:eq(0)").prop("selected", 'selected');
             }
         }
     });
@@ -188,7 +195,6 @@ function reset() {
     $("#linkName").val('');
     $("#linkUrl").val('');
     $("#linkDescription").val('');
-    $("#linkRank").val(0);
     $('#edit-error-msg').css("display", "none");
     $("#linkType option:first").prop("selected", 'selected');
 }

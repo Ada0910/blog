@@ -60,7 +60,7 @@ public class LinkController {
     /***
      * @Author Ada
      * @Date 16:07 2019/6/30
-     * @Param [linkType, linkName, linkUrl, linkRank, linkDescription]
+     * @Param [linkType, linkName, linkUrl, linkDescription]
      * @return com.ada.blog.util.ResultUtil
      * @Description 添加友情链接
      **/
@@ -69,15 +69,13 @@ public class LinkController {
     public ResultUtil add(@RequestParam("linkType") Integer linkType,
                           @RequestParam("linkName") String linkName,
                           @RequestParam("linkUrl") String linkUrl,
-                          @RequestParam("linkRank") Integer linkRank,
                           @RequestParam("linkDescription") String linkDescription) {
-        if (linkType == null || linkType < 0 || linkRank == null || linkRank < 0 || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkUrl) || StringUtils.isEmpty(linkDescription)) {
+        if (linkType == null || linkType < 0  || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkUrl) || StringUtils.isEmpty(linkDescription)) {
             ResultStatusUtil.failResult("参数异常");
         }
 
         Link link = new Link();
         link.setLinkType(linkType.byteValue());
-        link.setLinkRank(linkRank);
         link.setLinkName(linkName);
         link.setLinkUrl(linkUrl);
         link.setLinkDescription(linkDescription);
@@ -101,7 +99,7 @@ public class LinkController {
     /***
      * @Author Ada
      * @Date 16:23 2019/6/30
-     * @Param [linkId, linkType, linkName, linkUrl, linkRank, linkDescription]
+     * @Param [linkId, linkType, linkName, linkUrl, linkDescription]
      * @return com.ada.blog.util.ResultUtil
      * @Description 友情链接更新
      **/
@@ -111,18 +109,16 @@ public class LinkController {
                              @RequestParam("linkType") Integer linkType,
                              @RequestParam("linkName") String linkName,
                              @RequestParam("linkUrl") String linkUrl,
-                             @RequestParam("linkRank") Integer linkRank,
                              @RequestParam("linkDescription") String linkDescription) {
 
         Link updateLink = linkService.selectById(linkId);
         if (updateLink == null) {
             return ResultStatusUtil.failResult("无数据！");
         }
-        if (StringUtils.isEmpty(linkUrl) || StringUtils.isEmpty(linkDescription) || linkRank == null || linkRank < 0 || linkType == null || linkType < 0 || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkName)) {
+        if (StringUtils.isEmpty(linkUrl) || StringUtils.isEmpty(linkDescription) ||  linkType == null || linkType < 0 || StringUtils.isEmpty(linkName) || StringUtils.isEmpty(linkName)) {
             return ResultStatusUtil.failResult("参数异常！");
         }
 
-        updateLink.setLinkRank(linkRank);
         updateLink.setLinkName(linkName);
         updateLink.setLinkUrl(linkUrl);
         updateLink.setLinkDescription(linkDescription);
