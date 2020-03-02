@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width">
     <link rel="shortcut icon" th:href="@{${configuration.get('websiteIcon')}}"/>
     <link rel="stylesheet" th:href="@{/blog/amaze/css/base.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/common/dist/css/font-awesome.min.css}">
     <script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
     <script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/common/dist/js/public.js}"></script>
@@ -16,41 +18,45 @@
     <script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/common/plugins/sweetalert/sweetalert.min.js}"></script>
     <script th:src="@{/blog/plugins/version/version.js}"></script>
+<<<<<<< HEAD
     <link rel="stylesheet" th:href="@{/common/dist/css/font-awesome.min.css}">
+=======
+    <script th:src="@{/blog/plugins/jquery/jquery.min.js}"></script>
+    <script th:src="@{/blog/plugins/highlight/highlight.pack.js}"></script>
+    <script th:src="@{/blog/plugins/dictionary/dictionary.js}"></script>
+    <script th:src="@{/blog/plugins/comment/valid.js}"></script>
+    <script th:src="@{/blog/plugins/comment/comment.js}"></script>
+    <!-- sweetalert -->
+    <script th:src="@{/common/plugins/sweetalert/sweetalert.min.js}"></script>
+    <script th:src="@{/blog/plugins/like/like.js}"></script>
+    <script>
+        $(function () {
+            $("#back-top").hide();
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('#back-top').fadeIn();
+                } else {
+                    $('#back-top').fadeOut();
+                }
+            });
+            // scroll body to 0px on click
+            $('#back-top a').click(function () {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+
+            $('pre code').each(function (i, block) {
+                hljs.highlightBlock(block);
+            });
+
+            $('article h1, article h2, article h3, article h4, article h5').find('a').removeAttr('target')
+        })
+    </script>
+>>>>>>> 28b842c5501cca144afcfac05ad2ed0b19afaa88
 </head>
 
-<script th:src="@{/blog/plugins/jquery/jquery.min.js}"></script>
-<script th:src="@{/blog/plugins/highlight/highlight.pack.js}"></script>
-<script th:src="@{/blog/plugins/dictionary/dictionary.js}"></script>
-<script th:src="@{/blog/plugins/comment/valid.js}"></script>
-<script th:src="@{/blog/plugins/comment/comment.js}"></script>
-<!-- sweetalert -->
-<script th:src="@{/common/plugins/sweetalert/sweetalert.min.js}"></script>
-<script>
-    $(function () {
-        $("#back-top").hide();
-        $(window).scroll(function () {
-            if ($(this).scrollTop() > 300) {
-                $('#back-top').fadeIn();
-            } else {
-                $('#back-top').fadeOut();
-            }
-        });
-        // scroll body to 0px on click
-        $('#back-top a').click(function () {
-            $('body,html').animate({
-                scrollTop: 0
-            }, 800);
-            return false;
-        });
-
-        $('pre code').each(function (i, block) {
-            hljs.highlightBlock(block);
-        });
-
-        $('article h1, article h2, article h3, article h4, article h5').find('a').removeAttr('target')
-    })
-</script>
 
 <!--body-->
 <body>
@@ -75,8 +81,14 @@
                                   <button type="button" class="btn btn-primary"
                                           onclick="showModal()"><i
                                           class="fa fa-pencil-square-o"></i>评论</button>
+<<<<<<< HEAD
                                  <button type="button" class="btn btn-primary "
                                          onclick="addOrCancelLike()"><i class="fa fa-thumbs-up"></i>赞(10)</button>
+=======
+                                 <button type="button" class="btn btn-primary"
+                                         onclick="addOrCancelLike()"><i
+                                         class="fa fa-thumbs-up"></i>赞<th:block th:text="${blogDetail.blogViews}"></th:block></button>
+>>>>>>> 28b842c5501cca144afcfac05ad2ed0b19afaa88
                             </div>
                     </span>
 

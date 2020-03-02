@@ -2,6 +2,7 @@ package com.ada.blog.controller.blog;
 
 import com.ada.blog.entity.BlogDetail;
 import com.ada.blog.entity.Comment;
+import com.ada.blog.entity.Like;
 import com.ada.blog.entity.Version;
 import com.ada.blog.service.*;
 import com.ada.blog.util.*;
@@ -36,6 +37,9 @@ public class IndexController {
 
     @Autowired
     public VersionService versionService;
+
+    @Autowired
+    public LikeService likeService;
 
     /***
      * @Author Ada
@@ -278,6 +282,17 @@ public class IndexController {
     public ResultUtil info(HttpServletRequest request) {
         Version version = versionService.getLatestVersion();
         return ResultStatusUtil.successResult(version);
+    }
+
+    @PostMapping("/blog/addOrCancelLike")
+    @ResponseBody
+    public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike,@RequestParam Integer blogId) {
+        Like like = new Like();
+        like.setLikeStatus(isLike);
+        like.setLikeUserIp(getIpAddress(request));
+        like.setLikeBlogId(blogId);
+       // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
+        return null;
     }
 
 }
