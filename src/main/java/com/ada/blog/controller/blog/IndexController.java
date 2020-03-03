@@ -286,12 +286,12 @@ public class IndexController {
 
     @PostMapping("/blog/addOrCancelLike")
     @ResponseBody
-    public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike,@RequestParam Integer blogId) {
+    public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Integer blogId) {
         Like like = new Like();
         like.setLikeStatus(isLike);
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
-       // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
+        // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
         return null;
     }
 
