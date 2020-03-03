@@ -1,5 +1,7 @@
 package com.ada.blog.service;
 
+import com.ada.blog.entity.Like;
+
 /**
  * @ClassName:LikeService
  * @author:Ada
@@ -7,6 +9,12 @@ package com.ada.blog.service;
  * @Description: 点赞模块的接口层
  */
 public interface LikeService {
+
+    public void addLikeToRedis(Like like);
+
+    public void deleteLikeFromRedis(Like like);
+
+    public Integer getLikeSumFromRedis(Integer blogId);
 
 
 }
