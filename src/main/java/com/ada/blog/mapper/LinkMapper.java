@@ -1,5 +1,6 @@
 package com.ada.blog.mapper;
 
+import com.ada.blog.entity.Like;
 import com.ada.blog.entity.Link;
 import com.ada.blog.util.PageUtil;
 import org.springframework.stereotype.Component;

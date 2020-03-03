@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -90,6 +89,9 @@ public class IndexController {
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
+            /**添加点赞数*/
+            int total = likeService.getLikeSumFromRedis(blogId);
+            request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
         }
@@ -290,22 +292,17 @@ public class IndexController {
     @ResponseBody
     public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Integer blogId) {
         Like like = new Like();
-        like.setLikeStatus(isLike);
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
-<<<<<<< HEAD
-        // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
-        return null;
-=======
+
         like.setLikeCreateTime(new Date());
-        if(isLike==1){
+        if (isLike == 1) {
             likeService.addLikeToRedis(like);
-        }else{
+        } else {
             likeService.deleteLikeFromRedis(like);
         }
         // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
         return ResultStatusUtil.successResult();
->>>>>>> c66b273510efa41d2d43bcf68929e08c296a6ed2
     }
 
 }

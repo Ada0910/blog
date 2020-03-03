@@ -14,7 +14,9 @@ public interface LikeService {
 
     public void deleteLikeFromRedis(Like like);
 
-    public Integer getLikeSumFromRedis(Integer blogId);
+    public Integer getLikeSumFromRedis(Long blogId);
+
+    public Boolean  addLikeInfo(Like like);
 
 
 }
