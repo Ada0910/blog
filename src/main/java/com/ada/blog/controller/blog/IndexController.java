@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Ada
@@ -291,8 +293,19 @@ public class IndexController {
         like.setLikeStatus(isLike);
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
+<<<<<<< HEAD
         // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
         return null;
+=======
+        like.setLikeCreateTime(new Date());
+        if(isLike==1){
+            likeService.addLikeToRedis(like);
+        }else{
+            likeService.deleteLikeFromRedis(like);
+        }
+        // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
+        return ResultStatusUtil.successResult();
+>>>>>>> c66b273510efa41d2d43bcf68929e08c296a6ed2
     }
 
 }
