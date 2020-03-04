@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -118,6 +119,7 @@ public class LikeServiceImpl implements LikeService {
      * @Param [blogId]
      * @Description 获取数据持久化到数据库
      **/
+    @Scheduled(cron="*/6 * * * * ?")
     @Override
     public Boolean addLikeInfo(Long blogId) {
         List<Like> list = getLikeListFromRedis(blogId);

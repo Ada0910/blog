@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -91,7 +90,7 @@ public class IndexController {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
             /**添加点赞数*/
-            int total = likeService.getLikeSumFromRedis(blogId);
+            int total = likeService.getLikeSumFromRedis(blogId) + likeService.getLikeSum(blogId);
             request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
@@ -297,11 +296,11 @@ public class IndexController {
         like.setLikeBlogId(blogId);
 
         like.setLikeCreateTime(new Date());
+        /**点赞状态*/
         if (isLike == 1) {
             likeService.addLikeToRedis(like);
-            likeService.addLikeInfo(blogId);
         } else {
-            //likeService.deleteLikeFromRedis(like);
+            likeService.deleteLikeFromRedis(like);
         }
         return ResultStatusUtil.successResult();
     }

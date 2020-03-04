@@ -13,11 +13,10 @@
         </sql>
 
     <insert id="addLikeInfo"  parameterType="java.util.List">
-        insert into tb_like(like_id ,like_userIp ,like_blog_id,like_create_time)
-        <include refid="Base_Column_List"/>
+        insert into tb_like(like_userIp ,like_blog_id,like_create_time)
         values
-        <foreach item="like" collection="likeList" separator=","  index= "index" open="(" close=")">
-            (null,#{like.likeUserIp},#{like.likeBlogId},#{like.likeCreateTime})
+        <foreach item="like" collection="list" separator=","  open="(" close=")">
+            #{like.likeUserIp},#{like.likeBlogId},#{like.likeCreateTime}
         </foreach>
     </insert>
 
