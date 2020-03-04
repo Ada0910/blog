@@ -2,7 +2,6 @@ package com.ada.blog.service.impl;
 
 import com.ada.blog.entity.Like;
 import com.ada.blog.mapper.LikeMapper;
-import com.ada.blog.mapper.LinkMapper;
 import com.ada.blog.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
@@ -10,6 +9,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +41,9 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void addLikeToRedis(Like like) {
         String key = "BLOG:LIKE:" + like.getLikeBlogId();
-        redisTemplate.opsForHash().put(key, like.getLikeUserIp(), like.getLikeCreateTime().toString());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = like.getLikeCreateTime();
+        redisTemplate.opsForHash().put(key, like.getLikeUserIp(), format.format(date));
 
     }
 
@@ -69,14 +75,65 @@ public class LikeServiceImpl implements LikeService {
         while (cursor.hasNext()) {
             Map.Entry<Object, Object> map = cursor.next();
             sum++;
-           // redisTemplate.opsForHash().delete(key, (String) map.getKey());
         }
         return sum;
     }
 
+    /**
+     * @return java.util.List<com.ada.blog.entity.Like>
+     * @Author Ada
+     * @Date 15:24 2020/03/04
+     * @Param [blogId]
+     * @Description 获取redis中的数据
+     **/
     @Override
-    public Boolean addLikeInfo(Like like) {
-        return likeMapper.addLikeInfo(like)>0;
+    public List<Like> getLikeListFromRedis(Long blogId) {
+        List<Like> likeList = new LinkedList<>();
+        String key = "BLOG:LIKE:" + blogId;
+        Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(key, ScanOptions.NONE);
+        while (cursor.hasNext()) {
+            Map.Entry<Object, Object> map = cursor.next();
+            Like like = new Like();
+            like.setLikeBlogId(blogId);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            like.setLikeUserIp((String) map.getKey());
+            String date = (String) map.getValue();
+            try {
+                like.setLikeCreateTime(format.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            likeList.add(like);
+            redisTemplate.opsForHash().delete(key, map.getKey());
+        }
+
+        return likeList;
+    }
+
+    /**
+     * @return java.lang.Boolean
+     * @Author Ada
+     * @Date 15:22 2020/03/04
+     * @Param [blogId]
+     * @Description 获取数据持久化到数据库
+     **/
+    @Override
+    public Boolean addLikeInfo(Long blogId) {
+        List<Like> list = getLikeListFromRedis(blogId);
+        return likeMapper.addLikeInfo(list) > 0;
+    }
+
+    /**
+     * @return java.lang.Integer
+     * @Author Ada
+     * @Date 15:51 2020/03/04
+     * @Param [blogId]
+     * @Description 从数据库中获取对应用户的总数
+     **/
+    @Override
+    public Integer getLikeSum(Long blogId) {
+        return likeMapper.getLikeSum(blogId);
     }
 
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -290,7 +291,7 @@ public class IndexController {
 
     @PostMapping("/blog/addOrCancelLike")
     @ResponseBody
-    public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Integer blogId) {
+    public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
         Like like = new Like();
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
@@ -298,10 +299,10 @@ public class IndexController {
         like.setLikeCreateTime(new Date());
         if (isLike == 1) {
             likeService.addLikeToRedis(like);
+            likeService.addLikeInfo(blogId);
         } else {
-            likeService.deleteLikeFromRedis(like);
+            //likeService.deleteLikeFromRedis(like);
         }
-        // return ResultStatusUtil.successResult(likeService.addOrCancelLike(like));
         return ResultStatusUtil.successResult();
     }
 

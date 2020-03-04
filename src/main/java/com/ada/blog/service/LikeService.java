@@ -2,6 +2,8 @@ package com.ada.blog.service;
 
 import com.ada.blog.entity.Like;
 
+import java.util.List;
+
 /**
  * @ClassName:LikeService
  * @author:Ada
@@ -16,7 +18,11 @@ public interface LikeService {
 
     public Integer getLikeSumFromRedis(Long blogId);
 
-    public Boolean  addLikeInfo(Like like);
+    public List<Like> getLikeListFromRedis(Long blogId);
+
+    public Boolean  addLikeInfo(Long blogId);
+
+    public Integer getLikeSum(Long blogId);
 
 
 }

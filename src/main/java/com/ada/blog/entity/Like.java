@@ -24,6 +24,6 @@ public class Like {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date likeCreateTime;
 
-    public Integer likeBlogId;
+    public Long likeBlogId;
 
 }

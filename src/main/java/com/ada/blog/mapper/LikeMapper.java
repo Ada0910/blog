@@ -3,6 +3,8 @@ package com.ada.blog.mapper;
 import com.ada.blog.entity.Like;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author Ada
  * @ClassName :LikeMapper
@@ -11,5 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public interface LikeMapper {
-    Integer addLikeInfo(Like like);
+    Integer addLikeInfo(List<Like> likeList);
+
+    Integer getLikeSum(Long blogId);
 }

@@ -338,7 +338,7 @@ public class BlogServiceImpl implements BlogService {
             //将datetime数据类型转化为String类型
             Date createTime = blog.getCreateTime();
             Date updateTime = blog.getUpdateTime();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             param.put("createTime", format.format(createTime));
             param.put("updateTime", format.format(updateTime));
             //value值是用hash类型

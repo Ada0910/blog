@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ada.blog.mapper.LinkMapper">
+<mapper namespace="com.ada.blog.mapper.LikeMapper">
     <resultMap id="BaseResultMap" type="com.ada.blog.entity.Like">
         <id column="like_id" jdbcType="INTEGER" property="likeId"/>
         <result column="like_userIp" jdbcType="VARCHAR" property="likeUserIp"/>
@@ -8,119 +8,24 @@
         <result column="like_create_time" jdbcType="TIMESTAMP" property="likeCreateTime"/>
     </resultMap>
 
-        <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
             like_id ,like_userIp ,like_blog_id,like_create_time
         </sql>
-    <!--
-           <select id="getTotalAbouts" parameterType="Map" resultType="java.lang.Integer">
-               select count(1)
-               from tb_about
-           </select>
 
-           <select id="getAboutList" parameterType="Map" resultMap="BaseResultMap">
-               select
-               <include refid="Base_Column_List"/>
-               from tb_about
-               order by about_id desc
-               <if test="start != null and limit!= null">
-                   limit #{start} ,#{limit}
-               </if>
-           </select>
+    <insert id="addLikeInfo"  parameterType="java.util.List">
+        insert into tb_like(like_id ,like_userIp ,like_blog_id,like_create_time)
+        <include refid="Base_Column_List"/>
+        values
+        <foreach item="like" collection="likeList" separator=","  index= "index" open="(" close=")">
+            (null,#{like.likeUserIp},#{like.likeBlogId},#{like.likeCreateTime})
+        </foreach>
+    </insert>
 
-           <insert id="insertSelective" parameterType="com.ada.blog.entity.About">
-               insert into tb_about
-               <trim prefix="(" suffix=")" suffixOverrides=",">
-                   <if test="aboutId != null">
-                       about_id,
-                   </if>
-                   <if test="aboutType != null">
-                       about_type,
-                   </if>
-                   <if test="aboutName != null">
-                       about_name,
-                   </if>
-                   <if test="aboutUrl != null">
-                       about_url,
-                   </if>
-                   <if test="aboutDescription != null">
-                       about_description,
-                   </if>
-                   <if test="aboutImage != null">
-                       about_image,
-                   </if>
-                   <if test="createTime != null">
-                       create_time,
-                   </if>
-                   <if test="updateTime != null">
-                       update_time,
-                   </if>
-               </trim>
-               <trim prefix="values (" suffix=")" suffixOverrides=",">
-                   <if test="aboutId != null">
-                       #{aboutId,jdbcType=INTEGER},
-                   </if>
-                   <if test="aboutType != null">
-                       #{aboutType,jdbcType=TINYINT},
-                   </if>
-                   <if test="aboutName != null">
-                       #{aboutName,jdbcType=VARCHAR},
-                   </if>
-                   <if test="aboutUrl != null">
-                       #{aboutUrl,jdbcType=VARCHAR},
-                   </if>
-                   <if test="aboutDescription != null">
-                       #{aboutDescription,jdbcType=VARCHAR},
-                   </if>
-                   <if test="aboutImage != null">
-                       #{aboutImage,jdbcType=INTEGER},
-                   </if>
-                   <if test="createTime != null">
-                       #{createTime,jdbcType=TIMESTAMP},
-                   </if>
-                   <if test="updateTime != null">
-                       #{updateTime,jdbcType=TIMESTAMP},
-                   </if>
-               </trim>
-           </insert>
+    <select id="getLikeSum" parameterType="java.lang.Long" resultType="java.lang.Integer">
+               select count(*)
+               from tb_like
+               where like_blog_id=#{blogId}
+               group by like_blog_id
+    </select>
 
-           <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.About">
-               update tb_about
-               <set>
-                   <if test="aboutType != null">
-                       about_type = #{aboutType,jdbcType=TINYINT},
-                   </if>
-                   <if test="aboutName != null">
-                       about_name = #{aboutName,jdbcType=VARCHAR},
-                   </if>
-                   <if test="aboutUrl != null">
-                       about_url = #{aboutUrl,jdbcType=VARCHAR},
-                   </if>
-                   <if test="aboutDescription != null">
-                       about_description = #{aboutDescription,jdbcType=VARCHAR},
-                   </if>
-                   <if test="aboutImage != null">
-                       about_image = #{aboutImage,jdbcType=INTEGER},
-                   </if>
-                   update_time = Now(),
-
-               </set>
-               where about_id = #{aboutId,jdbcType=INTEGER}
-           </update>
-
-
-           <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-               select
-               <include refid="Base_Column_List"/>
-               from tb_about
-               where about_id = #{aboutId,jdbcType=INTEGER}
-           </select>
-
-           <delete id="deleteBatch">
-               delete from tb_about
-               where about_id in
-               <foreach item="id" collection="array" open="(" separator="," close=")">
-                   #{id}
-               </foreach>
-           </delete>
-       -->
 </mapper>
