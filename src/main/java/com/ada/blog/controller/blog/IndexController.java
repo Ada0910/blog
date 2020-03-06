@@ -294,7 +294,6 @@ public class IndexController {
         Like like = new Like();
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
-
         like.setLikeCreateTime(new Date());
         /**点赞状态*/
         if (isLike == 1) {

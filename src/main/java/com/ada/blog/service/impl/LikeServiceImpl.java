@@ -45,7 +45,6 @@ public class LikeServiceImpl implements LikeService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = like.getLikeCreateTime();
         redisTemplate.opsForHash().put(key, like.getLikeUserIp(), format.format(date));
-
     }
 
     /**
@@ -119,7 +118,6 @@ public class LikeServiceImpl implements LikeService {
      * @Param [blogId]
      * @Description 获取数据持久化到数据库
      **/
-    @Scheduled(cron="*/6 * * * * ?")
     @Override
     public Boolean addLikeInfo(Long blogId) {
         List<Like> list = getLikeListFromRedis(blogId);
@@ -135,7 +133,11 @@ public class LikeServiceImpl implements LikeService {
      **/
     @Override
     public Integer getLikeSum(Long blogId) {
-        return likeMapper.getLikeSum(blogId);
+        if (likeMapper.getLikeSum(blogId) == null) {
+            return 0;
+        } else {
+            return likeMapper.getLikeSum(blogId);
+        }
     }
 
 
