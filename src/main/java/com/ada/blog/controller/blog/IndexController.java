@@ -90,7 +90,7 @@ public class IndexController {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
             /**添加点赞数*/
-            int total = likeService.getLikeSumFromRedis(blogId) + likeService.getLikeSum(blogId);
+            int total = likeService.getLikeTotalFromRedis(blogId) + likeService.getLikeTotal(blogId);
             request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
@@ -288,6 +288,14 @@ public class IndexController {
         return ResultStatusUtil.successResult(version);
     }
 
+
+    /**
+     * @return com.ada.blog.util.ResultUtil
+     * @Author Ada
+     * @Date 13:53 2020/03/07
+     * @Param [request, isLike, blogId]
+     * @Description 点赞或者取消添加到redis缓存数据库
+     **/
     @PostMapping("/blog/addOrCancelLike")
     @ResponseBody
     public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
@@ -295,12 +303,17 @@ public class IndexController {
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
         like.setLikeCreateTime(new Date());
-        /**点赞状态*/
-        if (isLike == 1) {
+          /* if (isLike == 1) {
             likeService.addLikeToRedis(like);
         } else {
             likeService.deleteLikeFromRedis(like);
+        }*/
+        /**点赞状态*/
+        if (isLike == 1) {
+            likeService.addLikeToRedis(like);
         }
+
+        likeService.addLikeList();
         return ResultStatusUtil.successResult();
     }
 

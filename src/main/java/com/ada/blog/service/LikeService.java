@@ -12,17 +12,16 @@ import java.util.List;
  */
 public interface LikeService {
 
-    public void addLikeToRedis(Like like);
+    void addLikeToRedis(Like like);
 
-    public void deleteLikeFromRedis(Like like);
+    void deleteLikeFromRedis(Like like);
 
-    public Integer getLikeSumFromRedis(Long blogId);
+    Integer getLikeTotalFromRedis(Long blogId);
 
-    public List<Like> getLikeListFromRedis(Long blogId);
+    Integer getLikeTotal(Long blogId);
 
-    public Boolean  addLikeInfo(Long blogId);
+    List<Like> getLikeListFromRedis();
 
-    public Integer getLikeSum(Long blogId);
-
+    void addLikeList();
 
 }

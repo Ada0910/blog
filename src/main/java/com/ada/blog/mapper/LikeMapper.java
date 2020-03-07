@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Component
 public interface LikeMapper {
-    Integer addLikeInfo(List<Like> likeList);
+    Integer addLikeList(List<Like> likeList);
 
-    Integer getLikeSum(Long blogId);
+    Integer getLikeTotal(Long blogId);
 }

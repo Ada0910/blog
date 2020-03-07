@@ -14,7 +14,7 @@ function addOrCancelLike() {
         isLike = 0;
     }
     var blogId = $("#blogId").val();
-    var data = {"isLike":isLike,"blogId":blogId};
+    var data = {"isLike": isLike, "blogId": blogId};
     $.ajax({
         type: 'POST',//方法类型
         url: '/blog/addOrCancelLike',

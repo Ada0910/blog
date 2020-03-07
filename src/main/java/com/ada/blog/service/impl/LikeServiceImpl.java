@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName:LikeServiceImpl
@@ -65,10 +62,10 @@ public class LikeServiceImpl implements LikeService {
      * @Date 17:05 2020/03/03
      * @Param []
      * @return java.lang.Integer
-     * @Description 获取缓存中的数目
+     * @Description 根据bolgId获取缓存中文章的点赞数
      **/
     @Override
-    public Integer getLikeSumFromRedis(Long blogId) {
+    public Integer getLikeTotalFromRedis(Long blogId) {
         Integer sum = 0;
         String key = "BLOG:LIKE:" + blogId;
         Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(key, ScanOptions.NONE);
@@ -80,36 +77,65 @@ public class LikeServiceImpl implements LikeService {
     }
 
     /**
+     * @return java.lang.Integer
+     * @Author Ada
+     * @Date 15:51 2020/03/04
+     * @Param [blogId]
+     * @Description 从数据库中获取对应用户的总数
+     **/
+    @Override
+    public Integer getLikeTotal(Long blogId) {
+        if (likeMapper.getLikeTotal(blogId) == null) {
+            return 0;
+        } else {
+            return likeMapper.getLikeTotal(blogId);
+        }
+    }
+
+    /**
      * @return java.util.List<com.ada.blog.entity.Like>
      * @Author Ada
      * @Date 15:24 2020/03/04
      * @Param [blogId]
-     * @Description 获取redis中的数据
+     * @Description 获取redis中的所有数据
      **/
     @Override
-    public List<Like> getLikeListFromRedis(Long blogId) {
-        List<Like> likeList = new LinkedList<>();
-        String key = "BLOG:LIKE:" + blogId;
-        Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(key, ScanOptions.NONE);
-        while (cursor.hasNext()) {
-            Map.Entry<Object, Object> map = cursor.next();
-            Like like = new Like();
-            like.setLikeBlogId(blogId);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            like.setLikeUserIp((String) map.getKey());
-            String date = (String) map.getValue();
-            try {
-                like.setLikeCreateTime(format.parse(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
+    public List<Like> getLikeListFromRedis() {
+        /**获取Redis中所有key*/
+        Set<String> keys = redisTemplate.keys("*");
+        /**文章点赞的所有key*/
+        List<String> allLikeKeyList = new ArrayList<>();
+        keys.forEach(key -> {
+            if (key.startsWith("BLOG:LIKE:")) {
+                allLikeKeyList.add(key);
             }
+        });
+        List<Like> likeList = new LinkedList<>();
 
-            likeList.add(like);
-            redisTemplate.opsForHash().delete(key, map.getKey());
-        }
+        allLikeKeyList.forEach(key -> {
+            Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(key, ScanOptions.NONE);
+            while (cursor.hasNext()) {
+                Map.Entry<Object, Object> map = cursor.next();
+                Like like = new Like();
+                like.setLikeBlogId(Long.parseLong(key.substring(10)));
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                like.setLikeUserIp((String) map.getKey());
+                String date = (String) map.getValue();
+                try {
+                    like.setLikeCreateTime(format.parse(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                likeList.add(like);
+                redisTemplate.opsForHash().delete(key, map.getKey());
+            }
+        });
+
 
         return likeList;
     }
+
 
     /**
      * @return java.lang.Boolean
@@ -118,27 +144,11 @@ public class LikeServiceImpl implements LikeService {
      * @Param [blogId]
      * @Description 获取数据持久化到数据库
      **/
+    @Scheduled(cron = "0/10 * * * * ? *")
     @Override
-    public Boolean addLikeInfo(Long blogId) {
-        List<Like> list = getLikeListFromRedis(blogId);
-        return likeMapper.addLikeInfo(list) > 0;
+    public void addLikeList() {
+        List<Like> list = getLikeListFromRedis();
+        likeMapper.addLikeList(list);
     }
-
-    /**
-     * @return java.lang.Integer
-     * @Author Ada
-     * @Date 15:51 2020/03/04
-     * @Param [blogId]
-     * @Description 从数据库中获取对应用户的总数
-     **/
-    @Override
-    public Integer getLikeSum(Long blogId) {
-        if (likeMapper.getLikeSum(blogId) == null) {
-            return 0;
-        } else {
-            return likeMapper.getLikeSum(blogId);
-        }
-    }
-
 
 }
