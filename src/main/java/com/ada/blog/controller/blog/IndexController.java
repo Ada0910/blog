@@ -90,8 +90,8 @@ public class IndexController {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
             /**添加点赞数*/
-            int total = likeService.getLikeTotalFromRedis(blogId) + likeService.getLikeTotal(blogId);
-            request.setAttribute("blogLikeTotal", total);
+          //  int total = likeService.getLikeTotalFromRedis(blogId) + likeService.getLikeTotal(blogId);
+           // request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
         }
@@ -298,23 +298,19 @@ public class IndexController {
      **/
     @PostMapping("/blog/addOrCancelLike")
     @ResponseBody
-    public ResultUtil addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
+    public Integer addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
         Like like = new Like();
         like.setLikeUserIp(getIpAddress(request));
         like.setLikeBlogId(blogId);
         like.setLikeCreateTime(new Date());
-          /* if (isLike == 1) {
+        if (isLike == 1) {
             likeService.addLikeToRedis(like);
         } else {
             likeService.deleteLikeFromRedis(like);
-        }*/
-        /**点赞状态*/
-        if (isLike == 1) {
-            likeService.addLikeToRedis(like);
         }
-
-        likeService.addLikeList();
-        return ResultStatusUtil.successResult();
+        int total = likeService.getLikeTotalFromRedis(blogId) + likeService.getLikeTotal(blogId);
+        request.setAttribute("blogLikeTotal", total);
+        return likeService.getLikeTotalFromRedis(blogId);
     }
 
 }

@@ -111,7 +111,6 @@ public class LikeServiceImpl implements LikeService {
             }
         });
         List<Like> likeList = new LinkedList<>();
-
         allLikeKeyList.forEach(key -> {
             Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(key, ScanOptions.NONE);
             while (cursor.hasNext()) {
@@ -142,13 +141,15 @@ public class LikeServiceImpl implements LikeService {
      * @Author Ada
      * @Date 15:22 2020/03/04
      * @Param [blogId]
-     * @Description 获取数据持久化到数据库
+     * @Description 每隔2个钟自动获取数据持久化到数据库
      **/
-    @Scheduled(cron = "0/10 * * * * ? *")
     @Override
+    @Scheduled(cron = "* * 0/2 * * ?")
     public void addLikeList() {
         List<Like> list = getLikeListFromRedis();
-        likeMapper.addLikeList(list);
+        if (list.size() != 0) {
+            likeMapper.addLikeList(list);
+        }
     }
 
 }

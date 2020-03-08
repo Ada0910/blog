@@ -1,16 +1,19 @@
 /**未点赞/取消点赞=0 , 点赞=1*/
-var isLike = 0;
+var isLike ;
 /**点赞和未点赞标志位*/
-var flagLike = false;
+var flagLike ;
 
+var likeTotal= 0;
 function addOrCancelLike() {
     /**未点赞*/
-    if (flagLike == false) {
+    if (flagLike != false) {
         flagLike = true;
+        swal({title:'点赞完成！'});
         isLike = 1;
-    } else if (flagLike == true) {
+    } else  {
         /**已点赞*/
         flagLike = false;
+        swal({title:'已取消!'});
         isLike = 0;
     }
     var blogId = $("#blogId").val();
@@ -20,10 +23,7 @@ function addOrCancelLike() {
         url: '/blog/addOrCancelLike',
         data: data,
         success: function (result) {
-            if (result.resultCode == 200) {
-            } else {
-            }
-            ;
+            $("#likeTotal").html(result);
         },
         error: function () {
         }
