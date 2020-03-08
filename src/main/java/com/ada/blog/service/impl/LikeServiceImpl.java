@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -65,7 +64,7 @@ public class LikeServiceImpl implements LikeService {
      * @Date 17:05 2020/03/03
      * @Param []
      * @return java.lang.Integer
-     * @Description 获取缓存中的数目
+     * @Description 根据blogId 获取缓存中的数目
      **/
     @Override
     public Integer getLikeSumFromRedis(Long blogId) {
