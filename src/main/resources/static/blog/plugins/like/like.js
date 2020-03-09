@@ -19,7 +19,6 @@ function showOriginalLike() {
     });
 }
 function cancelLike() {
-    alert("cancelLike");
     isLike = 0;
     var blogId = $("#blogId").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
@@ -39,7 +38,6 @@ function cancelLike() {
     });
 }
 function addLike() {
-    alert("addLike");
     isLike = 1;
     var blogId = $("#blogId").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
@@ -52,7 +50,7 @@ function addLike() {
             $("#originalButton").hide();
             $("#cancelLikeButton").show();
             $("#addLikeButton").hide();
-            $("#addLikeTotal").html(Number(result + blogLikeTotal));
+            $("#addLikeTotal").html(Number(Number(result)+Number (blogLikeTotal)));
         },
         error: function () {
         }
