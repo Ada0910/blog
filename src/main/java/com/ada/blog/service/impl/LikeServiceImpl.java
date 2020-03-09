@@ -38,10 +38,12 @@ public class LikeServiceImpl implements LikeService {
      **/
     @Override
     public void addLikeToRedis(Like like) {
-        String key = "BLOG:LIKE:" + like.getLikeBlogId();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = like.getLikeCreateTime();
-        redisTemplate.opsForHash().put(key, like.getLikeUserIp(), format.format(date));
+        synchronized (this) {
+            String key = "BLOG:LIKE:" + like.getLikeBlogId();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = like.getLikeCreateTime();
+            redisTemplate.opsForHash().put(key, like.getLikeUserIp(), format.format(date));
+        }
     }
 
     /**
@@ -53,8 +55,10 @@ public class LikeServiceImpl implements LikeService {
      **/
     @Override
     public void deleteLikeFromRedis(Like like) {
-        String key = "BLOG:LIKE:" + like.getLikeBlogId();
-        redisTemplate.opsForHash().delete(key, like.getLikeUserIp());
+        synchronized (this) {
+            String key = "BLOG:LIKE:" + like.getLikeBlogId();
+            redisTemplate.opsForHash().delete(key, like.getLikeUserIp());
+        }
     }
 
     /***
@@ -81,7 +85,7 @@ public class LikeServiceImpl implements LikeService {
      * @Author Ada
      * @Date 15:51 2020/03/04
      * @Param [blogId]
-     * @Description 从数据库中获取对应用户的总数
+     * @Description 从数据库中获取对应文章点赞总数
      **/
     @Override
     public Integer getLikeTotal(Long blogId) {
@@ -125,7 +129,6 @@ public class LikeServiceImpl implements LikeService {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
                 likeList.add(like);
                 redisTemplate.opsForHash().delete(key, map.getKey());
             }

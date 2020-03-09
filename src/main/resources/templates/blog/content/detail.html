@@ -78,10 +78,23 @@
                                   <button type="button" class="btn btn-primary"
                                           onclick="showModal()"><i
                                           class="fa fa-pencil-square-o"></i>评论</button>
+                                <button id="originalButton" type="button" class="btn btn-primary"
+                                        onclick="showOriginalLike()"><i
+                                        class="fa fa-thumbs-up"></i>赞<i  th:text="${blogLikeTotal}"></i></button>
 
-                                 <button type="button" class="btn btn-primary"
+                                <button style="display: none" id="cancelLikeButton" type="button" class="btn btn-primary"
+                                        onclick="cancelLike()"><i
+                                        class="fa fa-thumbs-up"></i>赞<i th:id="cancellikeTotal"></i></button>
+
+                                <button style="display: none" id="addlLikeButton" type="button" class="btn btn-primary"
+                                        onclick="addLike()"><i
+                                        class="fa fa-thumbs-up"></i>赞<i th:id="addLikeTotal"></i></button>
+
+                                <input type="hidden" id="blogLikeTotal" name="blogLikeTotal" th:value="${blogLikeTotal}">
+                                <!-- <button type="button" class="btn btn-primary"
                                          onclick="addOrCancelLike()"><i
-                                         class="fa fa-thumbs-up"></i>赞<i th:id="likeTotal" style="width: 20px"></i></button>
+                                         class="fa fa-thumbs-up"></i>赞<i th:id="likeTotal"></i></button>
+                                <input type="hidden" id="blogLikeTotal" name="blogLikeTotal" th:value="${blogLikeTotal}">-->
                             </div>
                     </span>
 

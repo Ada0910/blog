@@ -89,9 +89,11 @@ public class IndexController {
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
+            /**每次刷新页面的时候都会先将缓存里面的数据添加到数据中*/
+            likeService.addLikeList();
             /**添加点赞数*/
-          //  int total = likeService.getLikeTotalFromRedis(blogId) + likeService.getLikeTotal(blogId);
-           // request.setAttribute("blogLikeTotal", total);
+            int total = likeService.getLikeTotal(blogId);
+            request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
         }
