@@ -24,4 +24,8 @@ public interface LikeService {
 
     void addLikeList();
 
+    List<Like> getLikeList();
+
+    void addLikeInfo(Like like);
+
 }

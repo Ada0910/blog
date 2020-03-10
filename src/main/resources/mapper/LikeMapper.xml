@@ -27,4 +27,15 @@
                group by like_blog_id
     </select>
 
+    <select id="getLikeList"  resultMap ="BaseResultMap">
+               select *
+               from tb_like
+    </select>
+
+    <insert id="addLikeInfo"  parameterType="com.ada.blog.entity.Like">
+        insert into tb_like(like_userIp ,like_blog_id,like_create_time)
+        values
+        (#{like.likeUserIp},#{like.likeBlogId},#{like.likeCreateTime})
+
+    </insert>
 </mapper>

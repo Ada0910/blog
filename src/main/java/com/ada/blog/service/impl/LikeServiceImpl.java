@@ -155,4 +155,28 @@ public class LikeServiceImpl implements LikeService {
         }
     }
 
+    /***
+     * @Author Ada
+     * @Date 23:19 2020/3/10
+     * @Param []
+     * @return java.util.List<com.ada.blog.entity.Like>
+     * @Description 从数据库中查询所有数据
+     **/
+    @Override
+    public List<Like> getLikeList() {
+        return likeMapper.getLikeList();
+    }
+
+    /***
+     * @Author Ada
+     * @Date 23:19 2020/3/10
+     * @Param []
+     * @return void
+     * @Description 从缓存中添加到数据库逐条
+     **/
+    @Override
+    public void addLikeInfo(Like like) {
+        likeMapper.addLikeInfo(like);
+    }
+
 }

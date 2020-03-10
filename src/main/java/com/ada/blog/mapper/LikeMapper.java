@@ -16,4 +16,8 @@ public interface LikeMapper {
     Integer addLikeList(List<Like> likeList);
 
     Integer getLikeTotal(Long blogId);
+
+    List<Like> getLikeList();
+
+    void addLikeInfo(Like like);
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ada
@@ -89,8 +91,23 @@ public class IndexController {
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
-            /**每次刷新页面的时候都会先将缓存里面的数据添加到数据中*/
-            likeService.addLikeList();
+            AtomicReference<Boolean> isLike = new AtomicReference<>(false);
+            List<Like> lists = likeService.getLikeList();
+            lists.forEach(like->{
+                if(like.getLikeUserIp().equals(getIpAddress(request))){
+                   isLike.set(true);
+                }
+            });
+
+            /**从数据库取出数据判断是否用户已经点赞*/
+            List<Like> list = likeService.getLikeListFromRedis();
+            list.forEach(like -> {
+                /**如果用户未点赞,插入到数据库*/
+                //if (!like.getLikeUserIp().equals(getIpAddress(request))&&(isLike.get()!=true)) {
+                    likeService.addLikeInfo(like);
+                //}
+            });
+
             /**添加点赞数*/
             int total = likeService.getLikeTotal(blogId);
             request.setAttribute("blogLikeTotal", total);
@@ -310,8 +327,6 @@ public class IndexController {
         } else {
             likeService.deleteLikeFromRedis(like);
         }
-        int total = likeService.getLikeTotalFromRedis(blogId) + likeService.getLikeTotal(blogId);
-        request.setAttribute("blogLikeTotal", total);
         return likeService.getLikeTotalFromRedis(blogId);
     }
 
