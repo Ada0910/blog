@@ -1,56 +1,63 @@
+var isLike ;
 function showOriginalLike() {
+    alert(isLike);
     /**初始化进入页面点赞*/
-    isLike = 1;
     var blogId = $("#blogId").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
-    var data = {"isLike": isLike, "blogId": blogId};
+    var data = {
+        "isLike": isLike,
+        "blogId": blogId,
+    };
     $.ajax({
         type: 'POST',//方法类型
-        url: '/blog/addOrCancelLike',
+        url: '/blog/addLike',
         data: data,
         success: function (result) {
             $("#originalButton").hide();
             $("#cancelLikeButton").show();
             $("#addLikeButton").hide();
-            $("#cancellikeTotal").html(Number(Number(result)+Number (blogLikeTotal)));
+            $("#cancellikeTotal").html(Number(Number(result) + Number(blogLikeTotal)));
+            isLike = 1;
         },
         error: function () {
         }
     });
 }
+
 function cancelLike() {
-    isLike = 0;
     var blogId = $("#blogId").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
     var data = {"isLike": isLike, "blogId": blogId};
     $.ajax({
         type: 'POST',//方法类型
-        url: '/blog/addOrCancelLike',
+        url: '/blog/cancelLike',
         data: data,
         success: function (result) {
             $("#originalButton").hide();
             $("#cancelLikeButton").hide();
             $("#addLikeButton").show();
-            $("#addLikeTotal").html(Number(Number(result)+Number (blogLikeTotal)));
+            $("#addLikeTotal").html(Number(Number(result) + Number(blogLikeTotal)));
+            isLike = 0;
         },
         error: function () {
         }
     });
 }
+
 function addLike() {
-    isLike = 1;
     var blogId = $("#blogId").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
     var data = {"isLike": isLike, "blogId": blogId};
     $.ajax({
         type: 'POST',//方法类型
-        url: '/blog/addOrCancelLike',
+        url: '/blog/addLike',
         data: data,
         success: function (result) {
             $("#originalButton").hide();
             $("#cancelLikeButton").show();
             $("#addLikeButton").hide();
-            $("#addLikeTotal").html(Number(Number(result)+Number (blogLikeTotal)));
+            $("#addLikeTotal").html(Number(Number(result) + Number(blogLikeTotal)));
+            isLike = 1;
         },
         error: function () {
         }

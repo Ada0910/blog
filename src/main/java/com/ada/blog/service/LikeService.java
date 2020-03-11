@@ -24,8 +24,10 @@ public interface LikeService {
 
     void addLikeList();
 
-    List<Like> getLikeList();
+    List<Like> getLikeList(Long blogId);
 
     void addLikeInfo(Like like);
+
+    List<Like> getLikeListFromRedisByBlogId(Long blogId);
 
 }

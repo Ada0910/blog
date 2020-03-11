@@ -91,21 +91,21 @@ public class IndexController {
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
+            /**isLike表示IP是否已经在数据库*/
             AtomicReference<Boolean> isLike = new AtomicReference<>(false);
-            List<Like> lists = likeService.getLikeList();
-            lists.forEach(like->{
-                if(like.getLikeUserIp().equals(getIpAddress(request))){
-                   isLike.set(true);
+            /**查询数据库的数据*/
+            List<Like> blogList = likeService.getLikeList(blogId);
+            blogList.forEach(like -> {
+                if (like.getLikeUserIp().equals(getIpAddress(request))) {
+                    isLike.set(true);
                 }
             });
-
             /**从数据库取出数据判断是否用户已经点赞*/
-            List<Like> list = likeService.getLikeListFromRedis();
-            list.forEach(like -> {
-                /**如果用户未点赞,插入到数据库*/
-                //if (!like.getLikeUserIp().equals(getIpAddress(request))&&(isLike.get()!=true)) {
+            List<Like> redisBlogList = likeService.getLikeListFromRedisByBlogId(blogId);
+            redisBlogList.forEach(like -> {
+                if (!(getIpAddress(request).equals(like.getLikeUserIp()) && isLike.get() == true)) {
                     likeService.addLikeInfo(like);
-                //}
+                }
             });
 
             /**添加点赞数*/
@@ -314,7 +314,8 @@ public class IndexController {
      * @Date 13:53 2020/03/07
      * @Param [request, isLike, blogId]
      * @Description 点赞或者取消添加到redis缓存数据库
-     **/
+     * /*
+     **//*
     @PostMapping("/blog/addOrCancelLike")
     @ResponseBody
     public Integer addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
@@ -327,6 +328,29 @@ public class IndexController {
         } else {
             likeService.deleteLikeFromRedis(like);
         }
+        return likeService.getLikeTotalFromRedis(blogId);
+    }*/
+    @PostMapping("/blog/addLike")
+    @ResponseBody
+    public Integer addLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
+        if (isLike != 1) {
+            Like like = new Like();
+            like.setLikeUserIp(getIpAddress(request));
+            like.setLikeBlogId(blogId);
+            like.setLikeCreateTime(new Date());
+            likeService.addLikeToRedis(like);
+        }
+        return likeService.getLikeTotalFromRedis(blogId);
+    }
+
+    @PostMapping("/blog/cancelLike")
+    @ResponseBody
+    public Integer cancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
+        Like like = new Like();
+        like.setLikeUserIp(getIpAddress(request));
+        like.setLikeBlogId(blogId);
+        like.setLikeCreateTime(new Date());
+        likeService.deleteLikeFromRedis(like);
         return likeService.getLikeTotalFromRedis(blogId);
     }
 
