@@ -1,6 +1,5 @@
-var isLike ;
 function showOriginalLike() {
-    alert(isLike);
+    var isLike = $("#isLike").val();
     /**初始化进入页面点赞*/
     var blogId = $("#blogId").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
@@ -17,7 +16,6 @@ function showOriginalLike() {
             $("#cancelLikeButton").show();
             $("#addLikeButton").hide();
             $("#cancellikeTotal").html(Number(Number(result) + Number(blogLikeTotal)));
-            isLike = 1;
         },
         error: function () {
         }
@@ -26,6 +24,7 @@ function showOriginalLike() {
 
 function cancelLike() {
     var blogId = $("#blogId").val();
+    var isLike = $("#isLike").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
     var data = {"isLike": isLike, "blogId": blogId};
     $.ajax({
@@ -37,7 +36,6 @@ function cancelLike() {
             $("#cancelLikeButton").hide();
             $("#addLikeButton").show();
             $("#addLikeTotal").html(Number(Number(result) + Number(blogLikeTotal)));
-            isLike = 0;
         },
         error: function () {
         }
@@ -46,6 +44,7 @@ function cancelLike() {
 
 function addLike() {
     var blogId = $("#blogId").val();
+    var isLike = $("#isLike").val();
     var blogLikeTotal = $("#blogLikeTotal").val();
     var data = {"isLike": isLike, "blogId": blogId};
     $.ajax({
@@ -57,7 +56,6 @@ function addLike() {
             $("#cancelLikeButton").show();
             $("#addLikeButton").hide();
             $("#addLikeTotal").html(Number(Number(result) + Number(blogLikeTotal)));
-            isLike = 1;
         },
         error: function () {
         }

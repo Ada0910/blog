@@ -95,16 +95,22 @@ public class IndexController {
             AtomicReference<Boolean> isLike = new AtomicReference<>(false);
             /**查询数据库的数据*/
             List<Like> blogList = likeService.getLikeList(blogId);
+            request.setAttribute("isBlogLike", 0);
             blogList.forEach(like -> {
                 if (like.getLikeUserIp().equals(getIpAddress(request))) {
                     isLike.set(true);
+                    request.setAttribute("isBlogLike", 1);
                 }
             });
+
             /**从数据库取出数据判断是否用户已经点赞*/
             List<Like> redisBlogList = likeService.getLikeListFromRedisByBlogId(blogId);
             redisBlogList.forEach(like -> {
+                /**将没有在数据库的redis缓存插入到数据库*/
                 if (!(getIpAddress(request).equals(like.getLikeUserIp()) && isLike.get() == true)) {
                     likeService.addLikeInfo(like);
+                    likeService.deleteLikeFromRedis(like);
+                    request.setAttribute("isBlogLike", 1);
                 }
             });
 
