@@ -63,3 +63,16 @@ function addLike() {
 }
 
 
+/**跳转到上一篇文章*/
+function getPreArticle() {
+    var blogId = $("#preArticle").val()-1;
+    window.location.href="/blog/"+blogId;
+}
+
+
+/**跳转到下一篇文章*/
+function getNextArticle() {
+    var blogId = $("#nextArticle").val()+1;
+    window.location.href="/blog/"+blogId;
+}
+

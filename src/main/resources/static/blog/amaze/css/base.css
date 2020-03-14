@@ -6340,3 +6340,14 @@ button.close {
     height: 100%;
 }
 
+#preArticle,#nextArticle{
+    margin-top: 2%;
+    background-color: rgba(80, 159, 255, 0.8);
+    float: left;
+    border: 1px white solid;
+    height: 34px;
+    text-align: center;
+    width: 147px;
+}
+
+

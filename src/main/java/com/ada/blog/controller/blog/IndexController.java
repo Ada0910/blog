@@ -116,6 +116,7 @@ public class IndexController {
 
             /**添加点赞数*/
             int total = likeService.getLikeTotal(blogId);
+            request.setAttribute("blogId",blogId);
             request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));

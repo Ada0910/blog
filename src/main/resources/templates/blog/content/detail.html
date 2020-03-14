@@ -80,9 +80,10 @@
                                           class="fa fa-pencil-square-o"></i>评论</button>
                                 <button id="originalButton" type="button" class="btn btn-primary"
                                         onclick="showOriginalLike()"><i
-                                        class="fa fa-thumbs-up"></i>赞<i  th:text="${blogLikeTotal}"></i></button>
+                                        class="fa fa-thumbs-up"></i>赞<i th:text="${blogLikeTotal}"></i></button>
 
-                                <button style="display: none" id="cancelLikeButton" type="button" class="btn btn-primary"
+                                <button style="display: none" id="cancelLikeButton" type="button"
+                                        class="btn btn-primary"
                                         onclick="cancelLike()"><i
                                         class="fa fa-thumbs-up"></i>赞<i th:id="cancellikeTotal"></i></button>
 
@@ -90,7 +91,8 @@
                                         onclick="addLike()"><i
                                         class="fa fa-thumbs-up"></i>赞<i th:id="addLikeTotal"></i></button>
 
-                                <input type="hidden" id="blogLikeTotal" name="blogLikeTotal" th:value="${blogLikeTotal}">
+                                <input type="hidden" id="blogLikeTotal" name="blogLikeTotal"
+                                       th:value="${blogLikeTotal}">
                                 <input type="hidden" id="isLike" th:value="${isBlogLike}" name="isBlogLike">
                             </div>
                     </span>
@@ -103,6 +105,11 @@
                             <th:block th:text="${tag}"></th:block>
                         </a>&nbsp;&nbsp;
                     </th:block>
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" th:value="${blogId}" id="preArticle" onclick="getPreArticle();">上一篇</button>
+                    <button class="btn btn-primary" th:value="${blogId}"  id="nextArticle" onclick="getNextArticle();">下一篇</button>
                 </div>
 
             </div>
