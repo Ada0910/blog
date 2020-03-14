@@ -12,10 +12,10 @@
             like_id ,like_userIp ,like_blog_id,like_create_time
         </sql>
 
-    <insert id="addLikeList"  parameterType="java.util.List">
+    <insert id="addLikeList" parameterType="java.util.List">
         insert into tb_like(like_userIp ,like_blog_id,like_create_time)
         values
-        <foreach item="like" collection="list" separator="," >
+        <foreach item="like" collection="list" separator=",">
             (#{like.likeUserIp},#{like.likeBlogId},#{like.likeCreateTime})
         </foreach>
     </insert>
@@ -27,13 +27,13 @@
                group by like_blog_id
     </select>
 
-    <select id="getLikeList"  resultMap ="BaseResultMap" parameterType="java.lang.Long">
+    <select id="getLikeList" resultMap="BaseResultMap" parameterType="java.lang.Long">
                select *
                from tb_like
                where like_blog_id = #{likeBlogId}
     </select>
 
-    <insert id="addLikeInfo"  parameterType="com.ada.blog.entity.Like">
+    <insert id="addLikeInfo" parameterType="com.ada.blog.entity.Like">
         insert into tb_like(like_userIp ,like_blog_id,like_create_time)
         values
         (#{likeUserIp},#{likeBlogId},#{likeCreateTime})

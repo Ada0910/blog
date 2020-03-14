@@ -319,23 +319,8 @@ public class IndexController {
      * @Author Ada
      * @Date 13:53 2020/03/07
      * @Param [request, isLike, blogId]
-     * @Description 点赞或者取消添加到redis缓存数据库
-     * /*
-     **//*
-    @PostMapping("/blog/addOrCancelLike")
-    @ResponseBody
-    public Integer addOrCancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
-        Like like = new Like();
-        like.setLikeUserIp(getIpAddress(request));
-        like.setLikeBlogId(blogId);
-        like.setLikeCreateTime(new Date());
-        if (isLike == 1) {
-            likeService.addLikeToRedis(like);
-        } else {
-            likeService.deleteLikeFromRedis(like);
-        }
-        return likeService.getLikeTotalFromRedis(blogId);
-    }*/
+     * @Description 向缓存数据中添加点赞信息
+     */
     @PostMapping("/blog/addLike")
     @ResponseBody
     public Integer addLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
@@ -349,6 +334,13 @@ public class IndexController {
         return likeService.getLikeTotalFromRedis(blogId);
     }
 
+    /***
+     * @Author Ada
+     * @Date 14:09 2020/03/14
+     * @Param [request, isLike, blogId]
+     * @return java.lang.Integer
+     * @Description 从redis缓存数据库删除点赞信息
+     **/
     @PostMapping("/blog/cancelLike")
     @ResponseBody
     public Integer cancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {

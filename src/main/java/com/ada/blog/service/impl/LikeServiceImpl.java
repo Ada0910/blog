@@ -172,7 +172,7 @@ public class LikeServiceImpl implements LikeService {
      * @Date 23:19 2020/3/10
      * @Param []
      * @return void
-     * @Description 从缓存中添加到数据库逐条
+     * @Description 从缓存redis中逐条添加到数据库
      **/
     @Override
     public void addLikeInfo(Like like) {
