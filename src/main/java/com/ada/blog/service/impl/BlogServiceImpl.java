@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -297,7 +296,7 @@ public class BlogServiceImpl implements BlogService {
 
         //判断是否有缓存
         if (redisTemplate.hasKey(blogRedisKey)) {
-            //加入同步锁，在高并发的时候能够确保资源能够同步的被访问
+            /**加入同步锁，在高并发的时候能够确保资源能够同步的被访问*/
             synchronized (this) {
                 blog.setBlogId(blogId);
                 blog.setBlogTitle((String) redisTemplate.opsForHash().get(blogRedisKey, "blogTitle"));
@@ -338,18 +337,65 @@ public class BlogServiceImpl implements BlogService {
             //将datetime数据类型转化为String类型
             Date createTime = blog.getCreateTime();
             Date updateTime = blog.getUpdateTime();
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             param.put("createTime", format.format(createTime));
             param.put("updateTime", format.format(updateTime));
             //value值是用hash类型
             redisTemplate.opsForHash().putAll(blogRedisKey, param);
-            //设置过期时间
+            //设置过期时间(一个小时)
             redisTemplate.expire(blogRedisKey, 60 * 60, TimeUnit.SECONDS);
         }
 
         //不为空且状态已发布
         BlogDetail blogDetail = getBlogDetail(blog);
         if (blogDetail != null) {
+            return blogDetail;
+        }
+        return null;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:52 2019/7/19
+     * @Param [blog]
+     * @return com.ada.blog.entity.BlogDetail
+     * @Description 方法抽取
+     **/
+    private BlogDetail getBlogDetail(Blog blog) {
+        String key = "WEB:BLOG:" + blog.getBlogId();
+        //博客不为空且是发布状态
+        if (blog != null && blog.getBlogStatus() == 1) {
+            //增加浏览量
+            Long blogViews = blog.getBlogViews() + 1;
+            redisTemplate.opsForHash().increment(key, "blogViews", 1);
+            blogMapper.updateByPrimaryKey(blog);
+            BlogDetail blogDetail = new BlogDetail();
+            BeanUtils.copyProperties(blog, blogDetail);
+            blogDetail.setBlogContent(MarkDownUtil.mdToHtml(blog.getBlogContent()));
+
+
+            Category category = categoryMapper.selectByPrimaryKey(blog.getBlogCategoryId());
+            if (category == null) {
+                category = new Category();
+                category.setCategoryId(0);
+                category.setCategoryName("默认分类");
+                category.setCategoryIcon("/common/dist/img/category/00.png");
+            }
+            //分类信息
+            blogDetail.setBlogCategoryIcon(category.getCategoryIcon());
+
+            if (!StringUtils.isEmpty(blog.getBlogTags())) {
+                //标签设置
+                List<String> tags = Arrays.asList(blog.getBlogTags().split(","));
+                blogDetail.setBlogTags(tags);
+            }
+
+            //设置评论数
+            Map params = new HashMap();
+            params.put("blogId", blog.getBlogId());
+            //过滤审核通过的数据
+            params.put("commentStatus", 1);
+            blogDetail.setCommentCount(commentMapper.getTotalBlogComments(params));
             return blogDetail;
         }
         return null;
@@ -459,52 +505,6 @@ public class BlogServiceImpl implements BlogService {
         return null;
     }
 
-    /***
-     * @Author Ada
-     * @Date 22:52 2019/7/19
-     * @Param [blog]
-     * @return com.ada.blog.entity.BlogDetail
-     * @Description 方法抽取
-     **/
-    private BlogDetail getBlogDetail(Blog blog) {
-        //博客不为空且是发布状态
-        if (blog != null && blog.getBlogStatus() == 1) {
-            //增加浏览量
-            blog.setBlogViews(blog.getBlogViews() + 1);
-            blogMapper.updateByPrimaryKey(blog);
-
-            BlogDetail blogDetail = new BlogDetail();
-            BeanUtils.copyProperties(blog, blogDetail);
-            blogDetail.setBlogContent(MarkDownUtil.mdToHtml(blog.getBlogContent()));
-
-
-            Category category = categoryMapper.selectByPrimaryKey(blog.getBlogCategoryId());
-            if (category == null) {
-                category = new Category();
-                category.setCategoryId(0);
-                category.setCategoryName("默认分类");
-                category.setCategoryIcon("/common/dist/img/category/00.png");
-            }
-            //分类信息
-            blogDetail.setBlogCategoryIcon(category.getCategoryIcon());
-
-            if (!StringUtils.isEmpty(blog.getBlogTags())) {
-                //标签设置
-                List<String> tags = Arrays.asList(blog.getBlogTags().split(","));
-                blogDetail.setBlogTags(tags);
-            }
-
-            //设置评论数
-            Map params = new HashMap();
-            params.put("blogId", blog.getBlogId());
-            //过滤审核通过的数据
-            params.put("commentStatus", 1);
-            blogDetail.setCommentCount(commentMapper.getTotalBlogComments(params));
-            return blogDetail;
-        }
-        return null;
-    }
-
     /**
      * @return java.util.List<com.ada.blog.entity.BlogList>
      * @Author Ada
@@ -538,5 +538,10 @@ public class BlogServiceImpl implements BlogService {
             }
         }
         return blogLists;
+    }
+
+    @Override
+    public List<Long> getBlogIdList() {
+        return blogMapper.getBlogIdList();
     }
 }

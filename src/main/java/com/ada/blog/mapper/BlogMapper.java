@@ -72,4 +72,6 @@ public interface BlogMapper {
     int getTotalBlogByTagId(PageUtil pageUtil);
 
    Blog selectBySubUrl(String subUrl);
+
+    List<Long> getBlogIdList();
 }

@@ -2,6 +2,7 @@ package com.ada.blog.controller.blog;
 
 import com.ada.blog.entity.BlogDetail;
 import com.ada.blog.entity.Comment;
+import com.ada.blog.entity.Like;
 import com.ada.blog.entity.Version;
 import com.ada.blog.service.*;
 import com.ada.blog.util.*;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author Ada
@@ -36,6 +40,9 @@ public class IndexController {
 
     @Autowired
     public VersionService versionService;
+
+    @Autowired
+    public LikeService likeService;
 
     /***
      * @Author Ada
@@ -84,6 +91,33 @@ public class IndexController {
     public String detail(HttpServletRequest request, @PathVariable("blogId") Long blogId, @RequestParam(value = "commentPage", required = false, defaultValue = "1") Integer commentPage) {
         BlogDetail blogDetail = blogService.getBlogDetail(blogId);
         if (blogDetail != null) {
+            /**isLike表示IP是否已经在数据库*/
+            AtomicReference<Boolean> isLike = new AtomicReference<>(false);
+            /**查询数据库的数据*/
+            List<Like> blogList = likeService.getLikeList(blogId);
+            request.setAttribute("isBlogLike", 0);
+            blogList.forEach(like -> {
+                if (like.getLikeUserIp().equals(getIpAddress(request))) {
+                    isLike.set(true);
+                    request.setAttribute("isBlogLike", 1);
+                }
+            });
+
+            /**从数据库取出数据判断是否用户已经点赞*/
+            List<Like> redisBlogList = likeService.getLikeListFromRedisByBlogId(blogId);
+            redisBlogList.forEach(like -> {
+                /**将没有在数据库的redis缓存插入到数据库*/
+                if (!(getIpAddress(request).equals(like.getLikeUserIp()) && isLike.get() == true)) {
+                    likeService.addLikeInfo(like);
+                    likeService.deleteLikeFromRedis(like);
+                    request.setAttribute("isBlogLike", 1);
+                }
+            });
+
+            /**添加点赞数*/
+            int total = likeService.getLikeTotal(blogId);
+            request.setAttribute("blogId", blogId);
+            request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
         }
@@ -278,6 +312,58 @@ public class IndexController {
     public ResultUtil info(HttpServletRequest request) {
         Version version = versionService.getLatestVersion();
         return ResultStatusUtil.successResult(version);
+    }
+
+
+    /**
+     * @return com.ada.blog.util.ResultUtil
+     * @Author Ada
+     * @Date 13:53 2020/03/07
+     * @Param [request, isLike, blogId]
+     * @Description 向缓存数据中添加点赞信息
+     */
+    @PostMapping("/blog/addLike")
+    @ResponseBody
+    public Integer addLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
+        if (isLike != 1) {
+            Like like = new Like();
+            like.setLikeUserIp(getIpAddress(request));
+            like.setLikeBlogId(blogId);
+            like.setLikeCreateTime(new Date());
+            likeService.addLikeToRedis(like);
+        }
+        return likeService.getLikeTotalFromRedis(blogId);
+    }
+
+    /***
+     * @Author Ada
+     * @Date 14:09 2020/03/14
+     * @Param [request, isLike, blogId]
+     * @return java.lang.Integer
+     * @Description 从redis缓存数据库删除点赞信息
+     **/
+    @PostMapping("/blog/cancelLike")
+    @ResponseBody
+    public Integer cancelLike(HttpServletRequest request, @RequestParam Integer isLike, @RequestParam Long blogId) {
+        Like like = new Like();
+        like.setLikeUserIp(getIpAddress(request));
+        like.setLikeBlogId(blogId);
+        like.setLikeCreateTime(new Date());
+        likeService.deleteLikeFromRedis(like);
+        return likeService.getLikeTotalFromRedis(blogId);
+    }
+
+    /****
+     * @Author Ada
+     * @Date 16:45 2020/3/15
+     * @Param []
+     * @return java.util.List<java.lang.Long>
+     * @Description 获取所有的blogId
+     **/
+    @PostMapping("/blog/getBlogIdList")
+    @ResponseBody
+    public List<Long> getBlogIdList() {
+        return blogService.getBlogIdList();
     }
 
 }

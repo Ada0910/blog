@@ -44,7 +44,8 @@
 
     <select id="findBlogList" parameterType="Map" resultMap="ResultMapWithBLOBs">
         select
-        <include refid="Base_Column_List"/>,<include refid="Blob_Column_List"/>
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
         from tb_blog
         where is_deleted=0
         <if test="keyword!=null">
@@ -294,5 +295,10 @@
         <include refid="Blob_Column_List"/>
         from tb_blog
         where blog_sub_url = #{subUrl,jdbcType=VARCHAR} and is_deleted = 0 limit 1
+    </select>
+
+    <select id="getBlogIdList" resultType="java.lang.Long">
+        select blog_id
+        from tb_blog
     </select>
 </mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ada.blog.mapper.LikeMapper">
+    <resultMap id="BaseResultMap" type="com.ada.blog.entity.Like">
+        <id column="like_id" jdbcType="INTEGER" property="likeId"/>
+        <result column="like_userIp" jdbcType="VARCHAR" property="likeUserIp"/>
+        <result column="like_blog_id" jdbcType="INTEGER" property="likeBlogId"/>
+        <result column="like_create_time" jdbcType="TIMESTAMP" property="likeCreateTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+            like_id ,like_userIp ,like_blog_id,like_create_time
+        </sql>
+
+    <insert id="addLikeList" parameterType="java.util.List">
+        insert into tb_like(like_userIp ,like_blog_id,like_create_time)
+        values
+        <foreach item="like" collection="list" separator=",">
+            (#{like.likeUserIp},#{like.likeBlogId},#{like.likeCreateTime})
+        </foreach>
+    </insert>
+
+    <select id="getLikeTotal" parameterType="java.lang.Long" resultType="java.lang.Integer">
+               select count(*)
+               from tb_like
+               where like_blog_id=#{blogId}
+               group by like_blog_id
+    </select>
+
+    <select id="getLikeList" resultMap="BaseResultMap" parameterType="java.lang.Long">
+               select *
+               from tb_like
+               where like_blog_id = #{likeBlogId}
+    </select>
+
+    <insert id="addLikeInfo" parameterType="com.ada.blog.entity.Like">
+        insert into tb_like(like_userIp ,like_blog_id,like_create_time)
+        values
+        (#{likeUserIp},#{likeBlogId},#{likeCreateTime})
+    </insert>
+</mapper>
