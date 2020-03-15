@@ -116,7 +116,7 @@ public class IndexController {
 
             /**添加点赞数*/
             int total = likeService.getLikeTotal(blogId);
-            request.setAttribute("blogId",blogId);
+            request.setAttribute("blogId", blogId);
             request.setAttribute("blogLikeTotal", total);
             request.setAttribute("blogDetail", blogDetail);
             request.setAttribute("commentPageResult", commentService.getCommentPageByBlogIdAndPageNum(blogId, commentPage));
@@ -351,6 +351,19 @@ public class IndexController {
         like.setLikeCreateTime(new Date());
         likeService.deleteLikeFromRedis(like);
         return likeService.getLikeTotalFromRedis(blogId);
+    }
+
+    /****
+     * @Author Ada
+     * @Date 16:45 2020/3/15
+     * @Param []
+     * @return java.util.List<java.lang.Long>
+     * @Description 获取所有的blogId
+     **/
+    @PostMapping("/blog/getBlogIdList")
+    @ResponseBody
+    public List<Long> getBlogIdList() {
+        return blogService.getBlogIdList();
     }
 
 }

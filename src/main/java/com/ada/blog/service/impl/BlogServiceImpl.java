@@ -505,7 +505,6 @@ public class BlogServiceImpl implements BlogService {
         return null;
     }
 
-
     /**
      * @return java.util.List<com.ada.blog.entity.BlogList>
      * @Author Ada
@@ -539,5 +538,10 @@ public class BlogServiceImpl implements BlogService {
             }
         }
         return blogLists;
+    }
+
+    @Override
+    public List<Long> getBlogIdList() {
+        return blogMapper.getBlogIdList();
     }
 }

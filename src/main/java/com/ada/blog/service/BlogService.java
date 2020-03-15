@@ -42,4 +42,5 @@ public interface BlogService {
 
     BlogDetail getBlogDetailBySubUrl(String subUrl);
 
+    List<Long> getBlogIdList();
 }
