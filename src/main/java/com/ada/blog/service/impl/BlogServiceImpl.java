@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -544,4 +545,30 @@ public class BlogServiceImpl implements BlogService {
     public List<Long> getBlogIdList() {
         return blogMapper.getBlogIdList();
     }
+
+    /**
+     * 定时备份数据库
+     */
+    /*@Scheduled(cron = "* * * * * ?")*/
+    public void databasebackup() throws Exception {
+        System.out.println("定时备份数据库>>>>>>" + new Date());
+        String filePath = "/backup";
+        String dbName = "web_db";//备份的数据库名
+        String username = "root";//用户名
+        String password = "xieweining0728";//密码
+        File uploadDir = new File(filePath);
+        if (!uploadDir.exists())
+            uploadDir.mkdirs();
+
+        String cmd = "mysqldump -u" + username + "  -p " + password + dbName + " -r "
+                + filePath + "/" + dbName + new java.util.Date().getTime() + ".sql";
+        try {
+            Process process = Runtime.getRuntime().exec(cmd);
+            System.out.println("备份数据库成功!!!");
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
 }
