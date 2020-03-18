@@ -24,6 +24,7 @@
     <script th:src="@{/blog/plugins/dictionary/dictionary.js}"></script>
     <script th:src="@{/blog/plugins/comment/valid.js}"></script>
     <script th:src="@{/blog/plugins/comment/comment.js}"></script>
+    <script th:src="@{/blog/plugins/blog/blog.js}"></script>
     <!-- sweetalert -->
     <script th:src="@{/common/plugins/sweetalert/sweetalert.min.js}"></script>
     <script th:src="@{/blog/plugins/like/like.js}"></script>
@@ -75,6 +76,9 @@
                                 <a href="#comments" class="article-comments" style="color:black"><th:block
                                         th:text="${blogDetail.commentCount}"></th:block>条评论</a> &nbsp;
                                 <th:block th:text="${blogDetail.blogViews}"></th:block>浏览 &nbsp;&nbsp;&nbsp;&nbsp;
+                                 <button type="button" class="btn btn-primary"
+                                         onclick="pdfDownload()"><i
+                                         class="fa fa-file-pdf-o"></i>&nbsp;保存到本地</button>
                                   <button type="button" class="btn btn-primary"
                                           onclick="showModal()"><i
                                           class="fa fa-pencil-square-o"></i>评论</button>
@@ -109,7 +113,7 @@
 
                 <div>
                     <button class="btn btn-primary" th:value="${blogId}" id="preArticle" onclick="getPreArticle();">上一篇</button>
-                    <button class="btn btn-primary" th:value="${blogId}"  id="nextArticle" onclick="g tNextArticle();" style="margin-left: 5%">下一篇</button>
+                    <button class="btn btn-primary" th:value="${blogId}"  id="nextArticle" onclick="getNextArticle();" style="margin-left: 5%">下一篇</button>
                 </div>
 
             </div>
