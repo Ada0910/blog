@@ -21,7 +21,6 @@ function getPreArticle() {
     });
 }
 
-
 /**跳转到下一篇文章*/
 function getNextArticle() {
     var blogId = Number($("#nextArticle").val());
@@ -48,11 +47,13 @@ function getNextArticle() {
 /**下载pdf到本地*/
 function pdfDownload() {
     $.ajax({
-        type: 'POST',//方法类型
+        type: 'get',//方法类型
         url: '/blog/pdfDownload',
         success: function (result) {
         },
+        error:function (result) {
+           swal("下载失败");
+        }
     });
-
 
 }
