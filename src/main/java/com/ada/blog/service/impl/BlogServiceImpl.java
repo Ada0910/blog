@@ -552,7 +552,7 @@ public class BlogServiceImpl implements BlogService {
     /*@Scheduled(cron = "* * * * * ?")*/
     public void databasebackup() throws Exception {
         System.out.println("定时备份数据库>>>>>>" + new Date());
-        String filePath = "/backup";
+        String filePath = "/blog/static/backup/";
         String dbName = "web_db";//备份的数据库名
         String username = "root";//用户名
         String password = "xieweining0728";//密码

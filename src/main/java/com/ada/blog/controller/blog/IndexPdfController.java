@@ -16,14 +16,22 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class IndexPdfController {
 
+    /**
+     * @Author Ada
+     * @Date 15:02 2020/03/21
+     * @Param [request, response]
+     * @return void
+     * @Description 保存PDF到本地
+     **/
     @RequestMapping("/blog/pdfDownload")
     public void pdfDownload(HttpServletRequest request, HttpServletResponse response) {
         PdfUtil pdfUtil = new PdfUtil();
-        String html=getHtmlCode() ;
+        String htmlContent=getHtmlCode();
+       // String htmlContent=request.getParameter("blogContent");
         String fileName = "MyPDF.pdf";
-        pdfUtil.createPdf(html, fileName);
-        pdfUtil.downLoad(fileName, response);
-        pdfUtil.deletePdf(fileName);
+        pdfUtil.createPdf(htmlContent, fileName);
+        pdfUtil.downLoadPdf(fileName, response);
+      //  pdfUtil.deletePdf(fileName);
 
     }
     private String getHtmlCode(){
@@ -39,10 +47,10 @@ public class IndexPdfController {
         html.append("<h1>这是一个PDF文档</h1>");
         html.append("<table>");
         html.append("<tr>");
-        html.append("<td>第一列</td>");
-        html.append("<td>第二列</td>");
-        html.append("<td>第三列</td>");
-        html.append("<td>第四列</td>");
+        html.append("<td>第一列1</td>");
+        html.append("<td>第二列2</td>");
+        html.append("<td>第三列3</td>");
+        html.append("<td>第四列4</td>");
         html.append("</tr>");
         html.append("</table>");
         html.append("</body></html>");
