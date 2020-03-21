@@ -366,4 +366,5 @@ public class IndexController {
         return blogService.getBlogIdList();
     }
 
+
 }
