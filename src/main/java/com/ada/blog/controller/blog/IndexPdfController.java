@@ -1,7 +1,12 @@
 package com.ada.blog.controller.blog;
 
+import com.ada.blog.entity.Blog;
+import com.ada.blog.service.BlogService;
+import com.ada.blog.util.MarkDownUtil;
 import com.ada.blog.util.PdfUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,25 +21,36 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class IndexPdfController {
 
+    @Autowired
+    private BlogService blogService;
+
     /**
+     * @return void
      * @Author Ada
      * @Date 15:02 2020/03/21
      * @Param [request, response]
-     * @return void
      * @Description 保存PDF到本地
      **/
-    @RequestMapping("/blog/pdfDownload")
-    public void pdfDownload(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping("/blog/pdfDownload/{blogId}")
+    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") Long blogId) {
+        String suffixName = ".pdf";
+        Blog blog = blogService.getBlogById(blogId);
+        String blogContent = blog.getBlogContent();
+        String fileName = blog.getBlogTitle() + suffixName;
         PdfUtil pdfUtil = new PdfUtil();
-        String htmlContent=getHtmlCode();
-       // String htmlContent=request.getParameter("blogContent");
-        String fileName = "MyPDF.pdf";
-        pdfUtil.createPdf(htmlContent, fileName);
-        pdfUtil.downLoadPdf(fileName, response);
-      //  pdfUtil.deletePdf(fileName);
-
+        pdfUtil.createPdf(addHtmlTag(blogContent), fileName);
+        pdfUtil.downLoadPdf(response, fileName);
+        pdfUtil.deletePdf(fileName);
     }
-    private String getHtmlCode(){
+
+    /***
+     * @Author Ada
+     * @Date 22:47 2020/3/22
+     * @Param [blogContent]
+     * @return java.lang.String
+     * @Description 添加HTML标签
+     **/
+    public String addHtmlTag(String blogContent) {
         StringBuffer html = new StringBuffer();
         html.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
         html.append("<html xmlns=\"http://www.w3.org/1999/xhtml\">")
@@ -44,19 +60,10 @@ public class IndexPdfController {
                 .append("<style type=\"text/css\">img {width: 700px;}</style>")
                 .append("</head>")
                 .append("<body>");
-        html.append("<h1>这是一个PDF文档</h1>");
-        html.append("<table>");
-        html.append("<tr>");
-        html.append("<td>第一列1</td>");
-        html.append("<td>第二列2</td>");
-        html.append("<td>第三列3</td>");
-        html.append("<td>第四列4</td>");
-        html.append("</tr>");
-        html.append("</table>");
+        html.append(MarkDownUtil.mdToHtml(blogContent));
         html.append("</body></html>");
         return html.toString();
     }
-
 
 
 }

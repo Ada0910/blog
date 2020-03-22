@@ -4,7 +4,6 @@ import com.itextpdf.text.pdf.BaseFont;
 import org.springframework.util.ResourceUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -52,7 +51,7 @@ public class PdfUtil {
      * @return void
      * @Description 创建PDF文件到服务器
      **/
-    public void createPdf(String htmlContent, String fileName) {
+    public void createPdf(String blogContent, String fileName) {
         try {
             File file = new File(PDF_TEMP_PATH + fileName);
             FileOutputStream outputStream = new FileOutputStream(file);
@@ -65,7 +64,7 @@ public class PdfUtil {
              * 云服务请用这个
              * fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
              */
-            renderer.setDocumentFromString(htmlContent);
+            renderer.setDocumentFromString(blogContent);
             renderer.layout();
             renderer.createPDF(outputStream);
         } catch (Exception e) {
@@ -80,15 +79,21 @@ public class PdfUtil {
      * @return void
      * @Description 从服务器上下载PDF
      **/
-    public void downLoadPdf(String fileName, HttpServletResponse response) {
+    public void downLoadPdf( HttpServletResponse response,String fileName) {
+        File pdfFile = new File(PDF_TEMP_PATH + fileName);
         try {
             /**将文件读取到内存*/
             FileInputStream fileInputStream = new FileInputStream(PDF_TEMP_PATH + fileName);
-            ServletOutputStream outputStream = response.getOutputStream();
             response.reset();
+            fileName = new String(fileName.getBytes(), "ISO-8859-1");
+            /**在浏览器提示用户是保存还是下载*/
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            /**根据个人需要,这个是下载文件的类型*/
+            response.setContentType("application/octet-stream; charset=UTF-8");
             response.setHeader("content-type", "application/pdf");
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("application/octet-stream");
+            /**告诉浏览器下载文件的大小*/
+            response.setHeader("Content-Length", String.valueOf(pdfFile.length()));
+            ServletOutputStream outputStream = response.getOutputStream();
             /**输出*/
             int len = 1;
             byte[] bs = new byte[1024];

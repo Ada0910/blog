@@ -138,6 +138,10 @@
             <artifactId>core-renderer</artifactId>
             <version>R8</version>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -46,19 +46,7 @@ function getNextArticle() {
 
 /**下载pdf到本地*/
 function pdfDownload() {
-    var blogContent = $("#blogContent").val();
-    alert(blogContent);
-    $.ajax({
-        type: 'get',//方法类型
-        url: '/blog/pdfDownload',
-        data:{
-          blogContent:blogContent
-        },
-        success: function (result) {
-        },
-        error:function (result) {
-           swal("下载失败");
-        }
-    });
+    var blogId = $("#preArticle").val();
+   window.location.href = '/blog/pdfDownload/'+blogId;
 
 }
