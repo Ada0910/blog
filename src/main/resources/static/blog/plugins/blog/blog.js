@@ -53,6 +53,16 @@ function pdfDownload() {
 
 /**分享到微信*/
 function shareToWeChat() {
+    var content = "http://www.isada.cn/blog/"+$("#blogId").val();
+    $.post("./blog/shareToWeChat", {
+        content: content
+    }, function (result) {
+       /* if (result.success) {
+           // $("#blogQRContent").attr('src',  result.path);
+        } else {
+
+        }*/
+    }, 'json');
    $('#blogWechatContent').show();
     $('#popLayer').show();
 }
