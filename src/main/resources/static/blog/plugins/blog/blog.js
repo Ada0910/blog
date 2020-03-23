@@ -47,6 +47,17 @@ function getNextArticle() {
 /**下载pdf到本地*/
 function pdfDownload() {
     var blogId = $("#preArticle").val();
-   window.location.href = '/blog/pdfDownload/'+blogId;
+    window.location.href = '/blog/pdfDownload/' + blogId;
 
+}
+
+/**分享到微信*/
+function shareToWeChat() {
+   $('#blogWechatContent').show();
+    $('#popLayer').show();
+}
+
+function closeWeChatShare() {
+    $("#popLayer").attr("style","display:none");
+    $('#blogWechatContent').attr("style","display:none");
 }
