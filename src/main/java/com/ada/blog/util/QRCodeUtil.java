@@ -1,91 +1,81 @@
 package com.ada.blog.util;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class QRCodeUtil {
+    private static Logger log = LoggerFactory.getLogger(QRCodeUtil.class);
 
-/*    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        float f = Float.valueOf(120 - 40) / Float.valueOf(20);
-        f = (float) Math.ceil(f);
-        int i = (int) (f + 3);
-        System.out.println(i);//+3
-    }*/
-
-    /**
-     * 生成二维码(QRCode)图片的公共方法
-     * content 存储内容
-     * imgType 图片类型   jpg
-     * size 二维码尺寸size = "4";
-     */
-    public static BufferedImage qRCodeCommon(String content, String imgType, int size) {
-        BufferedImage bufImg = null;
+    /***
+     * @Author Ada
+     * @Date 22:30 2020/3/24
+     * @Param [text, path]
+     * @return void
+     * @Description 生成二维码
+     **/
+    public static void encodeQRCode(String text, String path, Integer width, Integer height, String format) {
         try {
-            Qrcode qrcodeHandler = new Qrcode();
-            // 设置二维码排错率，可选L(7%)、M(15%)、Q(25%)、H(30%)，排错率越高可存储的信息越少，但对二维码清晰度的要求越小
-            qrcodeHandler.setQrcodeErrorCorrect('M');
-            qrcodeHandler.setQrcodeEncodeMode('B');
-            // 设置设置二维码尺寸，取值范围1-40，值越大尺寸越大，可存储的信息越大
-            qrcodeHandler.setQrcodeVersion(size);
-            // 获得内容的字节数组，设置编码格式
-            byte[] contentBytes = content.getBytes("utf-8");
-            // 图片尺寸
-            int imgSize = 67 + 12 * (size - 1);
-            bufImg = new BufferedImage(imgSize, imgSize, BufferedImage.TYPE_INT_RGB);
-            Graphics2D gs = bufImg.createGraphics();
-            // 设置背景颜色
-            gs.setBackground(Color.WHITE);
-            gs.clearRect(0, 0, imgSize, imgSize);
-
-            // 设定图像颜色> BLACK
-            gs.setColor(Color.BLACK);
-            // 设置偏移量，不设置可能导致解析出错
-            int pixoff = 2;
-            // 输出内容> 二维码
-            if (contentBytes.length > 0 && contentBytes.length < 800) {
-                boolean[][] codeOut = qrcodeHandler.calQrcode(contentBytes);
-                for (int i = 0; i < codeOut.length; i++) {
-                    for (int j = 0; j < codeOut.length; j++) {
-                        if (codeOut[j][i]) {
-                            gs.fillRect(j * 3 + pixoff, i * 3 + pixoff, 3, 3);
-                        }
-                    }
+            /**得到文件对象*/
+            File file = new File(path);
+            /**判断目标文件所在的目录是否存在*/
+            if (!file.getParentFile().exists()) {
+                /**如果目标文件所在的目录不存在，则创建父目录*/
+                log.info("目标文件所在目录不存在，准备创建它！");
+                if (!file.getParentFile().mkdirs()) {
+                    log.info("创建目标文件所在目录失败！");
+                    return;
                 }
-            } else {
-                throw new Exception("QRCode content bytes length = " + contentBytes.length + " not in [0, 800].");
             }
-            gs.dispose();
-            bufImg.flush();
-        } catch (Exception e) {
+            // 宽
+            if (width == null) {
+                width = 300;
+            }
+            // 高
+            if (height == null) {
+                height = 300;
+            }
+            // 图片格式
+            if (format == null) {
+                format = "png";
+            }
+
+            /**设置字符集编码*/
+            Map<EncodeHintType, Object> hints = new HashMap<>();
+            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+            // 生成二维码矩阵
+            BitMatrix bitMatrix = null;
+
+            bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);
+
+            // 二维码路径
+            Path outputPath = Paths.get(path);
+            // 写入文件
+            MatrixToImageWriter.writeToPath(bitMatrix, format, outputPath);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return bufImg;
     }
 
 
-    /**
-     * 0-40  =3____   40-60=4______   60-80=5_____       80- 100= 6
-     * 100-120  =7____   120-140=8______   140-180=9_____
-     *
-     * @param content
-     * @return
-     */
-    public static int getSize(String content) {
-        int defaultSize = 3;
-
-        if (content.length() < 40) {
-            return defaultSize;
-        }
-        //由 String 转换成 Float
-        float f = Float.valueOf(content.length() - 40) / Float.valueOf(20);
-        f = (float) Math.ceil(f);
-        int i = (int) (f + 3);
-
-        return i;
+    public static boolean makeDirs(String filePath) {
+        File folder = new File(filePath);
+        return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
     }
 
 
