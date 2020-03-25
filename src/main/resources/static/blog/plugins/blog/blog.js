@@ -1,6 +1,6 @@
 /**跳转到上一篇文章*/
 function getPreArticle() {
-    var blogId = Number($("#preArticle").val());
+    var blogId = Number($("#blogId").val());
     var id;
     $.ajax({
         type: 'POST',//方法类型
@@ -23,7 +23,7 @@ function getPreArticle() {
 
 /**跳转到下一篇文章*/
 function getNextArticle() {
-    var blogId = Number($("#nextArticle").val());
+    var blogId = Number($("#blogId").val());
     var id;
     $.ajax({
         type: 'POST',//方法类型
@@ -53,19 +53,28 @@ function pdfDownload() {
 
 /**分享到微信*/
 function shareToWeChat() {
-    var blogId= $("#blogId").val();
-    var content = "http://www.isada.cn/blog/"+blogId;
-    $.post("/blog/shareToWeChat", {
-        content: content,
-        blogId :blogId
-    }, function (result) {
-
-    }, 'json');
-   $('#blogWechatContent').show();
-   $('#popLayer').show();
+    var blogId = Number($("#blogId").val());
+    var content = "http://www.isada.cn/blog/" + blogId;
+    $.ajax({
+        type: 'POST',//方法类型
+        url: '/blog/shareToWeChat',
+        data: {
+            content: content,
+            blogId: blogId
+        },
+        dataType: "json",
+        success: function (result) {
+            $("#blogQRContent").attr("src", result.message);
+        },
+        error: function (result) {
+            swal("请求有误!!");
+        }
+    });
+    $('#blogWechatContent').show();
+    $('#popLayer').show();
 }
 
 function closeWeChatShare() {
-    $("#popLayer").attr("style","display:none");
-    $('#blogWechatContent').attr("style","display:none");
+    $("#popLayer").attr("style", "display:none");
+    $('#blogWechatContent').attr("style", "display:none");
 }

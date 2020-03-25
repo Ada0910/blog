@@ -26,7 +26,10 @@ public class QRCodeUtil {
      * @return void
      * @Description 生成二维码
      **/
-    public static void encodeQRCode(String text, String path, Integer width, Integer height, String format) {
+    public static void encodeQRCode(String text, String path) {
+        Integer width = 300;
+        Integer height = 300;
+        String format = ".png";
         try {
             /**得到文件对象*/
             File file = new File(path);
@@ -39,43 +42,22 @@ public class QRCodeUtil {
                     return;
                 }
             }
-            // 宽
-            if (width == null) {
-                width = 300;
-            }
-            // 高
-            if (height == null) {
-                height = 300;
-            }
-            // 图片格式
-            if (format == null) {
-                format = "png";
-            }
-
             /**设置字符集编码*/
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            // 生成二维码矩阵
+            /** 生成二维码矩阵*/
             BitMatrix bitMatrix = null;
-
             bitMatrix = new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);
 
-            // 二维码路径
+            /**二维码保存路径*/
             Path outputPath = Paths.get(path);
-            // 写入文件
+            /** 写入文件*/
             MatrixToImageWriter.writeToPath(bitMatrix, format, outputPath);
-
         } catch (WriterException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    public static boolean makeDirs(String filePath) {
-        File folder = new File(filePath);
-        return (folder.exists() && folder.isDirectory()) ? true : folder.mkdirs();
     }
 
 

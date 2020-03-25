@@ -6353,9 +6353,9 @@ button.close {
 #blogWechatContent{
     position: absolute;
     display:none;
-    width:25%;
+    width:20%;
     left:30%;
-    top:10%;
+    top:5%;
     z-index:99;
     background-color: white;
 }
