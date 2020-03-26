@@ -6127,8 +6127,8 @@ button.close {
     background:rgba(12,8,18,0.99);
     -moz-opacity: 0.8;
     opacity:.80;
-    width: 10000px;
-    height: 10000px;
+    width:100%;
+    height: 100%;
 }
 
 
@@ -6348,6 +6348,16 @@ button.close {
     height: 34px;
     text-align: center;
     width: 147px;
+}
+
+#blogWechatContent{
+    position: absolute;
+    display:none;
+    width:20%;
+    left:30%;
+    top:5%;
+    z-index:99;
+    background-color: white;
 }
 
 

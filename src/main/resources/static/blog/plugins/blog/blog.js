@@ -1,6 +1,6 @@
 /**跳转到上一篇文章*/
 function getPreArticle() {
-    var blogId = Number($("#preArticle").val());
+    var blogId = Number($("#blogId").val());
     var id;
     $.ajax({
         type: 'POST',//方法类型
@@ -23,7 +23,7 @@ function getPreArticle() {
 
 /**跳转到下一篇文章*/
 function getNextArticle() {
-    var blogId = Number($("#nextArticle").val());
+    var blogId = Number($("#blogId").val());
     var id;
     $.ajax({
         type: 'POST',//方法类型
@@ -46,19 +46,35 @@ function getNextArticle() {
 
 /**下载pdf到本地*/
 function pdfDownload() {
-    var blogContent = $("#blogContent").val();
-    alert(blogContent);
+    var blogId = $("#preArticle").val();
+    window.location.href = '/blog/pdfDownload/' + blogId;
+
+}
+
+/**分享到微信*/
+function shareToWeChat() {
+    var blogId = Number($("#blogId").val());
+    var content = "http://www.isada.cn/blog/" + blogId;
     $.ajax({
-        type: 'get',//方法类型
-        url: '/blog/pdfDownload',
-        data:{
-          blogContent:blogContent
+        type: 'POST',//方法类型
+        url: '/blog/shareToWeChat',
+        data: {
+            content: content,
+            blogId: blogId
         },
+        dataType: "json",
         success: function (result) {
+            $("#blogQRContent").attr("src", result.message);
         },
-        error:function (result) {
-           swal("下载失败");
+        error: function (result) {
+            swal("请求有误!!");
         }
     });
+    $('#blogWechatContent').show();
+    $('#popLayer').show();
+}
 
+function closeWeChatShare() {
+    $("#popLayer").attr("style", "display:none");
+    $('#blogWechatContent').attr("style", "display:none");
 }

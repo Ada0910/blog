@@ -78,26 +78,29 @@
                                 <th:block th:text="${blogDetail.blogViews}"></th:block>浏览 &nbsp;&nbsp;&nbsp;&nbsp;
                                  <button type="button" class="btn btn-primary"
                                          onclick="pdfDownload()"><i
-                                         class="fa fa-file-pdf-o"></i>&nbsp;保存到本地</button>
+                                         class="fa fa-file-pdf-o"></i>&nbsp;</button>
                                   <button type="button" class="btn btn-primary"
                                           onclick="showModal()"><i
-                                          class="fa fa-pencil-square-o"></i>评论</button>
+                                          class="fa fa-pencil-square-o"></i></button>
                                 <button id="originalButton" type="button" class="btn btn-primary"
                                         onclick="showOriginalLike()"><i
-                                        class="fa fa-thumbs-up"></i>赞<i th:text="${blogLikeTotal}"></i></button>
+                                        class="fa fa-thumbs-up"></i><i th:text="${blogLikeTotal}"></i></button>
 
                                 <button style="display: none" id="cancelLikeButton" type="button"
                                         class="btn btn-primary"
                                         onclick="cancelLike()"><i
-                                        class="fa fa-thumbs-up"></i>赞<i th:id="cancellikeTotal"></i></button>
+                                        class="fa fa-thumbs-up"></i><i th:id="cancellikeTotal"></i></button>
 
                                 <button style="display: none" id="addLikeButton" type="button" class="btn btn-primary"
                                         onclick="addLike()"><i
-                                        class="fa fa-thumbs-up"></i>赞<i th:id="addLikeTotal"></i></button>
+                                        class="fa fa-thumbs-up"></i><i th:id="addLikeTotal"></i></button>
 
                                 <input type="hidden" id="blogLikeTotal" name="blogLikeTotal"
                                        th:value="${blogLikeTotal}">
                                 <input type="hidden" id="isLike" th:value="${isBlogLike}" name="isBlogLike">
+
+                                  <button  id="shareToWeChat" type="button" class="btn btn-primary"
+                                          onclick="shareToWeChat()"><i class="fa fa-weixin"></i></button>
                             </div>
                     </span>
 
@@ -112,8 +115,8 @@
                 </div>
 
                 <div>
-                    <button class="btn btn-primary" th:value="${blogId}" id="preArticle" onclick="getPreArticle();">上一篇</button>
-                    <button class="btn btn-primary" th:value="${blogId}"  id="nextArticle" onclick="getNextArticle();" style="margin-left: 5%">下一篇</button>
+                    <button class="btn btn-primary"  id="preArticle" onclick="getPreArticle();"><i class="fa fa-arrow-left"></i>  上一篇</button>
+                    <button class="btn btn-primary"  id="nextArticle" onclick="getNextArticle();" style="margin-left: 5%">下一篇&nbsp;<i class="fa fa-arrow-right"></i></button>
                 </div>
 
             </div>
@@ -125,8 +128,7 @@
         <div class="am-u-lg-12 am-u-sm-12">
             <article class="am-article blog-article-p article-trigger">
                 <div id="post-content" class="am-article-bd article-body">
-                    <th:block th:utext="${blogDetail.blogContent}" id = "blogContent"/>
-
+                    <th:block th:utext="${blogDetail.blogContent}" />
                 </div>
             </article>
             <hr>
@@ -301,9 +303,21 @@
 
     </div><!--modal-content-->
 
+    <!--分享到微信-->
+    <div class="modal-content" id="blogWechatContent" style="display: none;">
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+            <h4 class="modal-title">扫码分享到微信</h4>
+            <button type="button" class="close" onclick="closeWeChatShare()">&times;</button>
+        </div>
+
+        <!-- 模态框主体 -->
+        <div class="modal-body">
+            <img class="card-img-top" id = "blogQRContent"/>
+        </div>
+    </div>
 
     <p class="back-top" id="back-top" style="display:none"><a href="#top"><span></span></a></p>
-
 
     <div id="popLayer"></div>
 </div>
