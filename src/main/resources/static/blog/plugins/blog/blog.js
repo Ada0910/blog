@@ -46,7 +46,7 @@ function getNextArticle() {
 
 /**下载pdf到本地*/
 function pdfDownload() {
-    var blogId = $("#preArticle").val();
+    var blogId = $("#blogId").val();
     window.location.href = '/blog/pdfDownload/' + blogId;
 
 }

@@ -169,7 +169,7 @@ function deleteAbout() {
         icon: "warning",
         buttons: true,
         dangerMode: true,
-    }).then((flag) = > {
+    }).then((flag) => {
         if(flag) {
             $.ajax({
                 type: "POST",

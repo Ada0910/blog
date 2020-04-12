@@ -4,6 +4,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import org.springframework.util.ResourceUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -32,12 +33,16 @@ public class PdfUtil {
      * private static  String FONT_PATH = "/blog/static/font";
      */
     private static String FONT_PATH = "\\common\\dist\\fonts\\";
+    /* private static  String FONT_PATH = "/blog/static/font";*/
 
 
     public PdfUtil() {
         BASE_PATH = this.getClass().getResource("/").getPath();
         BASE_PATH = new File(BASE_PATH).getParentFile().getPath();
         PDF_TEMP_PATH = BASE_PATH + "\\" + "pdf\\";
+        /**云服务器请用下面*/
+        // BASE_PATH = "C:\\";
+        //  PDF_TEMP_PATH = "/blog/static/temp/";
         File filePath = new File(PDF_TEMP_PATH);
         if (!filePath.exists()) {
             filePath.mkdir();
@@ -60,6 +65,7 @@ public class PdfUtil {
             ITextFontResolver fontResolver = renderer.getFontResolver();
             /**本地font文件加载*/
             fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            //fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             /**
              * 云服务请用这个
              * fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
@@ -79,7 +85,7 @@ public class PdfUtil {
      * @return void
      * @Description 从服务器上下载PDF
      **/
-    public void downLoadPdf( HttpServletResponse response,String fileName) {
+    public void downLoadPdf(HttpServletResponse response, String fileName) {
         File pdfFile = new File(PDF_TEMP_PATH + fileName);
         try {
             /**将文件读取到内存*/

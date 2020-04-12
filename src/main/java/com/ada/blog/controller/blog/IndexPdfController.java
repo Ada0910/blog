@@ -32,9 +32,9 @@ public class IndexPdfController {
      * @Description 保存PDF到本地
      **/
     @RequestMapping("/blog/pdfDownload/{blogId}")
-    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") Long blogId) {
+    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") String blogId) {
         String suffixName = ".pdf";
-        Blog blog = blogService.getBlogById(blogId);
+        Blog blog = blogService.getBlogById(Long.parseLong(blogId));
         String blogContent = blog.getBlogContent();
         String fileName = blog.getBlogTitle() + suffixName;
         PdfUtil pdfUtil = new PdfUtil();
