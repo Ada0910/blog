@@ -8,8 +8,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
 
 /**
  * @author Ada
@@ -31,18 +30,18 @@ public class PdfUtil {
      * 云服务器请用下面
      * private static  String FONT_PATH = "/blog/static/font";
      */
-     //private static String FONT_PATH = "\\common\\dist\\fonts\\";
-     private static  String FONT_PATH = "/blog/static/font";
+    private static String FONT_PATH = "\\common\\dist\\fonts\\";
+    /*private static  String FONT_PATH = "/upload/font/";*/
 
 
     public PdfUtil() {
-        /*BASE_PATH = this.getClass().getResource("/").getPath();
-        BASE_PATH = new File(BASE_PATH).getParentFile().getPath();
-        PDF_TEMP_PATH = BASE_PATH + "\\" + "pdf\\";*/
+       /* BASE_PATH = this.getClass().getResource("/").getPath();
+        BASE_PATH = new File(BASE_PATH).getParentFile().getPath();*/
+        PDF_TEMP_PATH = BASE_PATH + "\\" + "pdf\\";
         /**云服务器请用下面*/
-         BASE_PATH = "/blog/static/pdf/";
-         PDF_TEMP_PATH = "/blog/static/temp/";
-        File file = new File(BASE_PATH);
+        /*BASE_PATH = "/upload/pdf/";
+        PDF_TEMP_PATH = "/upload/temp/";
+        File file = new File(BASE_PATH);*/
         File filePath = new File(PDF_TEMP_PATH);
         if (!filePath.exists()) {
             filePath.mkdir();
@@ -64,12 +63,12 @@ public class PdfUtil {
             /** 解决中文支持问题*/
             ITextFontResolver fontResolver = renderer.getFontResolver();
             /**本地font文件加载*/
-            //fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             /**
              * 云服务请用这个
              * fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
              */
+            //fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             renderer.setDocumentFromString(blogContent);
             renderer.layout();
             renderer.createPDF(outputStream);
@@ -146,62 +145,6 @@ public class PdfUtil {
         }
         return path;
     }
-
-    public static File saveUrlAs(String url,String filePath,String method,String fileName){
-        //创建不同的文件夹目录
-        File file=new File(filePath);
-        //判断文件夹是否存在
-        if (!file.exists())
-        {
-            //如果文件夹不存在，则创建新的的文件夹
-            file.mkdirs();
-        }
-        FileOutputStream fileOut = null;
-        HttpURLConnection conn = null;
-        InputStream inputStream = null;
-        try
-        {
-            // 建立链接
-            URL httpUrl=new URL(url);
-            conn=(HttpURLConnection) httpUrl.openConnection();
-            //以Post方式提交表单，默认get方式
-            conn.setRequestMethod(method);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            // post方式不能使用缓存
-            conn.setUseCaches(false);
-            //连接指定的资源
-            conn.connect();
-            //获取网络输入流
-            inputStream=conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(inputStream);
-            //判断文件的保存路径后面是否以/结尾
-            if (!filePath.endsWith("/")) {
-                filePath += "/";
-            }
-            //写入到文件（注意文件保存路径的后面一定要加上文件的名称）
-            fileOut = new FileOutputStream(filePath+fileName+".pdf");
-            BufferedOutputStream bos = new BufferedOutputStream(fileOut);
-
-            byte[] buf = new byte[4096];
-            int length = bis.read(buf);
-            //保存文件
-            while(length != -1)
-            {
-                bos.write(buf, 0, length);
-                length = bis.read(buf);
-            }
-            bos.close();
-            bis.close();
-            conn.disconnect();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            System.out.println("抛出异常！！");
-        }
-        return file;
-    }
-
 
 
 }

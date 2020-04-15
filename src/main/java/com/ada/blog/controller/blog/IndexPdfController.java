@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Ada
@@ -32,7 +33,7 @@ public class IndexPdfController {
      * @Description 保存PDF到本地
      **/
     @RequestMapping("/blog/pdfDownload/{blogId}")
-    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") String blogId) {
+    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") String blogId) throws UnsupportedEncodingException {
         String suffixName = ".pdf";
         Blog blog = blogService.getBlogById(Long.parseLong(blogId));
         String blogContent = blog.getBlogContent();
