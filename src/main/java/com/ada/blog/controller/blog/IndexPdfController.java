@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * @author Ada
@@ -37,10 +38,18 @@ public class IndexPdfController {
         String suffixName = ".pdf";
         Blog blog = blogService.getBlogById(Long.parseLong(blogId));
         String blogContent = blog.getBlogContent();
+        String pdfUrl = "http://www.isada.cn/upload/pdf/";
         String fileName = blog.getBlogTitle() + suffixName;
+        try {
+            fileName = URLEncoder.encode(fileName, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         PdfUtil pdfUtil = new PdfUtil();
         pdfUtil.createPdf(addHtmlTag(blogContent), fileName);
-        pdfUtil.downLoadPdf(response, fileName);
+        pdfUtil.downloadFile(response,pdfUrl + fileName,  "GET", fileName);
+       // pdfUtil.downLoadPdf(response, fileName);
         pdfUtil.deletePdf(fileName);
     }
 

@@ -8,6 +8,8 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 /**
@@ -17,14 +19,11 @@ import java.io.*;
  * @Description:
  */
 public class PdfUtil {
+
     /**
-     * 基础路径
+     * 存放PDF临时路径(云服务器)
      */
-    private static String BASE_PATH;
-    /**
-     * 存放PDF临时路径
-     */
-    private static String PDF_TEMP_PATH;
+    private static String PDF_TEMP_PATH= "/upload/pdf/";
     /**
      * 本地路径
      * 云服务器请用下面
@@ -35,13 +34,7 @@ public class PdfUtil {
 
 
     public PdfUtil() {
-       /* BASE_PATH = this.getClass().getResource("/").getPath();
-        BASE_PATH = new File(BASE_PATH).getParentFile().getPath();*/
-        PDF_TEMP_PATH = BASE_PATH + "\\" + "pdf\\";
-        /**云服务器请用下面*/
-        /*BASE_PATH = "/upload/pdf/";
-        PDF_TEMP_PATH = "/upload/temp/";
-        File file = new File(BASE_PATH);*/
+      //  PDF_TEMP_PATH = this.getClass().getResource("/").getPath() + "\\" + "pdf\\";
         File filePath = new File(PDF_TEMP_PATH);
         if (!filePath.exists()) {
             filePath.mkdir();
@@ -146,5 +139,53 @@ public class PdfUtil {
         return path;
     }
 
+    /***
+     * @Author Ada
+     * @Date 23:43 2020/4/19
+     * @Param [response, url, method, fileName]
+     * @return void
+     * @Description 下载pdf
+     **/
+    public  void downloadFile(HttpServletResponse response,String url, String method, String fileName) {
+        FileOutputStream fileOut = null;
+        HttpURLConnection conn = null;
+        InputStream inputStream = null;
+        try {
+            // 建立链接
+            URL httpUrl = new URL(url);
+            conn = (HttpURLConnection) httpUrl.openConnection();
+            //以Post方式提交表单，默认get方式
+            conn.setRequestMethod(method);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            // post方式不能使用缓存
+            conn.setUseCaches(false);
+            //连接指定的资源
+            conn.connect();
+            //获取网络输入流
+            inputStream = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(inputStream);
+            /**在浏览器提示用户是保存还是下载*/
+            response.setHeader("Content-Disposition", "attachment; filename=" +  fileName);
+            /**根据个人需要,这个是下载文件的类型*/
+            response.setContentType("application/octet-stream; charset=UTF-8");
+            response.setHeader("content-type", "application/pdf");
+            /**告诉浏览器下载文件的大小*/
+            ServletOutputStream outputStream = response.getOutputStream();
+            byte[] buf = new byte[4096];
+            int length = bis.read(buf);
+            //保存文件
+            while (length != -1) {
+                outputStream.write(buf, 0, length);
+                length = bis.read(buf);
+            }
+            outputStream.close();
+            bis.close();
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("抛出异常！！");
+        }
+    }
 
 }
