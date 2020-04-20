@@ -30,9 +30,8 @@ public class IndexBlogShareController {
                                     HttpServletRequest requset, @RequestParam("blogId")Long blogId) throws Exception {
         /**文件存放的路径*/
         String fileName = "blog"+blogId;
-        String path = UploadPath.FILE_UPLOAD_DIC+"blogShare\\";
         /**云服务器请用这个*/
-        //  String path = UploadPath.FILE_UPLOAD_DIC+"blogShare/";
+         String path = UploadPath.FILE_UPLOAD_DIC+"blogShare/";
         String suffixName = ".png";
         QRCodeUtil.encodeQRCode(content,path+fileName+suffixName);
         return ResultStatusUtil.successResult("/upload/blogShare/blog"+blogId+suffixName);

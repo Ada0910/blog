@@ -13,6 +13,6 @@ public class UploadPath {
      */
     public final static String FILE_UPLOAD_DIC = "F:\\Code\\blog\\src\\main\\resources\\static\\upload\\";
     /**云服务请用这个*/
-   /* public final static String FILE_UPLOAD_DIC = "/upload/";*/
+    //public final static String FILE_UPLOAD_DIC = "/upload/";
 
 }

@@ -34,23 +34,20 @@ public class IndexPdfController {
      * @Description 保存PDF到本地
      **/
     @RequestMapping("/blog/pdfDownload/{blogId}")
-    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") String blogId) throws UnsupportedEncodingException {
+    public void pdfDownload(HttpServletRequest request, HttpServletResponse response, @PathVariable("blogId") String blogId) throws UnsupportedEncodingException, InterruptedException {
         String suffixName = ".pdf";
         Blog blog = blogService.getBlogById(Long.parseLong(blogId));
         String blogContent = blog.getBlogContent();
         String pdfUrl = "http://www.isada.cn/upload/pdf/";
         String fileName = blog.getBlogTitle() + suffixName;
+        PdfUtil pdfUtil = new PdfUtil();
+        pdfUtil.createPdf(addHtmlTag(blogContent), fileName);
         try {
             fileName = URLEncoder.encode(fileName, "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        PdfUtil pdfUtil = new PdfUtil();
-        pdfUtil.createPdf(addHtmlTag(blogContent), fileName);
         pdfUtil.downloadFile(response,pdfUrl + fileName,  "GET", fileName);
-       // pdfUtil.downLoadPdf(response, fileName);
-        pdfUtil.deletePdf(fileName);
     }
 
     /***

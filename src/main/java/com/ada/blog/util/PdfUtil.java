@@ -1,6 +1,7 @@
 package com.ada.blog.util;
 
 import com.itextpdf.text.pdf.BaseFont;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ResourceUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 
 
 /**
@@ -27,14 +29,14 @@ public class PdfUtil {
     /**
      * 本地路径
      * 云服务器请用下面
-     * private static  String FONT_PATH = "/blog/static/font";
+     * private static  String FONT_PATH = "/upload/font/";
      */
-    private static String FONT_PATH = "\\common\\dist\\fonts\\";
-    /*private static  String FONT_PATH = "/upload/font/";*/
+   private static String FONT_PATH = "\\common\\dist\\fonts\\";
+   // private static  String FONT_PATH = "/upload/font/";
 
 
     public PdfUtil() {
-      //  PDF_TEMP_PATH = this.getClass().getResource("/").getPath() + "\\" + "pdf\\";
+      PDF_TEMP_PATH = this.getClass().getResource("/").getPath() + "\\" + "pdf\\";
         File filePath = new File(PDF_TEMP_PATH);
         if (!filePath.exists()) {
             filePath.mkdir();
@@ -56,7 +58,7 @@ public class PdfUtil {
             /** 解决中文支持问题*/
             ITextFontResolver fontResolver = renderer.getFontResolver();
             /**本地font文件加载*/
-            fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+           fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
             /**
              * 云服务请用这个
              * fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
@@ -66,44 +68,10 @@ public class PdfUtil {
             renderer.layout();
             renderer.createPDF(outputStream);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(">>>>>>>>>"+e.getMessage());
         }
     }
 
-    /***
-     * @Author Ada
-     * @Date 23:28 2020/3/19
-     * @Param [fileName, response]
-     * @return void
-     * @Description 从服务器上下载PDF
-     **/
-    public void downLoadPdf(HttpServletResponse response, String fileName) {
-        File pdfFile = new File(PDF_TEMP_PATH + fileName);
-        try {
-            /**将文件读取到内存*/
-            FileInputStream fileInputStream = new FileInputStream(PDF_TEMP_PATH + fileName);
-            response.reset();
-            fileName = new String(fileName.getBytes(), "ISO-8859-1");
-            /**在浏览器提示用户是保存还是下载*/
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
-            /**根据个人需要,这个是下载文件的类型*/
-            response.setContentType("application/octet-stream; charset=UTF-8");
-            response.setHeader("content-type", "application/pdf");
-            /**告诉浏览器下载文件的大小*/
-            response.setHeader("Content-Length", String.valueOf(pdfFile.length()));
-            ServletOutputStream outputStream = response.getOutputStream();
-            /**输出*/
-            int len = 1;
-            byte[] bs = new byte[1024];
-            while ((len = fileInputStream.read(bs)) != -1) {
-                outputStream.write(bs, 0, len);
-            }
-            fileInputStream.close();
-            outputStream.close();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     /***
      * @Author Ada
@@ -112,6 +80,7 @@ public class PdfUtil {
      * @return void
      * @Description 删除PDF
      **/
+    @Scheduled(cron = "* * 0/2 * * ?")
     public void deletePdf(String fileName) {
         File file = new File(PDF_TEMP_PATH + fileName);
         if (file.exists()) {
