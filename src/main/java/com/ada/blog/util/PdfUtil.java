@@ -1,6 +1,7 @@
 package com.ada.blog.util;
 
 import com.itextpdf.text.pdf.BaseFont;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ResourceUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
@@ -13,7 +14,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-
 /**
  * @author Ada
  * @ClassName :PdfUtil
@@ -22,25 +22,29 @@ import java.net.URL;
  */
 public class PdfUtil {
 
+
     /**
      * 存放PDF临时路径(云服务器)
      */
-    private static String PDF_TEMP_PATH= "/upload/pdf/";
+    private static String PDF_TEMP_PATH = "/upload/pdf/";
+
+    private String FONT_PATH;
     /**
-     * 本地路径
-     * 云服务器请用下面
-     * private static  String FONT_PATH = "/upload/font/";
+     * true表示是云服务环境，false表示是本地环境
      */
-   private static String FONT_PATH = "\\common\\dist\\fonts\\";
-   // private static  String FONT_PATH = "/upload/font/";
+    private Boolean flag ;
 
 
-    public PdfUtil() {
-      PDF_TEMP_PATH = this.getClass().getResource("/").getPath() + "\\" + "pdf\\";
+
+    public PdfUtil(String fontPath,Boolean flag) {
+        this.FONT_PATH = fontPath;
+        this.flag = flag;
+        PDF_TEMP_PATH = this.getClass().getResource("/").getPath() + "\\" + "pdf\\";
         File filePath = new File(PDF_TEMP_PATH);
         if (!filePath.exists()) {
             filePath.mkdir();
         }
+
     }
 
     /***
@@ -51,24 +55,28 @@ public class PdfUtil {
      * @Description 创建PDF文件到服务器
      **/
     public void createPdf(String blogContent, String fileName) {
+
         try {
             File file = new File(PDF_TEMP_PATH + fileName);
             FileOutputStream outputStream = new FileOutputStream(file);
             ITextRenderer renderer = new ITextRenderer();
             /** 解决中文支持问题*/
             ITextFontResolver fontResolver = renderer.getFontResolver();
-            /**本地font文件加载*/
-           fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            /**
-             * 云服务请用这个
-             * fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-             */
-            //fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            if(flag){
+                /**
+                 * 部署到云服务器请用这个
+                 */
+                fontResolver.addFont( FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            }else{
+                /**本地font文件加载*/
+                fontResolver.addFont(getLocalStaticUrl() + FONT_PATH + "simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            }
+
             renderer.setDocumentFromString(blogContent);
             renderer.layout();
             renderer.createPDF(outputStream);
         } catch (Exception e) {
-            System.out.println(">>>>>>>>>"+e.getMessage());
+            System.out.println("PDF创建的时候出错了，错误的信息是:" + e.getMessage());
         }
     }
 
@@ -115,7 +123,7 @@ public class PdfUtil {
      * @return void
      * @Description 下载pdf
      **/
-    public  void downloadFile(HttpServletResponse response,String url, String method, String fileName) {
+    public void downloadFile(HttpServletResponse response, String url, String method, String fileName) {
         FileOutputStream fileOut = null;
         HttpURLConnection conn = null;
         InputStream inputStream = null;
@@ -135,7 +143,7 @@ public class PdfUtil {
             inputStream = conn.getInputStream();
             BufferedInputStream bis = new BufferedInputStream(inputStream);
             /**在浏览器提示用户是保存还是下载*/
-            response.setHeader("Content-Disposition", "attachment; filename=" +  fileName);
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
             /**根据个人需要,这个是下载文件的类型*/
             response.setContentType("application/octet-stream; charset=UTF-8");
             response.setHeader("content-type", "application/pdf");
@@ -153,7 +161,7 @@ public class PdfUtil {
             conn.disconnect();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("抛出异常！！");
+            System.out.println("下载的过程中出现了错误！！，错误信息是："+e.getMessage());
         }
     }
 

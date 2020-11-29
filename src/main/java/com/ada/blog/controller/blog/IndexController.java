@@ -1,11 +1,10 @@
 package com.ada.blog.controller.blog;
 
-import com.ada.blog.entity.BlogDetail;
-import com.ada.blog.entity.Comment;
-import com.ada.blog.entity.Like;
-import com.ada.blog.entity.Version;
+import com.ada.blog.entity.*;
 import com.ada.blog.service.*;
 import com.ada.blog.util.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -26,6 +25,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Controller
 public class IndexController {
 
+    private static final Logger logger = LogManager.getLogger(IndexController.class);
+
     @Autowired
     public BlogService blogService;
 
@@ -43,6 +44,7 @@ public class IndexController {
 
     @Autowired
     public LikeService likeService;
+
 
     /***
      * @Author Ada

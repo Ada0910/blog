@@ -1,9 +1,9 @@
 package com.ada.blog.controller.blog;
 
-import com.ada.blog.entity.UploadPath;
 import com.ada.blog.util.QRCodeUtil;
 import com.ada.blog.util.ResultStatusUtil;
 import com.ada.blog.util.ResultUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class IndexBlogShareController {
 
+    @Value("${FILE_UPLOAD_DIC}")
+    private  String FILE_UPLOAD_DIC;
+
     /**
      * 生成二维码
      */
@@ -31,7 +34,7 @@ public class IndexBlogShareController {
         /**文件存放的路径*/
         String fileName = "blog"+blogId;
         /**云服务器请用这个*/
-         String path = UploadPath.FILE_UPLOAD_DIC+"blogShare/";
+         String path = FILE_UPLOAD_DIC+"blogShare/";
         String suffixName = ".png";
         QRCodeUtil.encodeQRCode(content,path+fileName+suffixName);
         return ResultStatusUtil.successResult("/upload/blogShare/blog"+blogId+suffixName);

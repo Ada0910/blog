@@ -4,7 +4,10 @@ import com.ada.blog.entity.Blog;
 import com.ada.blog.service.BlogService;
 import com.ada.blog.util.MarkDownUtil;
 import com.ada.blog.util.PdfUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,21 @@ import java.net.URLEncoder;
  */
 @Controller
 public class IndexPdfController {
+    private static final Logger logger = LogManager.getLogger(IndexPdfController.class);
+
+    @Value("${upload.pdf.path}")
+    private  String pdfUrl ;
+
+    @Value("${upload.font.path}")
+    private String FONT_PATH ;
+
+    /**
+     * true表示是云服务环境，false表示是本地环境
+     */
+    @Value("${upload.font.flag}")
+    private Boolean flag = true;
+
+
 
     @Autowired
     private BlogService blogService;
@@ -38,9 +56,8 @@ public class IndexPdfController {
         String suffixName = ".pdf";
         Blog blog = blogService.getBlogById(Long.parseLong(blogId));
         String blogContent = blog.getBlogContent();
-        String pdfUrl = "http://www.isada.cn/upload/pdf/";
         String fileName = blog.getBlogTitle() + suffixName;
-        PdfUtil pdfUtil = new PdfUtil();
+        PdfUtil pdfUtil = new PdfUtil(FONT_PATH,flag);
         pdfUtil.createPdf(addHtmlTag(blogContent), fileName);
         try {
             fileName = URLEncoder.encode(fileName, "utf-8");

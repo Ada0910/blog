@@ -48,9 +48,14 @@ function getNextArticle() {
 function pdfDownload() {
     var blogId = $("#blogId").val();
     window.location.href = '/blog/pdfDownload/' + blogId;
-    window.location.href ="/blog/" + blogId;
+    setTimeout(funcName,5000);
+
 }
 
+function funcName() {
+    var blogId = $("#blogId").val();
+    window.location.href ="/blog/" + blogId;
+}
 /**分享到微信*/
 function shareToWeChat() {
     var blogId = Number($("#blogId").val());

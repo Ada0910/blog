@@ -1,9 +1,9 @@
 package com.ada.blog.controller.admin;
 
-import com.ada.blog.entity.UploadPath;
 import com.ada.blog.util.MyBlogUtil;
 import com.ada.blog.util.ResultStatusUtil;
 import com.ada.blog.util.ResultUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +32,9 @@ import java.util.Random;
 @RequestMapping("/admin")
 public class UploadController {
 
+    @Value("${FILE_UPLOAD_DIC}")
+    private  String FILE_UPLOAD_DIC;
+
 
     /***
      * @Author Ada
@@ -58,9 +61,9 @@ public class UploadController {
         tempName.append(simpleDateFormat.format(new Date())).append(random.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
 
-        File filePath = new File(UploadPath.FILE_UPLOAD_DIC);
+        File filePath = new File(FILE_UPLOAD_DIC);
         //创建文件
-        File destFile = new File(UploadPath.FILE_UPLOAD_DIC + newFileName);
+        File destFile = new File(FILE_UPLOAD_DIC + newFileName);
         try {
             if (!filePath.exists()) {
                 if (!filePath.mkdir()) {
@@ -99,9 +102,9 @@ public class UploadController {
         tempName.append(sdf.format(new Date())).append(random.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
 
-        File destFile = new File(UploadPath.FILE_UPLOAD_DIC + newFileName);
+        File destFile = new File(FILE_UPLOAD_DIC + newFileName);
         String fileUrl = MyBlogUtil.getHost(new URI(request.getRequestURL() + "")) + "/upload/" + newFileName;
-        File filePath = new File(UploadPath.FILE_UPLOAD_DIC);
+        File filePath = new File(FILE_UPLOAD_DIC);
         try {
             if (!filePath.exists()) {
                 if (!filePath.mkdir()) {

@@ -11,8 +11,9 @@
         </Console>
     </appenders>
 
+    <!-- 全局配置，默认所有的Logger都继承此配置 -->
     <loggers>
-        <logger name="com.roncoo.education" level="debug"/>
+        <logger name="com.ada.blog" level="debug"/>
         <root level="info">
             <appenderref ref="CONSOLE"/>
         </root>
