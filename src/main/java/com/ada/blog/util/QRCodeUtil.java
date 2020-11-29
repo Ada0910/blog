@@ -29,7 +29,7 @@ public class QRCodeUtil {
     public static void encodeQRCode(String text, String path) {
         Integer width = 300;
         Integer height = 300;
-        String format = ".png";
+        String format = "png";
         try {
             /**得到文件对象*/
             File file = new File(path);
