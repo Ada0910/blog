@@ -1,6 +1,9 @@
 package com.ada.blog.controller.blog;
 
-import com.ada.blog.entity.*;
+import com.ada.blog.entity.BlogDetail;
+import com.ada.blog.entity.Comment;
+import com.ada.blog.entity.Like;
+import com.ada.blog.entity.Version;
 import com.ada.blog.service.*;
 import com.ada.blog.util.*;
 import org.apache.logging.log4j.LogManager;

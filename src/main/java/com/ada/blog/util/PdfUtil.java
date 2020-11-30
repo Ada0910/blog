@@ -1,7 +1,6 @@
 package com.ada.blog.util;
 
 import com.itextpdf.text.pdf.BaseFont;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ResourceUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;

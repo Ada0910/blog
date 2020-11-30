@@ -37,6 +37,6 @@ public class IndexBlogShareController {
          String path = FILE_UPLOAD_DIC+"blogShare/";
         String suffixName = ".png";
         QRCodeUtil.encodeQRCode(content,path+fileName+suffixName);
-        return ResultStatusUtil.successResult("/upload/blogShare/blog"+blogId+suffixName);
+        return ResultStatusUtil.successResult(path+fileName+suffixName);
     }
 }
