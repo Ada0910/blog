@@ -8,7 +8,7 @@
     </a>
 
 
-    <div class="sidebar">
+    <div class="sidebar" >
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img th:src="@{/common/img/my.jpg}" class="img-circle elevation-2" alt="User Image">
@@ -40,70 +40,89 @@
                     </a>
                 </li>
 
-                <li class="nav-header">管理模块</li>
+<!---------------------------------------管理模块-------------------------------------------------------------------->
                 <li class="nav-item">
-                    <a th:href="@{/admin/blog}" th:class="${path}=='blog'?'nav-link active':'nav-link'">
-                        <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
+                    <a data-toggle="collapse" data-target="#manage_module" class = "nav-link">
                         <p>
-                            博客管理
+                            管理模块
                         </p>
                     </a>
                 </li>
+                <div id="manage_module" class="collapse show">
+                    <li class="nav-item">
+                        <a th:href="@{/admin/blog}" th:class="${path}=='blog'?'nav-link active':'nav-link'">
+                            <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
+                            <p>
+                                博客管理
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a th:href="@{/admin/comment}" th:class="${path}=='comment'?'nav-link active':'nav-link'">
-                        <i class="fa fa-comments nav-icon" aria-hidden="true"></i>
-                        <p>
-                            评论管理
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/comment}" th:class="${path}=='comment'?'nav-link active':'nav-link'">
+                            <i class="fa fa-comments nav-icon" aria-hidden="true"></i>
+                            <p>
+                                评论管理
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a th:href="@{/admin/category}" th:class="${path}=='category'?'nav-link active':'nav-link'">
-                        <i class="fa fa-bookmark nav-icon" aria-hidden="true"></i>
-                        <p>
-                            分类管理
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/category}" th:class="${path}=='category'?'nav-link active':'nav-link'">
+                            <i class="fa fa-bookmark nav-icon" aria-hidden="true"></i>
+                            <p>
+                                分类管理
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a th:href="@{/admin/tag}" th:class="${path}=='tag'?'nav-link active':'nav-link'">
-                        <i class="fa fa-tags nav-icon" aria-hidden="true"></i>
-                        <p>
-                            标签管理
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/tag}" th:class="${path}=='tag'?'nav-link active':'nav-link'">
+                            <i class="fa fa-tags nav-icon" aria-hidden="true"></i>
+                            <p>
+                                标签管理
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a th:href="@{/admin/link}" th:class="${path}=='link'?'nav-link active':'nav-link'">
-                        <i class="fa fa-heart nav-icon" aria-hidden="true"></i>
-                        <p>
-                            友情链接
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/link}" th:class="${path}=='link'?'nav-link active':'nav-link'">
+                            <i class="fa fa-heart nav-icon" aria-hidden="true"></i>
+                            <p>
+                                友情链接
+                            </p>
+                        </a>
+                    </li>
 
-                <li class="nav-item">
-                    <a th:href="@{/admin/about}" th:class="${path}=='about'?'nav-link active':'nav-link'">
-                        <i class="fa fa-book nav-icon" aria-hidden="true"></i>
-                        <p>
-                            关于管理
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/admin/version}" th:class="${path}=='version'?'nav-link active':'nav-link'">
-                        <i class="fa  fa-code-fork nav-icon" aria-hidden="true"></i>
-                        <p>
-                            版本信息
-                        </p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/about}" th:class="${path}=='about'?'nav-link active':'nav-link'">
+                            <i class="fa fa-book nav-icon" aria-hidden="true"></i>
+                            <p>
+                                关于管理
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/version}" th:class="${path}=='version'?'nav-link active':'nav-link'">
+                            <i class="fa  fa-code-fork nav-icon" aria-hidden="true"></i>
+                            <p>
+                                版本信息
+                            </p>
+                        </a>
+                    </li>
+                </div>
 
-                <li class="nav-header">系统管理</li>
+
+
+<!---------------------------------------系统模块-------------------------------------------------------------------->
+                <li class="nav-item">
+                    <a data-toggle="collapse" data-target="#system_module" class = "nav-link">
+                        <p>
+                            系统模块
+                        </p>
+                    </a>
+                </li>
+                <div id="system_module" class="collapse show">
                 <li class="nav-item">
                     <a th:href="@{/admin/config}"
                        th:class="${path}=='config'?'nav-link active':'nav-link'">
@@ -126,6 +145,7 @@
                         <p>安全退出</p>
                     </a>
                 </li>
+                </div>
 
             </ul>
         </nav>
