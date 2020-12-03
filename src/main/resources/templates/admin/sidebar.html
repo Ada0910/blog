@@ -122,6 +122,7 @@
                         </p>
                     </a>
                 </li>
+
                 <div id="system_module" class="collapse show">
                 <li class="nav-item">
                     <a th:href="@{/admin/config}"
@@ -139,12 +140,30 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a th:href="@{/admin/logout}" class="nav-link">
-                        <i class="fa fa-sign-out nav-icon"></i>
-                        <p>安全退出</p>
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a th:href="@{/admin/profile}"
+                           th:class="${path}=='profile'?'nav-link active':'nav-link'">
+                            <i class="fa fa-user nav-icon"></i>
+                            <p>用户管理</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/admin/profile}"
+                           th:class="${path}=='profile'?'nav-link active':'nav-link'">
+                            <i class="fa fa-user-secret nav-icon"></i>
+                            <p>角色管理</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/admin/profile}"
+                           th:class="${path}=='profile'?'nav-link active':'nav-link'">
+                            <i class="fa fa-plus nav-icon"></i>
+                            <p>权限管理</p>
+                        </a>
+                    </li>
+
                 </div>
 
             </ul>
