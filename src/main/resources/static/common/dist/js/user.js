@@ -64,7 +64,7 @@ function isLock(cellvalue) {
 
 /**绑定用户*/
 function  bindUser() {
-    return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"background-color:#9094dc;\">绑定用户</button>";
+    return "<button type=\"button\" class=\"btn btn-block btn-info btn-sm\" style=\"background-color:#9094dc;\">绑定角色</button>";
 }
 
 /*重置*/
