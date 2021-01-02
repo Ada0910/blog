@@ -1,6 +1,8 @@
 package com.ada.blog.service;
 
 import com.ada.blog.entity.AdminUser;
+import com.ada.blog.util.PageResultUtil;
+import com.ada.blog.util.PageUtil;
 
 /**
  * 用户登陆service
@@ -23,4 +25,20 @@ public interface AdminUserService {
      * 修改当前登陆用户的名字信息
      **/
     Boolean updateName(Integer loginUserId, String loginUserName, String nickName);
+
+    /**
+     * 获取用户信息
+     */
+    PageResultUtil getUserList(PageUtil pageUtil);
+
+    /**
+     * 添加用户
+     */
+    Boolean addUser(AdminUser user);
+
+    AdminUser selectUserById(Integer adminUserId);
+
+    Boolean updateUser(AdminUser user);
+
+    boolean deleteBatchUser(Integer[] ids);
 }

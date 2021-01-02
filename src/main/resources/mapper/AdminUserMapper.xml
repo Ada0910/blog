@@ -8,10 +8,11 @@
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="locked" jdbcType="TINYINT" property="locked"/>
         <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        admin_user_id ,login_user_name ,login_password,nick_name ,locked,create_time
+        admin_user_id ,login_user_name ,login_password,nick_name ,locked,create_time,update_time
     </sql>
 
     <select id="login" resultMap="BaseResultMap">
@@ -29,24 +30,19 @@
         where admin_user_id = #{adminUserId,jdbcType=INTEGER}
     </select>
 
-    <insert id="insert" parameterType="com.ada.blog.entity.AdminUser">
-        insert into tb_admin_user
-        (admin_user_id,login_user_name ,login_password,nick_name,locked,create_time)
-        values
-        (#{adminUserId,jdbcType=INTEGER}, #{loginUserName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR},
-      #{nickName,jdbcType=VARCHAR}, #{locked,jdbcType=TINYINT},Now())
-    </insert>
 
     <insert id="insertSelective" parameterType="com.ada.blog.entity.AdminUser">
         insert into tb_admin_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="adminUserId != null">admin_user_id,</if>
             <if test="loginUserName != null">login_user_name,</if>
-            <if test="loginPassword != null">login_password</if>
-            <if test="nickName != null">nick_name</if>
+            <if test="loginPassword != null">login_password,</if>
+            <if test="nickName != null">nick_name,</if>
             <if test="locked != null">locked,</if>
             create_time,
+            update_time,
         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
         <trim>
             <if test="adminUserId != null">
                 #{adminUserId,jdbcType=INTEGER},
@@ -61,9 +57,11 @@
                 #{nickName,jdbcType=VARCHAR},
             </if>
             <if test="locked != null">
-                #{locked,jdbcType=TINYINT},
+                #{locked,jdbcType=VARCHAR},
             </if>
             Now(),
+            Now(),
+        </trim>
         </trim>
     </insert>
 
@@ -82,20 +80,32 @@
             <if test="locked != null">
                 locked = #{locked,jdbcType=TINYINT},
             </if>
-            create_time = Now(),
+            update_time = Now(),
         </set>
         where admin_user_id = #{adminUserId,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.ada.blog.entity.AdminUser">
-    update tb_admin_user
-    set
-      login_user_name = #{loginUserName,jdbcType=VARCHAR},
-      login_password = #{loginPassword,jdbcType=VARCHAR},
-      nick_name = #{nickName,jdbcType=VARCHAR},
-      locked = #{locked,jdbcType=TINYINT},
-      create_time = Now()
-    where
-    admin_user_id = #{adminUserId,jdbcType=INTEGER}
-  </update>
+
+    <select id="getUserList" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_admin_user
+        <if test="start != null and limit!= null">
+            limit #{start} ,#{limit}
+        </if>
+    </select>
+
+    <select id="getUserListTotal" parameterType="Map" resultType="java.lang.Integer">
+        select count(1) from tb_admin_user
+    </select>
+
+    <delete id="deleteBatchUser">
+        delete from tb_admin_user
+        where admin_user_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
 </mapper>

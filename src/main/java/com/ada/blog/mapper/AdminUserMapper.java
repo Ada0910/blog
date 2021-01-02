@@ -1,8 +1,11 @@
 package com.ada.blog.mapper;
 
 import com.ada.blog.entity.AdminUser;
+import com.ada.blog.util.PageUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author Ada
@@ -24,10 +27,6 @@ public interface AdminUserMapper {
      */
     AdminUser selectByPrimaryKey(Integer adminUserId);
 
-    /**
-     * 添加用户
-     */
-    int insert(AdminUser adminUser);
 
     int insertSelective(AdminUser adminUser);
 
@@ -36,5 +35,14 @@ public interface AdminUserMapper {
      */
     int updateByPrimaryKeySelective(AdminUser adminUser);
 
-    int updateByPrimaryKey(AdminUser adminUser);
+
+    /**获取用户列表*/
+    List<AdminUser> getUserList(PageUtil pageUtil);
+
+    /**获取用户条数*/
+    int getUserListTotal(PageUtil pageUtil);
+
+    Boolean addUser(AdminUser user);
+
+    int deleteBatchUser(Integer[] ids);
 }

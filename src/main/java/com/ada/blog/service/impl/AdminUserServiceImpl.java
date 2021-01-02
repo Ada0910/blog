@@ -4,8 +4,12 @@ import com.ada.blog.entity.AdminUser;
 import com.ada.blog.mapper.AdminUserMapper;
 import com.ada.blog.service.AdminUserService;
 import com.ada.blog.util.MD5Util;
+import com.ada.blog.util.PageResultUtil;
+import com.ada.blog.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 /**
@@ -15,7 +19,8 @@ import org.springframework.stereotype.Service;
  * @Description:
  */
 @Service("adminUserService")
-public class AdminUserServiceImpl implements AdminUserService {
+public
+class AdminUserServiceImpl implements AdminUserService {
 
     @Autowired
     private AdminUserMapper adminUserMapper;
@@ -79,5 +84,72 @@ public class AdminUserServiceImpl implements AdminUserService {
             }
         }
         return false;
+    }
+
+    /***
+     * @Author Ada
+     * @Date 22:37 2020/12/8
+     * @Param [pageUtil]
+     * @return com.ada.blog.util.PageResultUtil
+     * @Description 用户列表
+     **/
+    @Override
+    public PageResultUtil getUserList(PageUtil pageUtil) {
+        List<AdminUser> userList = adminUserMapper.getUserList(pageUtil);
+        int total = adminUserMapper.getUserListTotal(pageUtil);
+        PageResultUtil pageResultUtil = new PageResultUtil(userList, total, pageUtil.getLimit(), pageUtil.getPage());
+        return pageResultUtil;
+    }
+
+    /***
+     * @Description 添加用户
+     *
+     * @param user
+     * @return java.lang.Boolean
+     * @Author Ada
+     * @Date 0:00 2021/1/2
+     **/
+    @Override
+    public Boolean addUser(AdminUser user) {
+        return adminUserMapper.insertSelective(user) > 0;
+    }
+
+    /***
+     * @Description 根据主键寻找用户信息
+     *
+     * @param adminUserId
+     * @return com.ada.blog.entity.AdminUser
+     * @Author Ada
+     * @Date 17:56 2021/1/2
+     **/
+    @Override
+    public AdminUser selectUserById(Integer adminUserId) {
+        return adminUserMapper.selectByPrimaryKey(adminUserId);
+    }
+
+    /***
+     * @Description 更新
+     *
+     * @param user
+     * @return java.lang.Boolean
+     * @Author Ada
+     * @Date 17:57 2021/1/2
+     **/
+    @Override
+    public Boolean updateUser(AdminUser user) {
+        return adminUserMapper.updateByPrimaryKeySelective(user)>0;
+    }
+
+    /***
+     * @Description  删除
+     *
+     * @param ids
+     * @return boolean
+     * @Author Ada
+     * @Date 19:02 2021/1/2
+     **/
+    @Override
+    public boolean deleteBatchUser(Integer[] ids) {
+        return adminUserMapper.deleteBatchUser(ids)>0;
     }
 }

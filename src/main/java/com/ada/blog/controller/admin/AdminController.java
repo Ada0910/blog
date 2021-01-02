@@ -142,29 +142,7 @@ public class AdminController {
         return "admin/login";
     }
 
-    /***
-     * @Author Ada
-     * @Date 10:43 2019/6/24
-     * @Param [request]
-     * @return java.lang.String
-     * @Description 用户信息修改页面
-     **/
-    @ApiOperation(value="用户修改信息", notes="用户修改信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "request", value = "request", required = true, dataType = "HttpServletRequest")
-    })
-    @GetMapping("/profile")
-    public String profile(HttpServletRequest request) {
-        Integer loginUserId = (Integer) request.getSession().getAttribute("loginUserId");
-        AdminUser adminUser = adminUserService.getUserDetailById(loginUserId);
-        if (adminUser == null) {
-            return "admin/login";
-        }
-        request.setAttribute("path", "profile");
-        request.getSession().setAttribute("loginUserName", adminUser.getLoginUserName());
-        request.getSession().setAttribute("nickName", adminUser.getNickName());
-        return "admin/user/profile";
-    }
+
 
 
     /**
