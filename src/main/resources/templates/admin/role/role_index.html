@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment"></header>
+<!-- jQuery -->
+<script th:src="@{/common/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/common/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/common/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/common/dist/js/adminlte.min.js}"></script>
+<script th:src="@{/common/plugins/jqgrid-5.3.0/jquery.jqGrid.min.js}"></script>
+<script th:src="@{/common/plugins/jqgrid-5.3.0/grid.locale-cn.js}"></script>
+<!-- ajaxupload -->
+<script th:src="@{/common/plugins/ajaxupload/ajaxupload.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/common/plugins/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/common/dist/js/public.js}"></script>
+<script th:src="@{/common/dist/js/role.js}"></script>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+
+    <div class="content-wrapper">
+
+        <div class="content-header">
+            <div class="container-fluid">
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">角色管理</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="grid-btn">
+                            <button class="btn btn-info" onclick="toAddRolePage()"><i
+                                    class="fa fa-plus"></i>&nbsp;新增
+                            </button>
+                            <button class="btn btn-info" onclick="toEditRolePage()"><i
+                                    class="fa fa-pencil-square-o"></i>&nbsp;修改
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteRole()"><i
+                                    class="fa fa-trash-o"></i>&nbsp;删除
+                            </button>
+                        </div>
+                        <table id="jqGrid" class="table table-bordered">
+                        </table>
+                        <div id="jqGridPager"></div>
+                    </div>
+                </div>
+            </div><!-- container-fluid -->
+        </div>
+
+        <div class="content">
+            <!-- 模态框（Modal） -->
+            <div class="modal fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="roleModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title">Modal</h6>
+                        </div>
+
+
+                        <div class="modal-body">
+                            <form id="roleForm">
+                                <div class="form-group">
+                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
+                                        错误信息展示栏。
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" id="roleId" name="roleId">
+                                    <div class="form-group">
+                                        <label for="roleName" class="control-label"><span style="color: red">*</span>角色名称:</label>
+                                        <input type="text" class="form-control" id="roleName" name="roleName"
+                                               placeholder="角色名称" required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="roleDesc" class="control-label">角色描述:</label>
+                                        <textarea  type="url" class="form-control" th:rows="4"  id="roleDesc"
+                                               name="roleDesc"
+                                                   placeholder="请输入角色描述" required="true"></textarea>
+                                    </div>
+                            </form>
+                        </div><!--modal-body-->
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" id="saveButton" onclick="saveRole()">确认
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        </div>
+
+                    </div><!--modal-content-->
+                </div><!--modal-dialog-->
+            </div><!-- modal -->
+
+        </div><!--content-->
+
+    </div><!-- content-wrapper -->
+
+
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+
+</body>
+</html>

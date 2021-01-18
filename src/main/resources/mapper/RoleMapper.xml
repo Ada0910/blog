@@ -5,8 +5,8 @@
         <id column="role_id" jdbcType="INTEGER" property="roleId"></id>
         <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
         <result column="role_desc" jdbcType="VARCHAR" property="roleDesc"/>
-        <result column="create_time" jdbcType="DATE" property="createTime"/>
-        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
