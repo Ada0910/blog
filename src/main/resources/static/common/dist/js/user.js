@@ -126,8 +126,7 @@ function saveButton() {
                 swal("保存失败", {
                     icon: "error",
                 });
-            }
-            ;
+            };
         },
         error: function () {
             swal("操作失败", {

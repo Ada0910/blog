@@ -7,8 +7,8 @@
         <result column="login_password" jdbcType="VARCHAR" property="loginPassword"/>
         <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="locked" jdbcType="TINYINT" property="locked"/>
-        <result column="create_time" jdbcType="DATE" property="createTime"/>
-        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -39,8 +39,12 @@
             <if test="loginPassword != null">login_password,</if>
             <if test="nickName != null">nick_name,</if>
             <if test="locked != null">locked,</if>
-            create_time,
-            update_time,
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
         <trim>
@@ -59,8 +63,12 @@
             <if test="locked != null">
                 #{locked,jdbcType=VARCHAR},
             </if>
-            Now(),
-            Now(),
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
         </trim>
         </trim>
     </insert>
